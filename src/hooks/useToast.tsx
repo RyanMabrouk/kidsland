@@ -58,7 +58,7 @@ type ToastType = Partial<{
 // Context
 const toastContext = createContext<ToastType>({}); // Update the createContext type
 
-export function ToastProvider({ children }: { children: React.ReactNode }) {
+function ToastProvider({ children }: { children: React.ReactNode }) {
   const { toast, toastContainer } = createToast();
   return (
     <toastContext.Provider value={{ toast, toastContainer }}>
@@ -66,13 +66,15 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     </toastContext.Provider>
   );
 }
-export default function useToast() {
+function useToast() {
   const { toast, toastContainer } = useContext(toastContext);
   if (!toast || !toastContainer)
     throw new Error("useToast must be used within a ToastProvider");
   return { toast: toast, toastContainer: toastContainer };
 }
-export function ToastContainer() {
+function ToastContainer() {
   const { toastContainer } = useContext(toastContext);
   return <>{toastContainer}</>;
 }
+
+export { useToast, ToastProvider, ToastContainer };

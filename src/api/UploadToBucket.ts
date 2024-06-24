@@ -4,15 +4,15 @@ import { cookies } from "next/headers";
 export async function UploadToBucket({
   file,
   fileName,
-  BucketName,
+  bucketName,
 }: {
   file: string;
   fileName: string;
-  BucketName: string;
+  bucketName: string;
 }) {
   const supabase = createServerActionClient({ cookies });
   const { data, error } = await supabase.storage
-    .from(BucketName)
+    .from(bucketName)
     .upload(fileName, file, {
       cacheControl: "3600",
       upsert: false,

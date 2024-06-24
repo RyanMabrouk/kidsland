@@ -3,11 +3,7 @@
     "downlevelIteration": true,
     "declaration": true,
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -25,24 +21,9 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "src/app/(dashboard)/Files/_ui/filesTable/tableSideBar/TableSideBarFolderBox.tsx",
-    "src/components/ui/Pagination.tsx",
-    "src/app/(dashboard)/people/(employees)/orgchart/_ui/components/OrgChart/OrgChartBody.tsx",
-    "src/app/(dashboard)/people/(employees)/orgchart/_ui/components/OrgChart/prevversion.jsx",
-    "src/app/(dashboard)/Files/context/CheckBoxesContext.js",
-    "src/app/(dashboard)/Files/_ui/components/pdfviewer/PdfViewer.jsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
 }

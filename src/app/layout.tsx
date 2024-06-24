@@ -3,7 +3,6 @@ import { Lato } from "next/font/google";
 import "./globals.css";
 import Hydration from "@/provider/hydration";
 import Store from "@/provider/store";
-import PopUp from "./_ui/_PopUp/PopUp";
 import { ToastContainer, ToastProvider } from "@/hooks/useToast";
 
 const lato = Lato({
@@ -13,29 +12,15 @@ const lato = Lato({
 });
 
 export const metadata: Metadata = {
-  title: "SoftyHr",
-  description: "Manage your employees with ease",
+  title: "",
+  description: "",
   generator: "Next.js",
   manifest: "/manifest.json",
-  keywords: [
-    "management",
-    "softy hr",
-    "company",
-    "company management",
-    "softyhr",
-    "hr",
-    "hr management",
-    "employee",
-    "human resources",
-    "human resources management",
-    "employee management",
-    "employee hr",
-    "softy",
-  ],
+  keywords: [],
   authors: [
     {
-      name: "Softylines",
-      url: "https://www.linkedin.com/company/softylines/",
+      name: "",
+      url: "",
     },
   ],
 };
@@ -52,7 +37,6 @@ export default async function RootLayout({
           <Hydration>
             <ToastProvider>
               <ToastContainer />
-              <PopUp />
               {children}
             </ToastProvider>
           </Hydration>

@@ -1,9 +1,7 @@
 import React from "react";
-import { Footer } from "./_ui/Footer";
 import NotFoundPage from "/public/NotFound/NotFound.png";
 import NotFoundPanda from "/public/NotFound/NotFoundPanda.png";
 import Image from "next/image";
-import { Button } from "./_ui/Button";
 import Link from "next/link";
 
 function NotFound() {
@@ -39,7 +37,6 @@ function NotFound() {
           </Link>
         </div>
       </div>
-      <Footer />
     </div>
   );
 }
