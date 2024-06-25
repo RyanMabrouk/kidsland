@@ -10,6 +10,6 @@ export default async function signOut() {
       error,
     };
   } else {
-    redirect("/logout");
+    redirect("/login");
   }
 }
