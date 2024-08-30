@@ -22,5 +22,5 @@ export default async function login({
       },
     };
   }
-  redirect("/home");
+  return { error: null };
 }

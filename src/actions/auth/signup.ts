@@ -8,9 +8,9 @@ export default async function signUp({
   email,
   password,
 }: {
-  firstName: string;
-  lastName: string;
-  tel: string;
+  firstName: string | null;
+  lastName: string | null;
+  tel: string | null;
   email: string;
   password: string;
 }) {
@@ -41,4 +41,5 @@ export default async function signUp({
       error: { message: "You already have an account", type: "SignUp Error" },
     };
   }
+  return { data, error: null };
 }

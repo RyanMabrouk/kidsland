@@ -1,11 +1,12 @@
 import React from "react";
-import { BsQuestionCircleFill } from "react-icons/bs";
-export default function InsightGeneric({
+export default function TooltipGeneric({
   tip,
   position,
+  children,
 }: {
   tip: string;
   position?: "top" | "bottom" | "left" | "right";
+  children: React.ReactNode;
 }) {
   const positions = {
     top: "tooltip-top",
@@ -15,10 +16,10 @@ export default function InsightGeneric({
   };
   return (
     <div
-      className={`tooltip flex items-center justify-center ${positions[position ?? "top"]}`}
+      className={`tooltip ${positions[position ?? "top"]} z-[1000]`}
       data-tip={tip}
     >
-      <BsQuestionCircleFill className="cursor-pointer text-gray-34 hover:text-gray-20" />
+      {children}
     </div>
   );
 }

@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   compiler: {
-  //  removeConsole: process.env.NODE_ENV !== "development", // Remove console.log in production
+    removeConsole: process.env.NODE_ENV !== "development", // Remove console.log in production
   },
   swcMinify: true,
   logging: {
@@ -13,7 +13,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "ybwqmrrlvmpdikvmkqra.supabase.co",
+        hostname: "bbebbirskpjukxmqvcup.supabase.co",
         port: "",
         pathname: "/storage/v1/object/**",
       },
@@ -39,6 +39,11 @@ const nextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com",
         port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.pixabay.com",
         pathname: "/**",
       },
     ],

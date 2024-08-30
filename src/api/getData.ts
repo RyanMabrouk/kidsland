@@ -10,12 +10,16 @@ type getDataParams = {
   user?: boolean;
   match?: Record<string, unknown>;
   column?: string;
+  count?: {
+    head?: boolean;
+    count?: "exact" | "planned" | "estimated";
+  };
   sort?: {
     column: string;
     ascending: boolean;
   };
   pagination?: {
-    itemsPerPage: number;
+    limit: number;
     page: number;
   };
 };
@@ -24,14 +28,16 @@ export default async function getData<T = any>({
   user,
   match,
   column = "*",
+  count = {},
   sort,
   pagination,
 }: getDataParams): Promise<{
   data: T[] | null;
   error: PostgrestError | null;
+  count: number | null;
 }> {
   const supabase = createServerComponentClient<Database>({ cookies });
-  let query = supabase.from(tableName).select(column);
+  let query = supabase.from(tableName).select(column, count);
   if (match) {
     query = query.match(match);
   }
@@ -41,6 +47,7 @@ export default async function getData<T = any>({
     if (!user_id || sessionErr) {
       return {
         data: null,
+        count: null,
         error: {
           message: "User not found",
           details: "User not found",
@@ -56,16 +63,14 @@ export default async function getData<T = any>({
   }
   if (pagination) {
     const start =
-      pagination.page === 1
-        ? 0
-        : (pagination.page - 1) * pagination.itemsPerPage;
+      pagination.page === 1 ? 0 : (pagination.page - 1) * pagination.limit;
     const end =
       pagination.page === 1
-        ? pagination.itemsPerPage - 1
-        : start + pagination.itemsPerPage - 1;
+        ? pagination.limit - 1
+        : start + pagination.limit - 1;
     query = query.range(start, end);
   }
-  const { data, error } = await query;
+  const { data, error, count: items_count } = await query;
   // @ts-ignore BUG : possible bug in supabase type GenericStringError[] in data is never returned
-  return { data: data, error: error };
+  return { data: data, error: error, count: items_count };
 }
