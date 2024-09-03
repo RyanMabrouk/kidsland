@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import React from "react";
-import { MenuItemsType } from "../../home/data";
+import { MenuItemsType } from "../../home/constants/menuItems";
 export function NavbarItemsSubmenu(item: MenuItemsType[number]) {
   const [isHovering, setIsHovering] = React.useState(false);
   return (

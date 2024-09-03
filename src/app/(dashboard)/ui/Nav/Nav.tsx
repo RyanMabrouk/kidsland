@@ -5,7 +5,7 @@ import { NavbarItemsSubmenu } from "./NavbarItemsSubmenu";
 import SearchBar from "./SearchBar";
 import UserMenu from "./UserMenu";
 import CartButton from "./CartButton";
-import { menuItems } from "../../home/data";
+import { menuItems } from "../../home/constants/menuItems";
 import Link from "next/link";
 
 export function Nav() {

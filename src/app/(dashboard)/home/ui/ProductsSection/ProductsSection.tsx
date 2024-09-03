@@ -9,7 +9,7 @@ import { productsQuery } from "@/hooks/data/products/productsQuery";
 
 export function ProductsSection() {
   const [page, setPage] = useState(1);
-  const limit = 10;
+  const limit = 8;
   const { data: products } = useProducts({ page, limit });
   const queryClient = useQueryClient();
   useEffect(() => {
