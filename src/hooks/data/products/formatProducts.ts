@@ -1,6 +1,9 @@
+import { IProduct } from "@/types/database.tables.types";
 import { Tables } from "@/types/database.types";
 
-export function formatProduct(product: Tables<"products"> | undefined) {
+export function formatProduct(
+  product: Tables<"products"> | undefined,
+): IProduct | null {
   if (!product) return null;
   return {
     ...product,
