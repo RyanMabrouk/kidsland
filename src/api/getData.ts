@@ -1,7 +1,7 @@
 "use server";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { Database } from "@/types/database.types";
+import { Database, Tables } from "@/types/database.types";
 import { PostgrestError } from "@supabase/supabase-js";
 import { tableType } from "@/types/database.tables.types";
 import getSession from "./getSession";
@@ -14,6 +14,7 @@ type getDataParams = {
     head?: boolean;
     count?: "exact" | "planned" | "estimated";
   };
+  search?: { column: string; value: string };
   sort?: {
     column: string;
     ascending: boolean;
@@ -23,7 +24,7 @@ type getDataParams = {
     page: number;
   };
 };
-export default async function getData<T = any>({
+export default async function getData<T>({
   tableName,
   user,
   match,
@@ -31,6 +32,7 @@ export default async function getData<T = any>({
   count = {},
   sort,
   pagination,
+  search,
 }: getDataParams): Promise<{
   data: T[] | null;
   error: PostgrestError | null;
@@ -69,6 +71,9 @@ export default async function getData<T = any>({
         ? pagination.limit - 1
         : start + pagination.limit - 1;
     query = query.range(start, end);
+  }
+  if (search) {
+    query = query.ilike(search.column, `%${search?.value}%`);
   }
   const { data, error, count: items_count } = await query;
   // @ts-ignore BUG : possible bug in supabase type GenericStringError[] in data is never returned

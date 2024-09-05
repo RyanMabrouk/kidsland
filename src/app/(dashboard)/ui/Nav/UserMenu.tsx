@@ -1,12 +1,9 @@
 "use client";
 import { Logout } from "@mui/icons-material";
 import {
-  Avatar,
   Divider,
   IconButton,
-  ListItemIcon,
   Menu,
-  MenuItem,
 } from "@mui/material";
 import React from "react";
 import { FaHeart } from "react-icons/fa";

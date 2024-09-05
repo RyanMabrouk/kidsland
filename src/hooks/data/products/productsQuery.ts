@@ -3,18 +3,28 @@ import { infinityPagination } from "@/helpers/infinityPagination";
 import { Tables } from "@/types/database.types";
 import { formatProduct } from "./formatProducts";
 
-const productsQuery = ({ page, limit }: { page: number; limit: number }) => ({
+const productsQuery = ({
+  page,
+  limit,
+  search,
+}: {
+  page: number;
+  limit: number;
+  search?: { column: keyof Tables<"products">; value: string };
+}) => ({
   queryKey: [
     "products",
     {
       page,
       limit,
+      search,
     },
   ],
   queryFn: async () => {
     const [data, countData] = await Promise.all([
       getData<Tables<"products">>({
         tableName: "products",
+        search,
         pagination: {
           page,
           limit,
@@ -23,7 +33,7 @@ const productsQuery = ({ page, limit }: { page: number; limit: number }) => ({
         ...res,
         data: res.data?.map((e) => formatProduct(e)),
       })),
-      getData<any>({
+      getData<never>({
         tableName: "products",
         count: { count: "exact", head: true },
       }).then((res) => ({
