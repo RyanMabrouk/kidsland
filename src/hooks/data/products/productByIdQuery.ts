@@ -13,7 +13,7 @@ const productByIdQuery = (id: string) => ({
       data: formatProduct(res.data?.[0]),
     }));
   },
-  enabled: !!id,
+  enabled: id !== undefined && id !== null,
 });
 
 export { productByIdQuery };

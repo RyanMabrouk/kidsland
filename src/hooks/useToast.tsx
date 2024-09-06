@@ -46,7 +46,7 @@ function createToast() {
   };
   return { toast: toast, toastContainer: contextHolder };
 }
-type ToastType = Partial<{
+export type ToastType = Partial<{
   toast: {
     success(message: string, description?: string): void;
     error(message: string, description?: string): void;
@@ -70,7 +70,7 @@ function useToast() {
   const { toast, toastContainer } = useContext(toastContext);
   if (!toast || !toastContainer)
     throw new Error("useToast must be used within a ToastProvider");
-  return { toast: toast, toastContainer: toastContainer };
+  return { toast, toastContainer };
 }
 function ToastContainer() {
   const { toastContainer } = useContext(toastContext);

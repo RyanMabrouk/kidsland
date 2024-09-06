@@ -5,7 +5,7 @@ import { Database, Tables } from "@/types/database.types";
 import { PostgrestError } from "@supabase/supabase-js";
 import { tableType } from "@/types/database.tables.types";
 import getSession from "./getSession";
-type getDataParams = {
+export type getDataParams = {
   tableName: tableType;
   user?: boolean;
   match?: Record<string, unknown>;
@@ -63,6 +63,9 @@ export default async function getData<T>({
   if (sort) {
     query = query.order(sort.column, { ascending: sort.ascending });
   }
+  if (search) {
+    query = query.ilike(search.column, `%${search?.value}%`);
+  }
   if (pagination) {
     const start =
       pagination.page === 1 ? 0 : (pagination.page - 1) * pagination.limit;
@@ -72,9 +75,7 @@ export default async function getData<T>({
         : start + pagination.limit - 1;
     query = query.range(start, end);
   }
-  if (search) {
-    query = query.ilike(search.column, `%${search?.value}%`);
-  }
+
   const { data, error, count: items_count } = await query;
   // @ts-ignore BUG : possible bug in supabase type GenericStringError[] in data is never returned
   return { data: data, error: error, count: items_count };
