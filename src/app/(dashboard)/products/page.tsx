@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import BreadCrumbs from "./[productId]/ui/BreadCrumbs";
 import useProducts from "@/hooks/data/products/useProducts";
 import { useQueryClient } from "@tanstack/react-query";
@@ -9,12 +9,31 @@ import Product from "../home/ui/ProductsSection/Product";
 import { Pagination } from "@mui/material";
 import { SelectGeneric } from "@/app/ui/SelectGeneric";
 import { IProduct } from "@/types/database.tables.types";
-import { FaLongArrowAltDown } from "react-icons/fa";
+import { Tables } from "@/types/database.types";
+import { ToggleSortArrow } from "./ui/ToggleSortArrow";
 
 function Page() {
   const [page, setPage] = useState(1);
-  const limit = 21;
-  const { data: products } = useProducts({ page, limit });
+  const [sortDescending, setSortDescending] = useState(true);
+  const [sortColumn, setSortColumn] = useState<
+    keyof Tables<"products"> | undefined
+  >(undefined);
+  const limit = 6;
+  const sort = useMemo(
+    () =>
+      sortColumn
+        ? {
+            column: sortColumn,
+            ascending: !sortDescending,
+          }
+        : undefined,
+    [sortColumn, sortDescending],
+  );
+  const { data: products } = useProducts({
+    page,
+    limit,
+    sort,
+  });
   const queryClient = useQueryClient();
   useEffect(() => {
     if (products?.meta.has_next_page) {
@@ -22,14 +41,15 @@ function Page() {
         productsQuery({
           page: page + 1,
           limit,
+          sort,
         }),
       );
     }
-  }, [page, products?.meta.has_next_page, queryClient]);
+  }, [page, products?.meta.has_next_page, queryClient, sort]);
   const sortOptions: { label: string; value: keyof IProduct }[] = [
     {
       label: "Price",
-      value: "price_after_discount",
+      value: "price",
     },
     {
       label: "Newest",
@@ -47,7 +67,7 @@ function Page() {
   return (
     <div className="flex flex-col">
       <Image
-        src={"/product/opsti-uslovi_header.jpg"}
+        src={"/product/igracke_header.jpg"}
         alt="logo"
         width={2000}
         height={2000}
@@ -56,13 +76,17 @@ function Page() {
       <BreadCrumbs />
       <div className="mx-auto flex flex-row gap-[2rem]">
         <div className="w-[15rem] bg-color1"></div>
-        <div className="mt-20 flex flex-col gap-12">
-          <div className="flex flex-row gap-6 items-center">
-            <SelectGeneric options={sortOptions} inputLabel="Sort" />
-            <FaLongArrowAltDown className="size-7 border rounded-full p-1 " />
+        <div className="mt-10 flex flex-col gap-12">
+          <div className="flex flex-row items-center gap-6">
+            <SelectGeneric
+              options={sortOptions}
+              inputLabel="Sort"
+              setValueInParent={setSortColumn}
+            />
+            <ToggleSortArrow setSortDescending={setSortDescending} />
           </div>
-          <div className="mx-auto grid w-fit grid-cols-3 gap-x-10 gap-y-10">
-            {products?.data?.map((product, key) => (
+          <div className="mx-auto grid w-[50rem] grid-cols-3 gap-x-10 gap-y-10 min-h-screen">
+            {products?.data.map((product, key) => (
               <Product key={key} {...product} />
             ))}
           </div>
@@ -81,3 +105,5 @@ function Page() {
 }
 
 export default Page;
+
+

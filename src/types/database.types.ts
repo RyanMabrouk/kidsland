@@ -9,6 +9,36 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      cart: {
+        Row: {
+          product_id: string
+          user_id: string
+        }
+        Insert: {
+          product_id: string
+          user_id: string
+        }
+        Update: {
+          product_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cart_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cart_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           created_at: string
@@ -21,6 +51,7 @@ export type Database = {
           stock: number
           subtitle: string
           title: string
+          wholesale_price: number
         }
         Insert: {
           created_at?: string
@@ -33,6 +64,7 @@ export type Database = {
           stock?: number
           subtitle?: string
           title?: string
+          wholesale_price?: number
         }
         Update: {
           created_at?: string
@@ -45,8 +77,77 @@ export type Database = {
           stock?: number
           subtitle?: string
           title?: string
+          wholesale_price?: number
         }
         Relationships: []
+      }
+      profiles: {
+        Row: {
+          is_admin: boolean
+          user_id: string
+        }
+        Insert: {
+          is_admin?: boolean
+          user_id: string
+        }
+        Update: {
+          is_admin?: boolean
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      purchases: {
+        Row: {
+          created_at: string
+          discount: number
+          discount_type: Database["public"]["Enums"]["discount_type_enum"]
+          id: number
+          price_before_discount: number
+          product_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          discount: number
+          discount_type: Database["public"]["Enums"]["discount_type_enum"]
+          id?: number
+          price_before_discount: number
+          product_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          discount?: number
+          discount_type?: Database["public"]["Enums"]["discount_type_enum"]
+          id?: number
+          price_before_discount?: number
+          product_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "purchases_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchases_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

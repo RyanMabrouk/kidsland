@@ -1,4 +1,4 @@
-import { QueriesConfig } from "@/constants/queries";
+import { QueriesConfig } from "@/constants/QueriesConfig";
 import {
   QueryClient,
   dehydrate,

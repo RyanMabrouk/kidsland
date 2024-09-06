@@ -39,7 +39,7 @@ const menuItems: MenuItemsType = [
   },
   {
     title: "Toys",
-    href: "/toys",
+    href: "/products",
     subItems: [
       {
         title: "Action Figures",
