@@ -1,29 +1,13 @@
 "use client";
 import Image from "next/image";
-import Product from "./ui/Product";
-import useProducts from "@/hooks/data/products/useProducts";
-import { useEffect, useState } from "react";
-import { Pagination } from "@mui/material";
-import { useQueryClient } from "@tanstack/react-query";
-import { productsQuery } from "@/hooks/data/products/productsQuery";
+import { useState } from "react";
+import Products from "./ui/products";
+
 
 export default function Page() {
-  const [page, setPage] = useState(1);
-  const limit = 8;
-  const { data: products } = useProducts({ page, limit });
-  const queryClient = useQueryClient();
-  useEffect(() => {
-    if (products?.meta.has_next_page) {
-      queryClient.prefetchQuery(
-        productsQuery({
-          page: page + 1,
-          limit,
-        }),
-      );
-    }
-  }, [page, products?.meta.has_next_page, queryClient]);
+  const [searchQuery, setSearchQuery] = useState<string>(""); // State for search query
   return (
-    <div className="mt-20 flex flex-col gap-12">
+    <div className="mt-20 pb-5 flex flex-col gap-12">
       <div className="flex flex-row items-center justify-center gap-3">
         <Image
           src="/home/icons/flower_yellow.png"
@@ -41,19 +25,24 @@ export default function Page() {
           width={15}
         />
       </div>
-      <div className="mx-auto grid w-fit grid-cols-4 gap-x-10 gap-y-10">
-        {products?.data?.map((product, key) => (
-          <Product key={key} {...product} />
-        ))}
-      </div>
-      <Pagination
-        className="flex w-full justify-center"
-        count={products?.meta.total_pages}
-        page={page}
-        boundaryCount={3}
-        siblingCount={3}
-        onChange={(e, value) => setPage(value)}
-      />
+      <div className="flex flex-row gap-1 items-center border-gray-200 border-2 px-2 w-[40rem] m-auto" >
+            <Image
+              src="/MagnifyingGlass.Png"
+              alt="aaa"
+              width={20}
+              height={20}
+            />
+
+          <input
+          type="text"
+          placeholder="Search products..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-96 p-3 hover:border-none focus:outline-none"        />
+      </div>     
+
+      <Products searchQuery={searchQuery} /> 
+
     </div>
   );
 }

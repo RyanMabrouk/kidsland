@@ -10,18 +10,19 @@ export async function uploadFile({
   name: string;
   title: string;
 }) {
-  const file = formData.get(name) as string| null;
+  const file = formData.get(name) as File;
   if (!file) {
     throw new Error("File not found in form data");
   }
   const { data, error } = await UploadToBucket({
-    file,       
-    fileName: title, 
+    file,
+    fileName: title,
     bucketName: "products_images",
   });
   if (error) {
-    throw new Error(`Failed to upload file: ${error.message}`);
+    throw new Error(`Failed to upload the file: ${error.message}`);
   }
+  console.log(data?.fullPath);
 
-  return data?.fullPath;
+  return data?.fullPath as string;
 }
