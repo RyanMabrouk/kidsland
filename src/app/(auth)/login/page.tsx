@@ -1,10 +1,15 @@
+import LoginForm from "@/components/LoginForm";
 import React from "react";
-import getSession from "@/api/getSession";
-import { redirect } from "next/navigation";
-import Form from "./form";
 
-export default async function Page() {
-  const { session } = await getSession();
-  if (session) redirect("/home");
-  return <Form />;
+export default function Page() {
+  return (
+    <div className="flex h-screen items-center justify-center">
+      <div className="absolute inset-0 bg-black/5"></div>
+
+      {/* Content */}
+      <div className="z-10 w-full">
+        <LoginForm />
+      </div>
+    </div>
+  );
 }
