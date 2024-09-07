@@ -22,7 +22,6 @@ export async function uploadFile({
   if (error) {
     throw new Error(`Failed to upload the file: ${error.message}`);
   }
-  console.log(data?.fullPath);
 
-  return data?.fullPath as string;
+  return (process.env.SUPABASE_STORAGE_LINK as string) +"/"+ data?.fullPath;
 }

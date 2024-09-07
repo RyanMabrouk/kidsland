@@ -68,9 +68,8 @@ export default function Page() {
         title: title,
       });
 
-      await postData({
-        tableName: "products",
-        payload: {
+      await postData<TablesInsert<"products">[]>({
+        payload: [ {
           title,
           price,
           stock,
@@ -78,7 +77,9 @@ export default function Page() {
           subtitle,
           wholesale_price: wholesalePrice,
           image_url,
-        } as TablesInsert<"products">,
+        } ] ,
+        tableName: "products",
+       
       });
     },
     onSuccess: () => {
@@ -105,7 +106,7 @@ export default function Page() {
       width={15}
     />
     <div className="text-2xl font-bold uppercase text-color5">
-      Edit Article
+      Add A New Article
     </div>
     <Image
       src="/home/icons/flower_yellow.png"
@@ -215,7 +216,7 @@ export default function Page() {
   >
     Submit
   </button>
-  
+
 </form>
 
   );
