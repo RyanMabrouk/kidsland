@@ -5,25 +5,35 @@ import { Database, Tables } from "@/types/database.types";
 import { PostgrestError } from "@supabase/supabase-js";
 
 export type getPurchasesParams = {
-  match?: Record<string, unknown>;
+  match?: Partial<Tables<"purchases">>;
   column?: string;
   count?: {
     head?: boolean;
     count?: "exact" | "planned" | "estimated";
   };
-  search?: { column: string; value: string };
+  search?: { column: keyof Tables<"purchases">; value: string };
   sort?: {
-    column: string;
+    column: keyof Tables<"purchases">;
     ascending: boolean;
   };
   pagination?: {
     limit: number;
     page: number;
   };
-  filter?: { 
-    column: string; 
+  filter?: {
+    column: keyof Tables<"purchases">;
     value: string;
-    operator?: "eq" | "neq" | "gt" | "gte" | "lt" | "lte" | "ilike" | "not_ilike" | "in" | "not_in";
+    operator?:
+      | "eq"
+      | "neq"
+      | "gt"
+      | "gte"
+      | "lt"
+      | "lte"
+      | "ilike"
+      | "not_ilike"
+      | "in"
+      | "not_in";
   };
 };
 
@@ -35,15 +45,11 @@ export default async function getPurchases({
   pagination,
   search,
   filter,
-}: getPurchasesParams): Promise<{
-  data: Tables<"purchases">[] | null;
-  error: PostgrestError | null;
-  count: number | null;
-}> {
+}: getPurchasesParams) {
   const supabase = createServerComponentClient<Database>({ cookies });
-    let query = supabase
+  let query = supabase
     .from("purchases")
-    .select(column, { count: count.count || undefined }); 
+    .select(column, { count: count.count || undefined });
   if (match) {
     query = query.match(match);
   }
@@ -57,19 +63,18 @@ export default async function getPurchases({
     query = query.filter(filter.column, filter.operator || "eq", filter.value);
   }
   if (pagination) {
-    const start = pagination.page === 1 ? 0 : (pagination.page - 1) * pagination.limit;
-    const end = pagination.page === 1 ? pagination.limit - 1 : start + pagination.limit - 1;
+    const start =
+      pagination.page === 1 ? 0 : (pagination.page - 1) * pagination.limit;
+    const end =
+      pagination.page === 1
+        ? pagination.limit - 1
+        : start + pagination.limit - 1;
     query = query.range(start, end);
   }
-  try {
-    const { data, error, count: items_count } = await query;
-    if (error) {
-      console.error("Error fetching purchases:", error);
-      return { data: null, error, count: null };
-    }
-    return { data: data || null, error: null, count: items_count };
-  } catch (err) {
-    console.error("Unexpected error:", err);
-    return { data: null, error: err as PostgrestError, count: null };
-  }
+  const { data, error, count: items_count } = await query;
+  return {
+    data: data as unknown as Tables<"purchases"> | null,
+    error,
+    count: items_count,
+  };
 }
