@@ -1,19 +1,19 @@
 "use server";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { Database, Tables } from "@/types/database.types";
-import { PostgrestError } from "@supabase/supabase-js";
+import { Database, Enums, Tables } from "@/types/database.types";
 
-export type getPurchasesParams = {
-  match?: Partial<Tables<"purchases">>;
+export type getOrdersParams = {
+  match?: Partial<Tables<"orders">>;
   column?: string;
+  status: Enums<"status_type_enum">;
   count?: {
     head?: boolean;
     count?: "exact" | "planned" | "estimated";
   };
-  search?: { column: keyof Tables<"purchases">; value: string };
+  search?: { column: keyof Tables<"orders">; value: string };
   sort?: {
-    column: keyof Tables<"purchases">;
+    column: keyof Tables<"orders">;
     ascending: boolean;
   };
   pagination?: {
@@ -21,7 +21,7 @@ export type getPurchasesParams = {
     page: number;
   };
   filter?: {
-    column: keyof Tables<"purchases">;
+    column: keyof Tables<"orders">;
     value: string;
     operator?:
       | "eq"
@@ -37,7 +37,8 @@ export type getPurchasesParams = {
   };
 };
 
-export default async function getPurchases({
+export default async function getOrders({
+  status="pending",
   match,
   column = "*",
   count = {},
@@ -45,11 +46,13 @@ export default async function getPurchases({
   pagination,
   search,
   filter,
-}: getPurchasesParams) {
+}: getOrdersParams) {
   const supabase = createServerComponentClient<Database>({ cookies });
   let query = supabase
-    .from("purchases")
-    .select(column, { count: count.count || undefined });
+  .from("orders")
+  .select(column, { count: count.count || undefined })
+  .eq("status", status);
+
   if (match) {
     query = query.match(match);
   }
@@ -73,7 +76,7 @@ export default async function getPurchases({
   }
   const { data, error, count: items_count } = await query;
   return {
-    data: data as unknown as Tables<"purchases"> | null,
+    data: data as unknown as Tables<"orders"> | null,
     error,
     count: items_count,
   };

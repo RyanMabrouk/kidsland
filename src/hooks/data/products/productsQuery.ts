@@ -11,7 +11,7 @@ const productsQuery = (args: {
     ascending: boolean;
     column: keyof Tables<"products">;
   };
-  cartProducts: string[] | undefined;
+  cartProducts?: string[] | undefined;
 }) => ({
   queryKey: [
     "products",

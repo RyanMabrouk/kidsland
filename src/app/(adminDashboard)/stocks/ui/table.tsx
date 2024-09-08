@@ -54,7 +54,8 @@ export default function Table({ searchQuery }: { searchQuery: string }) {
     const income =
       validStock * (validPrice - validDiscount - validWholesalePrice);
     return {
-      product: product.title, // Adjust according to your product object
+      id : product.id, 
+      product: product.title, 
       stock: validStock,
       wholesale_price: validWholesalePrice,
       price: validPrice,

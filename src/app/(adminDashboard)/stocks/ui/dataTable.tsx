@@ -3,11 +3,14 @@ import React, { useEffect, useState } from "react";
 import { Table, TableHead, TableRow, TableCell, TableBody } from "@/components/ui/table";
 import useProducts from "@/hooks/data/products/useProducts";
 import productsIncome from "@/api/products/prodcutsIncome";
+import { FaPen } from "react-icons/fa";
+import Link from "next/link";
+import DeleteProduct from "./deleteProduct";
 
 const DataTable = ({
   data,
 }: {
-  data: Array<{ product: string; stock: number; wholesale_price: number; price: number; income: number }>;
+  data: Array<{ id:string;product: string; stock: number; wholesale_price: number; price: number; income: number }>;
 }) => {
   const [totalIncome, setTotalIncome] = useState<number | null>(null); // State for storing total income
   const [sortField, setSortField] = useState<keyof typeof data[0]>("product");
@@ -46,32 +49,40 @@ const DataTable = ({
       {/* Table */}
       <Table className="min-w-full table-auto">
         <TableHead className="px-0 bg-gray-100 text-base font-semibold">
-          <TableRow className="grid grid-cols-5">
-            <TableCell onClick={() => toggleSort("product")}>Product</TableCell>
-            <TableCell onClick={() => toggleSort("stock")}>Stock</TableCell>
-            <TableCell onClick={() => toggleSort("wholesale_price")}>Wholesale Price(dt)</TableCell>
-            <TableCell onClick={() => toggleSort("price")}>Price(dt)</TableCell>
-            <TableCell onClick={() => toggleSort("income")}>Income(dt)</TableCell>
+          <TableRow className="grid grid-cols-11">
+            <TableCell className="col-span-2 text-center" onClick={() => toggleSort("product")}>Product</TableCell>
+            <TableCell className="col-span-2 text-center " onClick={() => toggleSort("stock")}>Stock</TableCell>
+            <TableCell className="col-span-2 text-center" onClick={() => toggleSort("wholesale_price")}>Wholesale Price</TableCell>
+            <TableCell className="col-span-2 text-center" onClick={() => toggleSort("price")}>Price</TableCell>
+            <TableCell className="col-span-2 text-center" onClick={() => toggleSort("income")}>Income(dt)</TableCell>
+            <TableCell className="col-span-1 text-center">Actions</TableCell>  {/* Add column for actions */}
           </TableRow>
         </TableHead>
         <TableBody>
           {/* Total Income Row */}
-          <TableRow className="grid grid-cols-5 font-bold text-base">
-            <TableCell>All Products</TableCell>
-            <TableCell>-</TableCell>
-            <TableCell>-</TableCell>
-            <TableCell>-</TableCell>
-            <TableCell className="">{totalIncome !== null ? totalIncome : "Loading..."}</TableCell>
+          <TableRow className="grid grid-cols-11 font-bold text-base ">
+            <TableCell className="col-span-2 text-center">All Products</TableCell>
+            <TableCell className="col-span-2 text-center">-</TableCell>
+            <TableCell className="col-span-2 text-center">-</TableCell>
+            <TableCell className="col-span-2 text-center">-</TableCell>
+            <TableCell className="col-span-2 text-center">{totalIncome !== null ? totalIncome : "Loading..."}</TableCell>
+            <TableCell className="col-span-1 text-center"></TableCell>  {/* Add column for actions */}
           </TableRow>
 
           {/* Filtered and Sorted Data */}
           {sortedData.map((row) => (
-            <TableRow key={row.product} className="grid grid-cols-5">
-              <TableCell>{row.product}</TableCell>
-              <TableCell>{row.stock}</TableCell>
-              <TableCell>{row.wholesale_price}</TableCell>
-              <TableCell>{row.price}</TableCell>
-              <TableCell>{row.income}</TableCell>
+            <TableRow key={row.product} className="grid grid-cols-11">
+              <TableCell className="col-span-2 text-center">{row.product}</TableCell>
+              <TableCell className="col-span-2 text-center">{row.stock}</TableCell>
+              <TableCell className="col-span-2 text-center">{row.wholesale_price}</TableCell>
+              <TableCell className="col-span-2 text-center">{row.price}</TableCell>
+              <TableCell className="col-span-2 text-center">{row.income}</TableCell>
+              <TableCell className="col-span-1 text-center flex justify-between  ">
+              <Link href={`/editProduct/${row.id}`}>
+                  <FaPen className="size-[1rem] hover:text-gray-500" />
+              </Link>
+              <DeleteProduct  id={row.id} />
+              </TableCell>  
             </TableRow>
           ))}
         </TableBody>
