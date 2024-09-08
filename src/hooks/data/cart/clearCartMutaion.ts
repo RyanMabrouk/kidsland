@@ -1,27 +1,29 @@
 "use client";
 import getSession from "@/api/getSession";
-import postData from "@/api/postData";
 import { useToast } from "@/hooks/useToast";
-import { TablesInsert } from "@/types/database.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import useCart from "./useCart";
+import deleteData from "@/api/deleteData";
 
-export function useAddToCart() {
+export function useClearCart() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { data: oldCart } = useCart();
   return useMutation({
-    mutationFn: async ({ product_id }: { product_id: string }) => {
+    mutationFn: async () => {
       const { session } = await getSession();
       if (!session) {
         throw new Error("User is not authenticated");
       }
-      await postData<TablesInsert<"cart">[]>({
+      if (!oldCart?.data) {
+        throw new Error("User cart not found");
+      }
+      await deleteData({
         tableName: "cart",
-        payload: [
-          {
-            product_id,
-            user_id: session.user.id,
-          },
-        ],
+        matchInArray: {
+          column: "product_id",
+          in: oldCart.data,
+        },
       });
     },
     onError: (error) => {
@@ -29,7 +31,7 @@ export function useAddToCart() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
-      toast.success("Item added to cart");
+      toast.success("Cart was cleared");
     },
   });
 }

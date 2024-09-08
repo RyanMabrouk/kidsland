@@ -1,9 +1,8 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import { productsQuery } from "./productsQuery";
-import { getDataParams } from "@/api/getData";
-import { IProduct } from "@/types/database.tables.types";
 import { Tables } from "@/types/database.types";
+import useCart from "../cart/useCart";
 
 export default function useProducts({
   page,
@@ -19,5 +18,14 @@ export default function useProducts({
   };
   search?: { column: keyof Tables<"products">; value: string };
 }) {
-  return useQuery(productsQuery({ page, limit, sort, search }));
+  const { data: cart } = useCart();
+  return useQuery(
+    productsQuery({
+      page,
+      limit,
+      sort,
+      search,
+      cartProducts: cart?.data,
+    }),
+  );
 }

@@ -11,6 +11,7 @@ const productsQuery = (args: {
     ascending: boolean;
     column: keyof Tables<"products">;
   };
+  cartProducts: string[] | undefined;
 }) => ({
   queryKey: [
     "products",
@@ -20,7 +21,7 @@ const productsQuery = (args: {
   ],
   queryFn: async () => {
     const [data, countData] = await Promise.all([
-      getData<Tables<"products">>({
+      getData<"products">({
         tableName: "products",
         ...args,
         pagination: {
@@ -29,9 +30,13 @@ const productsQuery = (args: {
         },
       }).then((res) => ({
         ...res,
-        data: res.data?.map((e) => formatProduct(e)),
+        data: res.data?.map((e) =>
+          formatProduct(e, {
+            cartProducts: args.cartProducts,
+          }),
+        ),
       })),
-      getData<never>({
+      getData<"products">({
         tableName: "products",
         count: { count: "exact", head: true },
       }).then((res) => ({
@@ -48,6 +53,7 @@ const productsQuery = (args: {
       error: data.error || countData.error,
     };
   },
+  enabled: args.cartProducts !== undefined,
 });
 
 export { productsQuery };
