@@ -1,7 +1,7 @@
-import getData from "@/api/getData";
 import { infinityPagination } from "@/helpers/infinityPagination";
 import { Tables } from "@/types/database.types";
 import { formatProduct } from "./formatProducts";
+import getProducts from "@/actions/products/getProducts";
 
 const productsQuery = (args: {
   page: number;
@@ -10,6 +10,10 @@ const productsQuery = (args: {
   sort?: {
     ascending: boolean;
     column: keyof Tables<"products">;
+  };
+  filters?: {
+    minDiscount: number;
+    priceRange: number[];
   };
   cartProducts: string[] | undefined;
 }) => ({
@@ -21,9 +25,11 @@ const productsQuery = (args: {
   ],
   queryFn: async () => {
     const [data, countData] = await Promise.all([
-      getData<"products">({
+      getProducts({
         tableName: "products",
         ...args,
+        minDiscount: args.filters?.minDiscount,
+        priceRange: args.filters?.priceRange,
         pagination: {
           page: args.page,
           limit: args.limit,
@@ -36,7 +42,7 @@ const productsQuery = (args: {
           }),
         ),
       })),
-      getData<"products">({
+      getProducts({
         tableName: "products",
         count: { count: "exact", head: true },
       }).then((res) => ({

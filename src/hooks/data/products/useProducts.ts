@@ -9,6 +9,7 @@ export default function useProducts({
   limit,
   sort,
   search,
+  filters,
 }: {
   page: number;
   limit: number;
@@ -17,6 +18,10 @@ export default function useProducts({
     column: keyof Tables<"products">;
   };
   search?: { column: keyof Tables<"products">; value: string };
+  filters?: {
+    minDiscount: number;
+    priceRange: number[];
+  };
 }) {
   const { data: cart } = useCart();
   return useQuery(
@@ -26,6 +31,7 @@ export default function useProducts({
       sort,
       search,
       cartProducts: cart?.data,
+      filters,
     }),
   );
 }
