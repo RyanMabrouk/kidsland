@@ -11,6 +11,7 @@ import { SelectGeneric } from "@/app/ui/SelectGeneric";
 import { IProduct } from "@/types/database.tables.types";
 import { Tables } from "@/types/database.types";
 import { ToggleSortArrow } from "./ui/ToggleSortArrow";
+import useCart from "@/hooks/data/cart/useCart";
 
 function Page() {
   const [page, setPage] = useState(1);
@@ -34,6 +35,7 @@ function Page() {
     limit,
     sort,
   });
+  const { data: cart } = useCart();
   const queryClient = useQueryClient();
   useEffect(() => {
     if (products?.meta.has_next_page) {
@@ -42,6 +44,7 @@ function Page() {
           page: page + 1,
           limit,
           sort,
+          cartProducts: cart?.data,
         }),
       );
     }
@@ -85,7 +88,7 @@ function Page() {
             />
             <ToggleSortArrow setSortDescending={setSortDescending} />
           </div>
-          <div className="mx-auto grid w-[50rem] grid-cols-3 gap-x-10 gap-y-10 min-h-screen">
+          <div className="mx-auto grid min-h-screen w-[50rem] grid-cols-3 gap-x-10 gap-y-10">
             {products?.data.map((product, key) => (
               <Product key={key} {...product} />
             ))}
@@ -105,5 +108,3 @@ function Page() {
 }
 
 export default Page;
-
-

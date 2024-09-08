@@ -6,7 +6,7 @@ export async function UploadToBucket({
   fileName,
   bucketName,
 }: {
-  file: string;
+  file: File;
   fileName: string;
   bucketName: string;
 }) {
