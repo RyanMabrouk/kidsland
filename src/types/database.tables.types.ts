@@ -6,7 +6,9 @@ export type tableType = keyof Database[Extract<
   "public"
 >]["Tables"];
 
-  export interface IProduct extends Tables<"products"> {
-    available: boolean;
-    price_after_discount: number;
-  }
+export interface IProduct extends Tables<"products"> {
+  available: boolean;
+  price_after_discount: number;
+}
+
+export type Cart = { product: IProduct; quantity: number }[];
