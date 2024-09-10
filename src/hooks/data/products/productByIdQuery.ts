@@ -19,7 +19,11 @@ const productByIdQuery = ({
       data: formatProduct(res.data?.[0], { cartProducts }),
     }));
   },
-  enabled: id !== undefined && id !== null,
+  enabled:
+    id !== undefined &&
+    id !== null &&
+    cartProducts !== undefined &&
+    id !== "undefined",
 });
 
 export { productByIdQuery };

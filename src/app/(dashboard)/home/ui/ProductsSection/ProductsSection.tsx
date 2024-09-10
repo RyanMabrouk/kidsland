@@ -24,7 +24,7 @@ export function ProductsSection() {
         }),
       );
     }
-  }, [page, products?.meta.has_next_page, queryClient]);
+  }, [page, products?.meta.has_next_page, queryClient, cart?.data]);
   return (
     <div className="mt-20 flex min-h-screen flex-col gap-12">
       <div className="flex flex-row items-center justify-center gap-3">

@@ -1,4 +1,5 @@
 "use client";
+import AddToCartBtn from "@/app/(dashboard)/home/ui/ProductsSection/AddToCartBtn";
 import useProductById from "@/hooks/data/products/useProductById";
 import Image from "next/image";
 import { useParams } from "next/navigation";
@@ -60,13 +61,13 @@ export default function ProductDetails() {
                 </span>
               </div>
             </div>
-            <div className="-mx-2 mb-4 flex">
-              <div className="w-[25%] px-2">
-                <button
-                  className={`flex h-[2.5rem] w-[10rem] items-center justify-center rounded-xl border border-slate-700 bg-slate-700 px-3 py-2 text-center text-sm font-semibold capitalize text-white transition-all ease-linear hover:bg-white hover:text-slate-700`}
-                >
-                  add to cart
-                </button>
+            <div className="mb-4 flex">
+              <div className="">
+                <AddToCartBtn
+                  product_id={product?.id ?? ""}
+                  isInCart={product?.isInCart}
+                  className="relative bottom-0 left-0 flex h-[2.5rem] w-[10rem] items-center justify-center opacity-100"
+                />
               </div>
             </div>
             <div>

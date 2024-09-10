@@ -14,7 +14,7 @@ export function useAddToCart() {
       if (!session) {
         throw new Error("User is not authenticated");
       }
-      await postData<TablesInsert<"cart">[]>({
+      await postData<"cart">({
         tableName: "cart",
         payload: [
           {

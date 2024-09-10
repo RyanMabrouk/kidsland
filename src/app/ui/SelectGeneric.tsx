@@ -21,7 +21,7 @@ export function SelectGeneric({
   group, // if true, every option with a group_name will be a group_name label
   required,
   capitalize,
-  setValueInParent,
+  onChange,
   inputLabel,
   cursor = "black",
 }: {
@@ -34,7 +34,7 @@ export function SelectGeneric({
   group?: boolean;
   required?: boolean;
   capitalize?: boolean;
-  setValueInParent?: React.Dispatch<React.SetStateAction<any>> | undefined;
+  onChange?: (value: string) => void;
   inputLabel?: string | ReactNode;
   cursor?: "white" | "black" | string;
   disabled?: boolean;
@@ -67,7 +67,7 @@ export function SelectGeneric({
           required={required}
           onOpen={(e) => setOpen(true)}
           onClose={(e) => setOpen(false)}
-          onChange={(e) => setValueInParent && setValueInParent(e.target.value)}
+          onChange={(e) => onChange?.(e.target.value)}
           IconComponent={() => (
             <VscTriangleDown
               className={`cursor-pointer transition-all ease-linear ${cursor_type} ${open ? "rotate-180" : ""} `}
