@@ -41,7 +41,7 @@ export default function CartItem({
             className="h-[7rem] w-[7rem] p-3"
           />
           <div className="pt-7">
-            <div className={`${product.available && "text-red-600"}`}>
+            <div className={`${product.available || "text-red-600"}`}>
               {product.title}
             </div>
             {product.available ? (

@@ -1,15 +1,16 @@
 "use server";
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { tableType } from "@/types/database.tables.types";
-export default async function updateData({
+import { dbTableType } from "@/types/database.tables.types";
+import { Tables, TablesUpdate } from "@/types/database.types";
+export default async function updateData<ITableName extends dbTableType>({
   tableName,
   payload,
   match,
 }: {
-  tableName: tableType;
-  payload: Record<string, unknown>;
-  match: Record<string, unknown>;
+  tableName: ITableName;
+  payload: TablesUpdate<ITableName>;
+  match: Partial<Tables<ITableName>>;
 }) {
   const supabase = createServerActionClient({ cookies });
   const { data, error } = await supabase

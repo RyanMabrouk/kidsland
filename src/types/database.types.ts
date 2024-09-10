@@ -111,27 +111,27 @@ export type Database = {
       orders: {
         Row: {
           created_at: string
-          discount: number
-          discount_type: Database["public"]["Enums"]["discount_type_enum"]
           id: number
-          price_before_discount: number
+          status: Database["public"]["Enums"]["status_type_enum"]
+          total_price: number
           user_id: string
+          username: string | null
         }
         Insert: {
           created_at?: string
-          discount: number
-          discount_type: Database["public"]["Enums"]["discount_type_enum"]
           id?: number
-          price_before_discount: number
+          status?: Database["public"]["Enums"]["status_type_enum"]
+          total_price: number
           user_id: string
+          username?: string | null
         }
         Update: {
           created_at?: string
-          discount?: number
-          discount_type?: Database["public"]["Enums"]["discount_type_enum"]
           id?: number
-          price_before_discount?: number
+          status?: Database["public"]["Enums"]["status_type_enum"]
+          total_price?: number
           user_id?: string
+          username?: string | null
         }
         Relationships: [
           {
@@ -217,6 +217,7 @@ export type Database = {
     }
     Enums: {
       discount_type_enum: "percentage" | "fixed"
+      status_type_enum: "pending" | "cancelled" | "fulfilled"
     }
     CompositeTypes: {
       [_ in never]: never

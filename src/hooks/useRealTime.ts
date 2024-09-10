@@ -1,11 +1,11 @@
 "use client";
-import { tableType } from "@/types/database.tables.types";
+import { dbTableType } from "@/types/database.tables.types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useEffect } from "react";
 type optionsType = {
   event: "UPDATE" | "INSERT" | "DELETE" | "*";
   schema: string;
-  table: tableType;
+  table: dbTableType;
   filter?: string;
 };
 export default function useRealTime({
@@ -14,7 +14,7 @@ export default function useRealTime({
   event = "*",
   onReceive,
 }: {
-  tableName: tableType;
+  tableName: dbTableType;
   filters?: {
     column: string;
     value: string | number;

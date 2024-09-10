@@ -1,18 +1,29 @@
 "use client";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { CartFilterType } from "../constants/CartFilters";
 export function Filters({
   filters,
   setFilter,
+  up,
+  setUp,
 }: {
   filters: CartFilterType[];
   setFilter: Dispatch<SetStateAction<string>>;
+  up: boolean;
+  setUp: Dispatch<SetStateAction<boolean>>;
 }) {
   return (
     <div className="flex">
       {filters.map((filter) => (
         <CartElement filters={filter} setFilter={setFilter} />
       ))}
+      <button className="ml-3 h-[3rem] px-3" onClick={() => setUp((e) => !e)}>
+        <img
+          src={up ? "/Cart/up-arrow.png" : "/Cart/down-arrow.png"}
+          alt="arrow"
+          className="h-[1rem] w-[1rem]"
+        />
+      </button>
     </div>
   );
 }

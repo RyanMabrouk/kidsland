@@ -1,10 +1,25 @@
 import useCart from "@/hooks/data/products/useCart";
-import React, { useState } from "react";
+import React from "react";
 import CartItem from "./CartItem";
-import { IProduct } from "@/types/database.tables.types";
+import { Cart, IProduct } from "@/types/database.tables.types";
 
-export default function Items({ filter }: { filter: string }) {
+export default function Items({ filter, up }: { filter: string; up: boolean }) {
   const { data: cart, isLoading } = useCart();
+  const cart2 = cart?.sort(
+    (
+      a: { product: IProduct; quantity: number },
+      b: { product: IProduct; quantity: number },
+    ) => {
+      if (filter === "By price") {
+        return a.product.price_after_discount - b.product.price_after_discount;
+      }
+      if (filter === "By Discount") {
+        return b.product.discount - a.product.discount;
+      }
+      return a.product.title.localeCompare(b.product.title);
+    },
+  ) as Cart;
+  const finalCart = up ? [...cart2].reverse() : cart2;
   const numberOfItems = cart?.reduce((acc, item) => acc + item.quantity, 0);
   if (isLoading) return <div>Loading Cart Items ...</div>;
   return (
@@ -13,31 +28,13 @@ export default function Items({ filter }: { filter: string }) {
         you have ({numberOfItems}) products in your cart
       </div>
       <Container>
-        {cart
-          ?.sort(
-            (
-              a: { product: IProduct; quantity: number },
-              b: { product: IProduct; quantity: number },
-            ) => {
-              if (filter === "By price") {
-                return (
-                  a.product.price_after_discount -
-                  b.product.price_after_discount
-                );
-              }
-              if (filter === "By Discount") {
-                return b.product.discount - a.product.discount;
-              }
-              return a.product.title.localeCompare(b.product.title);
-            },
-          )
-          .map((item) => (
-            <CartItem
-              product={item.product}
-              filter={filter}
-              quantity={item.quantity}
-            />
-          ))}
+        {finalCart.map((item) => (
+          <CartItem
+            product={item.product}
+            filter={filter}
+            quantity={item.quantity}
+          />
+        ))}
       </Container>
     </div>
   );

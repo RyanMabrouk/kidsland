@@ -1,13 +1,14 @@
 "use server";
-import { tableType } from "@/types/database.tables.types";
+import { dbTableType } from "@/types/database.tables.types";
+import { TablesInsert } from "@/types/database.types";
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-export default async function postData({
+export default async function postData<ITableName extends dbTableType>({
   tableName,
   payload,
 }: {
-  tableName: tableType;
-  payload: Record<string, unknown>;
+  tableName: ITableName;
+  payload: TablesInsert<ITableName>[];
 }) {
   const supabase = createServerActionClient({ cookies });
   const { data, error } = await supabase

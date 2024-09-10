@@ -3,6 +3,7 @@ import { FormControl, MenuItem, Select } from "@mui/material";
 import { getTailwindColor } from "../../helpers/getTailwindColor";
 import { VscTriangleDown } from "react-icons/vsc";
 import { Label } from "./LabelGeneric";
+import { cn } from "@/lib/utils";
 const color = getTailwindColor("color-primary-10");
 export type Option = {
   group_name?: string; // add only the group name to create a group
@@ -20,7 +21,7 @@ export function SelectGeneric({
   group, // if true, every option with a group_name will be a group_name label
   required,
   capitalize,
-  setValueInParent,
+  onChange,
   inputLabel,
   cursor = "black",
 }: {
@@ -33,7 +34,7 @@ export function SelectGeneric({
   group?: boolean;
   required?: boolean;
   capitalize?: boolean;
-  setValueInParent?: React.Dispatch<React.SetStateAction<any>> | undefined;
+  onChange?: (value: string) => void;
   inputLabel?: string | ReactNode;
   cursor?: "white" | "black" | string;
   disabled?: boolean;
@@ -53,9 +54,12 @@ export function SelectGeneric({
         <Select
           variant="outlined"
           data-placeholder-trigger="keydown"
+          className={cn(
+            `group peer h-9 w-[12.5rem] border transition-all ease-linear first-letter:capitalize [&_.Mui-selected]:!bg-color1 [&_.MuiOutlinedInput-notchedOutline]:border-none ${open ? "rounded-b-none rounded-t-sm shadow-md" : "rounded-sm shadow-sm hover:shadow-md"}`,
+            className,
+          )}
           label={label}
           id={label}
-          className={`group peer h-9 w-[12.5rem] border transition-all ease-linear first-letter:capitalize [&_.Mui-selected]:!bg-color1 [&_.MuiOutlinedInput-notchedOutline]:border-none ${open ? "rounded-b-none rounded-t-sm shadow-md" : "rounded-sm shadow-sm hover:shadow-md"} ${className}`}
           name={name}
           open={open}
           defaultValue={defaultValue ? String(defaultValue.value) : "none"}
@@ -63,7 +67,7 @@ export function SelectGeneric({
           required={required}
           onOpen={(e) => setOpen(true)}
           onClose={(e) => setOpen(false)}
-          onChange={(e) => setValueInParent && setValueInParent(e.target.value)}
+          onChange={(e) => onChange?.(e.target.value)}
           IconComponent={() => (
             <VscTriangleDown
               className={`cursor-pointer transition-all ease-linear ${cursor_type} ${open ? "rotate-180" : ""} `}
@@ -141,7 +145,7 @@ export function SelectGeneric({
           )}
         </Select>
         {error && (
-          <span className="text-red-600 absolute -bottom-[1.375rem] left-0 w-max text-sm">
+          <span className="absolute -bottom-[1.375rem] left-0 w-max text-sm text-red-600">
             {error}
           </span>
         )}

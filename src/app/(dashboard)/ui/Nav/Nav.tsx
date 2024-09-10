@@ -29,7 +29,9 @@ export function Nav() {
         <SearchBar />
         <span className="flex flex-row items-center justify-center gap-2">
           <UserMenu />
-          <CartButton />
+          <Link href="/Cart">
+            <CartButton />
+          </Link>
         </span>
       </div>
     </nav>

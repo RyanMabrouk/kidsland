@@ -1,14 +1,15 @@
-import { Database, Tables, TablesInsert } from "./database.types";
+import { Database, Tables } from "./database.types";
 
 // Tables names
-export type tableType = keyof Database[Extract<
+export type dbTableType = keyof Database[Extract<
   keyof Database,
   "public"
 >]["Tables"];
 
+export type Cart = { product: IProduct; quantity: number }[];
+
 export interface IProduct extends Tables<"products"> {
   available: boolean;
   price_after_discount: number;
+  isInCart: boolean;
 }
-
-export type Cart = { product: IProduct; quantity: number }[];
