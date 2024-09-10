@@ -6,7 +6,7 @@ import { Database, Enums, Tables } from "@/types/database.types";
 export type getOrdersParams = {
   match?: Partial<Tables<"orders">>;
   column?: string;
-  status: Enums<"status_type_enum">;
+  status?: Enums<"status_type_enum">;
   count?: {
     head?: boolean;
     count?: "exact" | "planned" | "estimated";
@@ -38,7 +38,7 @@ export type getOrdersParams = {
 };
 
 export default async function getOrders({
-  status="pending",
+  status,
   match,
   column = "*",
   count = {},
@@ -49,10 +49,11 @@ export default async function getOrders({
 }: getOrdersParams) {
   const supabase = createServerComponentClient<Database>({ cookies });
   let query = supabase
-  .from("orders")
-  .select(column, { count: count.count || undefined })
-  .eq("status", status);
-
+    .from("orders")
+    .select(column, { count: count.count || undefined })
+  if (status) {
+    query.eq("status", status);
+  }
   if (match) {
     query = query.match(match);
   }

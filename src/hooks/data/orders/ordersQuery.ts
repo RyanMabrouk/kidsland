@@ -7,7 +7,7 @@ const ordersQuery = (args: {
     limit: number;
     page: number;
   }
-  status : Enums<"status_type_enum">;
+  status?: Enums<"status_type_enum">;
   search?: { column: keyof Tables<"orders">; value: string };
   sort?: {
     ascending: boolean;

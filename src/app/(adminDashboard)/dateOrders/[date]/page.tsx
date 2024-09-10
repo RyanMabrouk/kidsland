@@ -1,12 +1,14 @@
-"use client";
-import Image from "next/image";
-import { useState } from "react";
-import Products from "./ui/products";
-import { ProductsPaginationProvider, useProductsPagination } from "./context/useProductsPagination";
+"use client" ;
+import React, { useState } from 'react'
+import Image from 'next/image';
+import { useParams } from 'next/navigation';
+import { OrdersPaginationProvider, useOrdersPagination } from './context/useOrdersPagination';
+import Orders from './ui/orders';
 
 function ProductListPage() {
+  const { date } = useParams();
   const [searchQuery, setSearchQuery] = useState<string>(""); // State for search query
-  const { page, setPage } = useProductsPagination(); // Using the pagination context
+  const { page, setPage } = useOrdersPagination(); // Using the pagination context
 
   function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     setSearchQuery(e.target.value);
@@ -14,7 +16,7 @@ function ProductListPage() {
   }
 
   return (
-    <div className="mt-10 pb-5 flex flex-col gap-6 px-5 sm:px-10">
+    <div className="mt-20 pb-5 flex flex-col gap-10 w-[50rem] m-auto">
       <div className="flex flex-row items-center justify-center gap-3">
         <Image
           src="/home/icons/flower_yellow.png"
@@ -23,7 +25,7 @@ function ProductListPage() {
           width={15}
         />
         <div className="text-xl sm:text-2xl font-bold uppercase text-color5">
-          My products
+        { date } Orders
         </div>
         <Image
           src="/home/icons/flower_yellow.png"
@@ -36,22 +38,22 @@ function ProductListPage() {
         <Image src="/MagnifyingGlass.Png" alt="Search Icon" width={20} height={20} />
         <input
           type="text"
-          placeholder="Search products..."
+          placeholder="Search Orders..."
           value={searchQuery}
           onChange={handleSearchChange}
           className="w-full sm:w-96 p-2 focus:outline-none"
         />
       </div>
 
-      <Products searchQuery={searchQuery} />
+      <Orders searchQuery={searchQuery} />
     </div>
   );
 }
 
 export default function Page() {
   return (
-    <ProductsPaginationProvider>
+    <OrdersPaginationProvider>
       <ProductListPage />
-    </ProductsPaginationProvider>
+    </OrdersPaginationProvider>
   );
 }

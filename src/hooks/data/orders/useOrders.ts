@@ -10,7 +10,7 @@ export default function useOrders({
   search,
   filter,
 }: {
-  status: Enums<"status_type_enum">;
+  status?: Enums<"status_type_enum">;
   pagination?:{
     limit: number;
     page: number;

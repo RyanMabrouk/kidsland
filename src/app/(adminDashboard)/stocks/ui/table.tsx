@@ -46,11 +46,11 @@ export default function Table({ searchQuery }: { searchQuery: string }) {
   }
 
   const tableData = products.data.map((product: any) => {
-    const { stock, price, discount, wholesalePrice } = product;
+    const { stock, price, discount, wholesale_price } = product;
     const validStock = stock || 0;
     const validPrice = price || 0;
     const validDiscount = discount || 0;
-    const validWholesalePrice = wholesalePrice || 0;
+    const validWholesalePrice = wholesale_price || 0;
     const income =
       validStock * (validPrice - validDiscount - validWholesalePrice);
     return {
@@ -58,7 +58,7 @@ export default function Table({ searchQuery }: { searchQuery: string }) {
       product: product.title, 
       stock: validStock,
       wholesale_price: validWholesalePrice,
-      price: validPrice,
+      price: validPrice - validDiscount ,
       income: income,
     };
   });

@@ -3,15 +3,18 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { FaBitbucket, FaGamepad,FaMoneyBillWave, FaPlusCircle } from "react-icons/fa";
+import { FaBitbucket, FaGamepad,FaJediOrder,FaMailBulk,FaMoneyBillWave, FaPlusCircle } from "react-icons/fa";
 import { usePathname } from "next/navigation";
+import { PhoneSideBar } from "./phoneSideBar";
+import { FaLetterboxd, FaSquareLetterboxd } from "react-icons/fa6";
 
 export default function SideBar() {
   const [isLoading, setIsLoading] = useState(false);
   const Pathname= usePathname();
 
   return (
-    <div className="flex flex-col w-[17rem] bg-gray-900 ">
+    <>
+     <div className="hidden md:flex md:flex-col w-[17rem] bg-slate-900 ">
       <div className="p-3">
       <Link href={"/home"}>
         <Image
@@ -73,7 +76,22 @@ export default function SideBar() {
           <span className="text-lg">Stocks</span>
         </li>
         </Link>
+        <Link href={"/orders"}>
+        <li
+          className={`px-4 flex gap-2 items-center py-3 cursor-pointer ${
+            Pathname.includes("orders")
+             ? "bg-customText text-white hover:bg-hoverbutton hover:text-gray-50"
+              : "text-gray-500"       }`} 
+        >
+          <FaMailBulk className="text-xl" />
+          <span className="text-lg">Orders</span>
+        </li>
+        </Link>
       </ul>
     </div>
+    <PhoneSideBar/>
+
+    </>
+   
   );
 }

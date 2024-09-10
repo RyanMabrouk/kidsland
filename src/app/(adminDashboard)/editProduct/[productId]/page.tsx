@@ -105,16 +105,16 @@ export default function Page() {
   return (
 <form
   action={UpdateArticleMutation.mutate}
-  className="flex flex-col gap-10 m-auto w-[50rem] justify-center mt-20"
+  className="flex flex-col gap-10 m-auto w-full max-w-[50rem] justify-center mt-20 px-4 pb-4 sm:px-10"
 >
-  <div className="flex flex-row items-center gap-3 ">
+  <div className="flex flex-row items-center gap-3 justify-center">
     <Image
       src="/home/icons/flower_yellow.png"
       alt=""
       height={15}
       width={15}
     />
-    <div className="text-2xl font-bold uppercase text-color5">
+    <div className="text-xl sm:text-2xl font-bold uppercase text-color5">
       Edit Article
     </div>
     <Image
@@ -124,14 +124,15 @@ export default function Page() {
       width={15}
     />
   </div>
-  <div className="flex  gap-10 m-auto w-full items-start ">
-    <div className="flex flex-col gap-5 h-[15rem] ">
-      <div className="flex flex-col gap-3">
+
+  <div className="flex flex-col lg:flex-row gap-10 m-auto w-full items-start ">
+  <div className=" flex flex-col gap-5 w-full lg:w-[30rem]">
+      <div className="flex flex-col gap-3 ">
         <div className="text-sm font-semibold text-gray-900">
-          Product Title
+          Product Title:
         </div>
         <input
-          className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 w-[30rem] tx-lg text-gray-500 focus:outline-none"
+          className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 w-full tx-lg text-gray-500 focus:outline-none"
           type="text"
           placeholder="Product Title..."
           name="title"
@@ -140,18 +141,19 @@ export default function Page() {
       </div>
       <div className="flex flex-col gap-3 h-full">
         <div className="text-sm font-semibold text-gray-900">
-          Description
+          Description:
         </div>
         <textarea
-          className=" placeholder:text-sm placeholder:text-gray-300  border-[1px] border-gray-200 px-4 py-2 text-base text-gray-500 focus:outline-none h-full"
+          className="placeholder:text-sm placeholder:text-gray-300 border-[1px] border-gray-200 px-4 py-2 text-base text-gray-500 focus:outline-none h-full"
           placeholder="Description..."
           name="description"
           defaultValue={product?.data?.description || ""}
         ></textarea>
       </div>
     </div>
+
     <div
-      className="flex flex-col gap-2 bg-gray-200 h-[15rem] w-[15rem] justify-center py-2"
+      className="flex flex-col gap-2 bg-gray-200 h-[15rem] w-full max-w-[15rem] justify-center py-2 cursor-pointer"
       onClick={() =>
         document
           .querySelector<HTMLInputElement>('input[name="filepicture"]')
@@ -173,53 +175,61 @@ export default function Page() {
         style={{ display: "none" }}
         onChange={handleImageChange}
       />
-      <div className="text-xs text-gray-500 w-48 mx-auto">
+      <div className="text-xs text-gray-500 w-48 mx-auto text-center">
         Image size should be under 1MB and image ratio needs to be 1:1
       </div>
     </div>
   </div>
-  <div className=" grid  grid-cols-12  gap-3 w-full items-center" >
-    <div className="text-sm font-semibold text-gray-900 col-span-2">
+
+  <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 w-full items-center">
+    <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
       Original Price :
     </div>
     <input
-      className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 tx-base text-gray-500 focus:outline-none col-span-4"
+      className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 tx-base text-gray-500 focus:outline-none sm:col-span-4 w-full"
       type="text"
       placeholder="Price..."
       name="price"
       defaultValue={product?.data?.price || ""}
     />
-    <div className="text-sm font-semibold text-gray-900 col-span-2">Discount :</div>
+    <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
+      Discount :
+    </div>
     <input
-      className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 tx-base text-gray-500 focus:outline-none col-span-4"
+      className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 tx-base text-gray-500 focus:outline-none sm:col-span-4 w-full"
       type="text"
       placeholder="Price After Discount..."
       name="discount"
       defaultValue={product?.data?.discount || ""}
     />
-    <div className="text-sm font-semibold text-gray-900 col-span-2">Stock :</div>
+
+    <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
+      Stock :
+    </div>
     <input
-      className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2  tx-lg text-gray-500 focus:outline-none col-span-4"
+      className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 tx-lg text-gray-500 focus:outline-none sm:col-span-4 w-full"
       type="text"
       placeholder="Stock..."
       name="stock"
       defaultValue={product?.data?.stock || ""}
     />
-    <div className="text-sm font-semibold text-gray-900 col-span-2">
+    <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
       Wholesale Price :
     </div>
     <input
-      className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 text-base text-gray-500 focus:outline-none col-span-4"
+      className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 text-base text-gray-500 focus:outline-none sm:col-span-4 w-full"
       type="text"
       placeholder="Wholesale Price..."
       name="wholesale_price"
       defaultValue={product?.data?.wholesale_price || ""}
     />
-    <div className="text-sm font-semibold text-gray-900 col-span-2">Subtitle :</div>
-    <SelectGeneric 
-      className="placeholder:text-sm placeholder:text-gray-300 col-span-4 "
+    <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
+      Subtitle :
+    </div>
+    <SelectGeneric
+      className="placeholder:text-sm placeholder:text-gray-300 sm:col-span-4 w-full"
       inputLabel="Select Subtitle..."
-      options={Options} 
+      options={Options}
       defaultValue={Options.find(option => option.value === product?.data?.subtitle)} 
     />
   </div>
@@ -231,6 +241,7 @@ export default function Page() {
     Submit
   </button>
 </form>
+
 
   );
 }

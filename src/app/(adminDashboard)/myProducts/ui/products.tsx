@@ -3,7 +3,7 @@ import useProducts from "@/hooks/data/products/useProducts";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { Pagination } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Product from "./Product";
 import { useProductsPagination } from "../context/useProductsPagination";
 
@@ -28,9 +28,10 @@ export default function Products({ searchQuery }: { searchQuery: string }) {
       );
     }
   }, [page, products?.meta.has_next_page, queryClient]);
+
   if (isLoading) {
     return (
-      <div className="">
+      <div className="flex justify-center items-center">
         <Player
           className="m-auto"
           autoplay
@@ -41,13 +42,15 @@ export default function Products({ searchQuery }: { searchQuery: string }) {
       </div>
     );
   }
+
   // Ensure products are available before rendering the table
   if (!products?.data.length) {
     return <div>No products found</div>;
   }
+
   return (
-    <div className="m-auto flex w-[60rem] flex-col gap-5">
-      <div className="mx-auto grid w-fit grid-cols-4 gap-x-10 gap-y-10">
+    <div className="m-auto flex w-full max-w-7xl flex-col gap-5">
+      <div className="mx-auto grid w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
         {products?.data?.map((product, key) => (
           <Product key={key} {...product} />
         ))}

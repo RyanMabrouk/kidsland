@@ -6,6 +6,7 @@ import productsIncome from "@/api/products/prodcutsIncome";
 import { FaPen } from "react-icons/fa";
 import Link from "next/link";
 import DeleteProduct from "./deleteProduct";
+import productsWholeSalePrice from "@/api/products/productWholesalePrice";
 
 const DataTable = ({
   data,
@@ -15,9 +16,20 @@ const DataTable = ({
   const [totalIncome, setTotalIncome] = useState<number | null>(null); // State for storing total income
   const [sortField, setSortField] = useState<keyof typeof data[0]>("product");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+  const [totalWholesalePrice, setTotalWholesalePrice] = useState<number | null>(null);
 
   // Fetch total income using the server-side function
   useEffect(() => {
+    const fetchWholesalePrice = async () => {
+      try {
+        const wholesalePrice = await productsWholeSalePrice();
+        setTotalWholesalePrice(wholesalePrice);
+      } catch (error) {
+        console.error("Failed to fetch total wholesale price:", error);
+      }
+    };
+    fetchWholesalePrice();
+
     const fetchIncome = async () => {
       try {
         const income = await productsIncome();
@@ -63,7 +75,7 @@ const DataTable = ({
           <TableRow className="grid grid-cols-11 font-bold text-base ">
             <TableCell className="col-span-2 text-center">All Products</TableCell>
             <TableCell className="col-span-2 text-center">-</TableCell>
-            <TableCell className="col-span-2 text-center">-</TableCell>
+            <TableCell className="col-span-2 text-center">{totalWholesalePrice !== null ? totalWholesalePrice : "Loading..."}</TableCell>
             <TableCell className="col-span-2 text-center">-</TableCell>
             <TableCell className="col-span-2 text-center">{totalIncome !== null ? totalIncome : "Loading..."}</TableCell>
             <TableCell className="col-span-1 text-center"></TableCell>  {/* Add column for actions */}
@@ -77,15 +89,16 @@ const DataTable = ({
               <TableCell className="col-span-2 text-center">{row.wholesale_price}</TableCell>
               <TableCell className="col-span-2 text-center">{row.price}</TableCell>
               <TableCell className="col-span-2 text-center">{row.income}</TableCell>
-              <TableCell className="col-span-1 text-center flex justify-between  ">
-              <Link href={`/editProduct/${row.id}`}>
-                  <FaPen className="size-[1rem] hover:text-gray-500" />
-              </Link>
-              <DeleteProduct  id={row.id} />
+              <TableCell className="col-span-1 items-center flex justify-between  ">
+                    <Link href={`/editProduct/${row.id}`}>
+                      <FaPen className="size-[1rem] hover:text-gray-500" />
+                  </Link>
+                  <DeleteProduct  id={row.id} />          
               </TableCell>  
             </TableRow>
           ))}
         </TableBody>
+        
       </Table>
     </div>
   );
