@@ -15,7 +15,7 @@ const productsQuery = (args: {
     minDiscount: number;
     priceRange: number[];
   };
-  cartProducts: string[] | undefined;
+  cartProducts?: string[] | undefined;
 }) => ({
   queryKey: [
     "products",
@@ -51,7 +51,7 @@ const productsQuery = (args: {
       })),
     ]);
     return {
-      ...infinityPagination(data?.data ?? [], {
+      ...infinityPagination(data?.data as Tables<"products">[], {
         page: args.page,
         limit: args.limit,
         total_count: countData.count ?? 0,

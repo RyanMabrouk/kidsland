@@ -9,21 +9,33 @@ import postData from "@/api/postData";
 import { TablesInsert } from "@/types/database.types";
 import { SelectGeneric } from "@/app/ui/SelectGeneric";
 
-// Define the schema for form validation
-const schema = z.object({});
+const schema = z.object({
+  title: z.string().min(1, "Title is required"),
+  price: z.number().positive("Price must be a positive number"),
+  priceAfterDiscount: z.number().optional(),
+  stock: z.number().positive("Stock must be a positive number"),
+  description: z.string().min(1, "Description is required"),
+  subtitle: z.string().min(1, "Subtitle is required"),
+  wholesalePrice: z.number().positive("Wholesale price must be a positive number"),
+  category_id: z.enum(["1", "2", "3"], { message: "Invalid category" }),
+});
 
 export default function Page() {
   const [preview, setPreview] = useState<string>("");
   const queryClient = useQueryClient();
   const Options: { label: string; value: string }[] = [
     {
-      label: "subtitle1",
-      value: "subtitle1",
+      label: "Concentration Games",
+      value: "1",
     },
     {
-      label: "subtitle2",
-      value: "subtitle2",
+      label: "Social",
+      value: "2",
     },
+    {
+      label: "Construction",
+      value: "3",
+    }
   ];
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -44,9 +56,8 @@ export default function Page() {
       const description = String(formData.get("description"));
       const subtitle = String(formData.get("subtitle"));
       const wholesalePrice = Number(formData.get("wholesalePrice"));
-      const file = formData.get("filepicture") as File;
-
-      // Validate form data
+      const category_id = Number(formData.get("category_id"));
+      
       const result = schema.safeParse({
         title,
         price,
@@ -55,6 +66,7 @@ export default function Page() {
         description,
         subtitle,
         wholesalePrice,
+        category_id
       });
 
       if (!result.success) {
@@ -68,25 +80,25 @@ export default function Page() {
         title: title,
       });
 
-      await postData<TablesInsert<"products">[]>({
-        payload: [ {
-          title,
-          price,
-          stock,
-          description,
-          subtitle,
-          wholesale_price: wholesalePrice,
-          image_url,
-        } ] ,
+      await postData({
+        payload: [
+          {
+            title,
+            price,
+            stock,
+            description,
+            subtitle,
+            wholesale_price: wholesalePrice,
+            image_url,
+            category_id
+          },
+        ],
         tableName: "products",
-       
       });
     },
     onSuccess: () => {
       alert("Success");
-      queryClient.invalidateQueries({
-        queryKey: ["products"],
-      });
+      queryClient.invalidateQueries({ queryKey: ["products"] });
     },
     onError: (error) => {
       console.error(error);
@@ -212,6 +224,7 @@ export default function Page() {
       Subtitle :
     </div>
     <SelectGeneric
+      name="category_id"
       className="placeholder:text-sm placeholder:text-gray-300 sm:col-span-4 w-full"
       inputLabel="Select Subtitle..."
       options={Options}

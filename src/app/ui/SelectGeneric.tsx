@@ -46,16 +46,16 @@ export function SelectGeneric({
       : "text-gray-600 rounded-br-sm !min-w-8 rounded-tr-sm px-2.5 h-full ";
   if (!options) return;
   return (
-    <FormControl className="group flex w-fit flex-col gap-1">
+    <FormControl className="group flex w-fit flex-col gap-1 z-50">
       <Label name={name} required={required} error={error}>
         {label}
       </Label>
-      <div className="relative flex flex-row items-center justify-center gap-1.5">
+      <div className= " z-50relative flex flex-row items-center justify-center gap-1.5">
         <Select
           variant="outlined"
           data-placeholder-trigger="keydown"
           className={cn(
-            `group peer h-9 w-[12.5rem] border transition-all ease-linear first-letter:capitalize [&_.Mui-selected]:!bg-color1 [&_.MuiOutlinedInput-notchedOutline]:border-none ${open ? "rounded-b-none rounded-t-sm shadow-md" : "rounded-sm shadow-sm hover:shadow-md"}`,
+            `group peer z-50 h-9 w-[12.5rem] border transition-all ease-linear first-letter:capitalize [&_.Mui-selected]:!bg-color1 [&_.MuiOutlinedInput-notchedOutline]:border-none ${open ? "rounded-b-none rounded-t-sm shadow-md" : "rounded-sm shadow-sm hover:shadow-md"}`,
             className,
           )}
           label={label}
@@ -102,7 +102,7 @@ export function SelectGeneric({
                     <hr className="m-0 h-[unset] !w-full shrink-0 border-solid border-[rgba(0,0,0,0.12)]" />
                     <MenuItem
                       key={option?.group_name}
-                      className="group peer !max-h-7 !w-full !border-y !border-black !px-2 !py-1 !text-center !text-[0.875rem] !opacity-100 first-letter:capitalize"
+                      className="group peer !max-h-7 !w-full !border-y !border-black !px-2 !py-1 !text-center !text-[0.875rem] z-50 !opacity-100 first-letter:capitalize"
                       disabled
                       aria-readonly
                       value="none"
@@ -127,7 +127,7 @@ export function SelectGeneric({
                 return (
                   <MenuItem
                     value={option?.value}
-                    className={`peer transition-all ease-linear first-letter:capitalize hover:!bg-color1 hover:text-white ${capitalize ? "capitalize" : ""} `}
+                    className={` z-50 peer transition-all ease-linear first-letter:capitalize hover:!bg-color1 hover:text-white ${capitalize ? "capitalize" : ""} `}
                     key={(name ?? inputLabel ?? label) + i}
                   >
                     {option?.label}
@@ -137,7 +137,7 @@ export function SelectGeneric({
           {inputLabel && (
             <MenuItem
               value="none"
-              className="peer invisible !hidden font-sans first-letter:capitalize"
+              className="peer z-50 invisible !hidden font-sans first-letter:capitalize"
               disabled
             >
               {inputLabel}
