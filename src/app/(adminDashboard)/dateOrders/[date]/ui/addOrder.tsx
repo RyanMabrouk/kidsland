@@ -33,11 +33,14 @@ export default function AddOrder() {
     search: { column: "title", value: searchQuery },
   });
 
-  const handleSelectProduct = (product: Tables<"products">) => {
-    if (!selectedProducts.find((p) => p.id === product.id)) {
-      setSelectedProducts([...selectedProducts, { ...product, quantity: 1 }]);
+  const handleSelectProduct = (product: Tables<"products"> | null) => {
+    if (product) {
+        if (!selectedProducts.find((p) => p.id === product.id)) {
+            setSelectedProducts([...selectedProducts, { ...product, quantity: 1 }]);
+          }
+          setSearchQuery(""); 
     }
-    setSearchQuery(""); 
+
   };
 
   const handleQuantityChange = (productId: string, quantity: number) => {
@@ -52,9 +55,9 @@ export default function AddOrder() {
     setSelectedProducts((prev) => prev.filter((product) => product.id !== productId));
   };
 
-  const filteredProducts: Tables<"products">[] =
-    products?.data.filter((product: Tables<"products">) =>
-      !selectedProducts.find((p) => p.id === product.id)
+  const filteredProducts: (Tables<"products"> | null)[] =
+    products?.data?.filter((product: Tables<"products"> | null) =>
+      !selectedProducts.find((p) => p.id === product?.id)
     ) || [];
 
   return (
@@ -120,19 +123,19 @@ export default function AddOrder() {
                 <div className="flex flex-col">
                   {searchQuery && filteredProducts?.map((product) => (
                     <div
-                      key={product.id}
+                      key={product?.id}
                       className="cursor-pointer p-2 border-b"
                       onClick={() => handleSelectProduct(product)}
                     >
                       <div className="flex gap-4 items-center">
                         <Image
-                          src={product.image_url || "/path/to/default-image.png"}
-                          alt={product.title}
+                          src={product?.image_url || "/path/to/default-image.png"}
+                          alt={product?.title || "yes"}
                           width={40}
                           height={40}
                           className="rounded-md"
                         />
-                        <div>{product.title}</div>
+                        <div>{product?.title}</div>
                       </div>
                     </div>
                   ))}

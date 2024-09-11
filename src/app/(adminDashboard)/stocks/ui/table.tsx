@@ -9,16 +9,15 @@ import { Pagination } from "@mui/material";
 import { useStockPagination } from "../context/useStockPagination";
 export default function Table({ searchQuery }: { searchQuery: string }) {
   const {page, setPage} = useStockPagination();
-  const limit = 8; // Number of items per page
+  const limit = 8;
   const { data: products, isLoading } = useProducts({
     page,
     limit,
     search: { column: "title", value: searchQuery },
-  }); // Fetching products
+  }); 
   const queryClient = useQueryClient();
-
   useEffect(() => {
-    if (products?.meta.has_next_page) {
+    if (products?.meta?.has_next_page) {
       queryClient.prefetchQuery(
         productsQuery({
           page: page + 1,
@@ -26,7 +25,7 @@ export default function Table({ searchQuery }: { searchQuery: string }) {
         }),
       );
     }
-  }, [page, products?.meta.has_next_page, queryClient]);
+  }, [page, products?.meta?.has_next_page, queryClient]);
   if (isLoading) {
     return (
       <div className="mt-[10rem]">
@@ -40,11 +39,9 @@ export default function Table({ searchQuery }: { searchQuery: string }) {
       </div>
     );
   }
-  // Ensure products are available before rendering the table
-  if (!products?.data.length) {
+  if (!products?.data?.length) {
     return <div>No products found</div>;
   }
-
   const tableData = products.data.map((product: any) => {
     const { stock, price, discount, wholesale_price } = product;
     const validStock = stock || 0;
@@ -62,13 +59,12 @@ export default function Table({ searchQuery }: { searchQuery: string }) {
       income: income,
     };
   });
-
   return (
     <div>
       <DataTable data={tableData} />
       <Pagination
         className="flex w-full justify-center mt-5"
-        count={products?.meta.total_pages}
+        count={products?.meta?.total_pages}
         page={page}
         boundaryCount={3}
         siblingCount={3}
