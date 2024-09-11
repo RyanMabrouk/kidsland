@@ -1,9 +1,7 @@
 "use server";
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { cookies, headers } from "next/headers";
-
 import { Provider } from "@supabase/supabase-js";
-import { redirect } from "next/navigation";
 
 export default async function signInWithOAuth({
   provider,
@@ -13,16 +11,18 @@ export default async function signInWithOAuth({
   const supabase = createServerActionClient({ cookies });
 
   const headersList = headers();
-  const header_url = headersList.get("host") || "";
+  const headerUrl = headersList.get("host") || "";
   const proto = headersList.get("x-forwarded-proto") || "http";
+
+  const redirectTo = `${proto}://${headerUrl}/auth/callback`;
 
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider,
     options: {
-      redirectTo: `${proto}://${header_url}/auth/callback`,
+      redirectTo,
     },
   });
-  
+
   if (error) {
     return {
       error: {
@@ -31,7 +31,6 @@ export default async function signInWithOAuth({
       },
     };
   }
-  redirect(data?.url);
-  
-  
+
+  return { data, error: null };
 }

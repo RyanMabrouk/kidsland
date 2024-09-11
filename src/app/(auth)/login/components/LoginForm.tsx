@@ -10,8 +10,6 @@ import LoginWithGoogle from "./LoginWithGoogle";
 export default function LoginForm() {
   return (
     <div className="mx-auto flex h-fit w-full max-w-[75rem] flex-col rounded-lg border bg-white p-10 shadow-lg">
-      {/* Banner Section */}
-
       <div className="relative mb-8 h-64 w-full max-lg:h-28 max-sm:hidden">
         <Image
           src="/bgBanner.jpg"

@@ -2,10 +2,10 @@
 import signInWithOAuth from "@/actions/auth/signInWithOAuth";
 import FcGoogle from "@/components/icons/FcGoogle";
 import { useMutation } from "@tanstack/react-query";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React from "react";
 
-export default function LoginWithGoogle() {
+export default function SignupWithGoogle() {
   const router = useRouter();
   const { mutate } = useMutation({
     mutationFn: async () => {
@@ -31,7 +31,7 @@ export default function LoginWithGoogle() {
       }}
     >
       <FcGoogle size={20} />
-      <span className="text-sm">Login with Google</span>
+      <span className="text-sm">Sign Up with Google</span>
     </button>
   );
 }

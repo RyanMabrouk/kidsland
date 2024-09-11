@@ -8,7 +8,7 @@ export default async function signUp({
   email: string;
   password: string;
 }) {
-  console.log(email, password);
+
   const headersList = headers();
   const header_url = headersList.get("host") || "";
   const proto = headersList.get("x-forwarded-proto") || "http";

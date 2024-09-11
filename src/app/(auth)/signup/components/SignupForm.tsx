@@ -1,11 +1,9 @@
-import React, { useState } from "react";
-import Input from "@/components/Input";
-import PrimaryButton from "@/components/PrimaryButton";
-import SecondaryButton from "@/components/SecondaryButton";
-import Image from "next/image";
-import SecondaryLink from "@/components/SecondaryLink";
+import React from "react";
+
 import FcGoogle from "@/components/icons/FcGoogle";
 import SignupWithPassword from "./SignupWithPassword";
+import { Sign } from "crypto";
+import SignupWithGoogle from "./SignupWithGoogle";
 
 export default function SignupForm() {
   return (
@@ -18,14 +16,7 @@ export default function SignupForm() {
           <hr className="w-36 border-gray-300 max-sm:flex-1" />
         </div>
 
-        <button
-          className={
-            "flex w-64 items-center justify-center gap-3 rounded-full border border-gray-300 bg-white px-6 py-3 text-sm font-medium text-gray-700 transition-all duration-200 ease-in-out hover:border-gray-400 hover:bg-gray-100 hover:shadow focus:outline-none focus:ring-2 focus:ring-gray-400 max-sm:w-full"
-          }
-        >
-          <FcGoogle size={20} />
-          <span className="text-sm">Sign up with Google</span>
-        </button>
+        <SignupWithGoogle />
       </div>
     </div>
   );

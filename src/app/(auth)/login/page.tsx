@@ -5,12 +5,11 @@ import { redirect } from "next/navigation";
 import React from "react";
 
 export default async function Page() {
-  const { session, error } = await getSession();
-  console.log(session?.user.id);
+  const { session } = await getSession();
+
   if (session) redirect("/home");
   return (
     <div className="flex min-h-screen items-center justify-center">
-      {/* Content */}
       <div className="z-10 w-full">
         <LoginForm />
       </div>

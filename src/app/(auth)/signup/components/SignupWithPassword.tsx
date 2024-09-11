@@ -4,19 +4,75 @@ import Input from "@/components/Input";
 import PrimaryButton from "@/components/PrimaryButton";
 import SecondaryLink from "@/components/SecondaryLink";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import React from "react";
+import { z } from "zod";
+
+const schema = z
+  .object({
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(6, "Password must be at least 6 characters"),
+    confirm: z.string(),
+    policies: z.boolean().refine((val) => val, {
+      message: "You must agree to the terms and policies",
+    }),
+  })
+  .refine((data) => data.password === data.confirm, {
+    message: "Passwords must match",
+    path: ["confirm"],
+  });
 
 export default function SignupWithPassword() {
+  const router = useRouter();
+  const [errors, setErrors] = React.useState<string[]>([]);
   const { mutate } = useMutation({
     mutationFn: async (formData: FormData) => {
-      const { email, password } = Object.fromEntries(formData) as {
-        [key: string]: string;
+      // Convert FormData to plain object
+      const formObject = Object.fromEntries(formData) as {
+        email: string;
+        password: string;
+        confirm: string;
+        policies: string;
       };
+
+      // Convert policies from string to boolean
+      const policies = formObject.policies === "on";
+
+      // Create an object with the converted policies
+      const data = {
+        email: formObject.email,
+        password: formObject.password,
+        confirm: formObject.confirm,
+        policies,
+      };
+
+      // Validate data with Zod
+      try {
+        schema.parse(data);
+        setErrors([]); // Clear errors if validation is successful
+      } catch (err) {
+        if (err instanceof z.ZodError) {
+          // Set the errors from Zod validation
+          setErrors(err.errors.map((e) => e.message));
+        } else {
+          setErrors(["An unexpected error occurred"]);
+        }
+        throw err; // rethrow the error to stop further processing
+      }
+
+      // Proceed with signup if validation passes
+      const { email, password } = data;
       const { error } = await signUp({ email, password });
-      console.log(error);
-      if (error) throw error;
+      if (error?.message) {
+        setErrors([error.message]);
+        throw error;
+      }
+    },
+    onSuccess: () => {
+      router.push("/home");
     },
   });
+
   return (
     <form className="flex-1 space-y-6" action={mutate}>
       <h2 className="text-2xl font-bold text-gray-800">Create Account</h2>
@@ -26,7 +82,7 @@ export default function SignupWithPassword() {
       <Input name="confirm" label="Confirm Password" type="password" required />
 
       <div className="flex items-center space-x-4">
-        <input type="checkbox" id="terms" required />
+        <input name="policies" type="checkbox" id="terms" required />
         <label htmlFor="terms" className="text-sm text-gray-600">
           By marking this field, you agree with the{" "}
           <a href="/terms" className="text-blue-500 hover:underline">
@@ -39,10 +95,21 @@ export default function SignupWithPassword() {
           of this online store.
         </label>
       </div>
+
+      {errors.length > 0 && (
+        <div className="space-y-1">
+          {errors.map((error, index) => (
+            <p key={index} className="text-sm text-red-500">
+              {error}
+            </p>
+          ))}
+        </div>
+      )}
+
       <div className="flex justify-between gap-4 max-sm:flex-col">
         <PrimaryButton className="max-sm:w-full">Sign Up</PrimaryButton>
         <SecondaryLink href={"/login"} className="max-sm:w-full">
-          You have account
+          You have an account
         </SecondaryLink>
       </div>
     </form>
