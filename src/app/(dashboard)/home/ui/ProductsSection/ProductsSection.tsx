@@ -11,7 +11,11 @@ import useCart from "@/hooks/data/cart/useCart";
 export function ProductsSection() {
   const [page, setPage] = useState(1);
   const limit = 8;
-  const { data: products } = useProducts({ page, limit });
+  const sort = {
+    column: "discount" as const,
+    ascending: false,
+  };
+  const { data: products } = useProducts({ page, limit, sort });
   const queryClient = useQueryClient();
   useEffect(() => {
     if (products?.meta?.has_next_page) {
@@ -19,10 +23,11 @@ export function ProductsSection() {
         productsQuery({
           page: page + 1,
           limit,
+          sort,
         }),
       );
     }
-  }, [page, products?.meta?.has_next_page, queryClient]);
+  }, [page, products?.meta?.has_next_page]);
   return (
     <div className="mt-20 flex min-h-screen flex-col gap-12">
       <div className="flex flex-row items-center justify-center gap-3">
@@ -49,10 +54,9 @@ export function ProductsSection() {
       </div>
       <Pagination
         className="flex w-full justify-center"
-        count={products?.meta?.total_pages}
+        count={2}
         page={page}
-        boundaryCount={3}
-        siblingCount={3}
+        boundaryCount={1}
         onChange={(e, value) => setPage(value)}
       />
     </div>

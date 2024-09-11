@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { FormControl, MenuItem, Select } from "@mui/material";
+import { MenuItem, Select } from "@mui/material";
 import { getTailwindColor } from "../../helpers/getTailwindColor";
 import { VscTriangleDown } from "react-icons/vsc";
 import { Label } from "./LabelGeneric";
@@ -46,7 +46,7 @@ export function SelectGeneric({
       : "text-gray-600 rounded-br-sm !min-w-8 rounded-tr-sm px-2.5 h-full ";
   if (!options) return;
   return (
-    <FormControl className="group flex w-fit flex-col gap-1">
+    <div className="group flex w-fit flex-col gap-1">
       <Label name={name} required={required} error={error}>
         {label}
       </Label>
@@ -150,6 +150,6 @@ export function SelectGeneric({
           </span>
         )}
       </div>
-    </FormControl>
+    </div>
   );
 }
