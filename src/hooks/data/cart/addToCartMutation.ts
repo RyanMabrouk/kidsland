@@ -2,7 +2,6 @@
 import getSession from "@/api/getSession";
 import postData from "@/api/postData";
 import { useToast } from "@/hooks/useToast";
-import { TablesInsert } from "@/types/database.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useAddToCart() {

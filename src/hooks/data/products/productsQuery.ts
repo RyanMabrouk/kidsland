@@ -1,9 +1,8 @@
 import { infinityPagination } from "@/helpers/infinityPagination";
 import { Tables } from "@/types/database.types";
-import { formatProduct } from "./formatProducts";
 import getProducts from "@/actions/products/getProducts";
 
-const productsQuery = (args: {
+export interface ProductsQueryType {
   page: number;
   limit: number;
   search?: { column: keyof Tables<"products">; value: string };
@@ -14,9 +13,11 @@ const productsQuery = (args: {
   filters?: {
     minDiscount: number;
     priceRange: number[];
+    category_id: number | null;
   };
-  cartProducts?: string[] | undefined;
-}) => ({
+}
+
+const productsQuery = (args: ProductsQueryType) => ({
   queryKey: [
     "products",
     {
@@ -28,20 +29,18 @@ const productsQuery = (args: {
       getProducts({
         tableName: "products",
         ...args,
+        match: args.filters?.category_id
+          ? {
+              category_id: args.filters.category_id,
+            }
+          : undefined,
         minDiscount: args.filters?.minDiscount,
         priceRange: args.filters?.priceRange,
         pagination: {
           page: args.page,
           limit: args.limit,
         },
-      }).then((res) => ({
-        ...res,
-        data: res.data?.map((e) =>
-          formatProduct(e, {
-            cartProducts: args.cartProducts,
-          }),
-        ),
-      })),
+      }),
       getProducts({
         tableName: "products",
         count: { count: "exact", head: true },
@@ -59,7 +58,6 @@ const productsQuery = (args: {
       error: data.error || countData.error,
     };
   },
-  enabled: args.cartProducts !== undefined,
 });
 
 export { productsQuery };

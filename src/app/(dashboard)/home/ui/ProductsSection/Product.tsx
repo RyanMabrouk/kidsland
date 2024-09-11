@@ -46,7 +46,7 @@ export default function Product({
         <AddToCartBtn product_id={id ?? ""} isInCart={isInCart } />
       </div>
 
-      <div className="fle w-full flex-col items-center justify-center gap-6 text-lg">
+      <div className="fle w-full flex-col items-center justify-center gap-6 text-lg z-20">
         <TooltipGeneric tip={title ?? ""}>
           <span className="line-clamp-1 text-left">{title}</span>
         </TooltipGeneric>
