@@ -12,19 +12,17 @@ export function ProductsSection() {
   const [page, setPage] = useState(1);
   const limit = 8;
   const { data: products } = useProducts({ page, limit });
-  const { data: cart } = useCart();
   const queryClient = useQueryClient();
   useEffect(() => {
-    if (products?.meta.has_next_page) {
+    if (products?.meta?.has_next_page) {
       queryClient.prefetchQuery(
         productsQuery({
           page: page + 1,
           limit,
-          cartProducts: cart?.data,
         }),
       );
     }
-  }, [page, products?.meta.has_next_page, queryClient, cart?.data]);
+  }, [page, products?.meta?.has_next_page, queryClient]);
   return (
     <div className="mt-20 flex min-h-screen flex-col gap-12">
       <div className="flex flex-row items-center justify-center gap-3">
@@ -51,7 +49,7 @@ export function ProductsSection() {
       </div>
       <Pagination
         className="flex w-full justify-center"
-        count={products?.meta.total_pages}
+        count={products?.meta?.total_pages}
         page={page}
         boundaryCount={3}
         siblingCount={3}

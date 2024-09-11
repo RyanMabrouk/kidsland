@@ -56,7 +56,7 @@ export default function RecommendationSection() {
               },
             }}
             slides={
-              products?.data.map((product, key) => (
+              products?.data?.map((product, key) => (
                 <Product key={key} {...product} />
               )) ?? []
             }

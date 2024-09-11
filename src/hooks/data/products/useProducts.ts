@@ -1,37 +1,25 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { productsQuery } from "./productsQuery";
-import { Tables } from "@/types/database.types";
+import { productsQuery, ProductsQueryType } from "./productsQuery";
 import useCart from "../cart/useCart";
+import { formatProduct } from "./formatProducts";
 
-export default function useProducts({
-  page,
-  limit,
-  sort,
-  search,
-  filters,
-}: {
-  page: number;
-  limit: number;
-  sort?: {
-    ascending: boolean;
-    column: keyof Tables<"products">;
-  };
-  search?: { column: keyof Tables<"products">; value: string };
-  filters?: {
-    minDiscount: number;
-    priceRange: number[];
-  };
-}) {
+export default function useProducts(args: ProductsQueryType) {
   const { data: cart } = useCart();
-  return useQuery(
+  const query = useQuery(
     productsQuery({
-      page,
-      limit,
-      sort,
-      search,
-      cartProducts: cart?.data,
-      filters,
+      ...args,
     }),
   );
+  return {
+    ...query,
+    data: {
+      ...query.data,
+      data: query.data?.data?.map((e) =>
+        formatProduct(e, {
+          cartProducts: cart?.data,
+        }),
+      ),
+    },
+  };
 }
