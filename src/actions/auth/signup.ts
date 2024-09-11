@@ -2,34 +2,24 @@
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { cookies, headers } from "next/headers";
 export default async function signUp({
-  firstName,
-  lastName,
-  tel,
   email,
   password,
 }: {
-  firstName: string | null;
-  lastName: string | null;
-  tel: string | null;
   email: string;
   password: string;
 }) {
+  console.log(email, password);
   const headersList = headers();
   const header_url = headersList.get("host") || "";
-  const proto = headers().get("x-forwarded-proto") || "http";
-  const options = {
-    data: {
-      firstName,
-      lastName,
-      tel,
-    },
-    emailRedirectTo: `${proto}://${header_url}/auth/callback`,
-  };
+  const proto = headersList.get("x-forwarded-proto") || "http";
+
   const supabase = createServerActionClient({ cookies });
   const { data, error: signUpErr } = await supabase.auth.signUp({
     email: email,
     password: password,
-    options: options,
+    options: {
+      emailRedirectTo: `${proto}://${header_url}/auth/callback`,
+    },
   });
   if (signUpErr) {
     return {

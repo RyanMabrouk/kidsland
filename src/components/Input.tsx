@@ -5,6 +5,7 @@ import { Eye, EyeOff } from "lucide-react";
 export default function Input({
   label,
   type,
+  name,
   placeholder,
   required,
 }: {
@@ -12,6 +13,7 @@ export default function Input({
   type: string;
   placeholder?: string;
   required?: boolean;
+  name: string;
 }) {
   const [showPassword, setShowPassword] = React.useState(false);
   return (
@@ -28,6 +30,7 @@ export default function Input({
                 : "password"
               : type
           }
+          name={name}
           placeholder={placeholder}
           className="w-full text-gray-800 outline-none"
         />
