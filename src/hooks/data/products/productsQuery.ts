@@ -11,9 +11,9 @@ export interface ProductsQueryType {
     column: keyof Tables<"products">;
   };
   filters?: {
-    minDiscount: number;
-    priceRange: number[];
-    category_id: number | null;
+    minDiscount?: number;
+    priceRange?: number[];
+    category_id?: number | null;
   };
 }
 

@@ -8,15 +8,12 @@ import { productsQuery } from "@/hooks/data/products/productsQuery";
 import Product from "../home/ui/ProductsSection/Product";
 import { Divider, Pagination } from "@mui/material";
 import { SelectGeneric } from "@/app/ui/SelectGeneric";
-import { IProduct } from "@/types/database.tables.types";
 import { Tables } from "@/types/database.types";
 import { ToggleSortArrow } from "./ui/ToggleSortArrow";
 import PriceRangeFilter from "./ui/PriceRangeFilter";
 import DiscountFilter from "./ui/DiscountFilter";
-import useCategories from "@/hooks/data/categories/useCategories";
-import Checkbox from "@/app/ui/Checkbox";
-import { useSearchParams } from "next/navigation";
-const sortOptions: { label: string; value: keyof IProduct }[] = [
+import CategoriesFilter from "./ui/CategoriesFilter";
+const sortOptions: { label: string; value: keyof Tables<"products"> }[] = [
   {
     label: "Price",
     value: "price",
@@ -45,7 +42,7 @@ function Page() {
     priceRange: [5, 999],
     category_id: null as number | null,
   });
-  const limit = 21;
+  const limit = 18;
   const { data: products } = useProducts({
     page,
     limit,
@@ -64,7 +61,7 @@ function Page() {
         }),
       );
     }
-  }, [page, products?.meta?.has_next_page, queryClient, sort, filters]);
+  }, [page, products?.meta?.has_next_page, sort, filters]);
   return (
     <div className="flex flex-col">
       <Image
@@ -114,18 +111,22 @@ function Page() {
               options={sortOptions}
               inputLabel="Sort"
               onChange={(value) => {
-                setSort((prev) => ({
-                  ...prev,
-                  column: value as keyof Tables<"products">,
-                }));
+                if (value !== sort.column) {
+                  setSort((prev) => ({
+                    ...prev,
+                    column: value as keyof Tables<"products">,
+                  }));
+                }
               }}
             />
             <ToggleSortArrow
               onClick={(value) => {
-                setSort((prev) => ({
-                  ...prev,
-                  ascending: value,
-                }));
+                if (value !== sort.ascending) {
+                  setSort((prev) => ({
+                    ...prev,
+                    ascending: value,
+                  }));
+                }
               }}
             />
           </div>
@@ -138,8 +139,7 @@ function Page() {
             className="flex w-full justify-center"
             count={products?.meta?.total_pages}
             page={page}
-            boundaryCount={3}
-            siblingCount={3}
+            boundaryCount={1}
             onChange={(e, value) => setPage(value)}
           />
         </div>
@@ -149,32 +149,3 @@ function Page() {
 }
 
 export default Page;
-
-function CategoriesFilter({
-  onChange,
-}: {
-  onChange: (value: number | null) => void;
-}) {
-  const category = useSearchParams().get("category");
-  const { data: categories } = useCategories();
-  const [value, setValue] = useState<string | null>(
-    categories?.data?.find((e) => e.name == category)?.name ?? null,
-  );
-  return (
-    <div className="flex flex-col items-start justify-center">
-      <span className="mb-1 text-sm font-medium uppercase">Category</span>
-      {categories?.data?.map((e) => (
-        <Checkbox
-          key={e.name}
-          name="discount_options"
-          label={e.name}
-          checked={value === e.name}
-          onChange={() => {
-            setValue(e.name === value ? null : e.name);
-            onChange(e.name === value ? null : e.id);
-          }}
-        />
-      ))}
-    </div>
-  );
-}

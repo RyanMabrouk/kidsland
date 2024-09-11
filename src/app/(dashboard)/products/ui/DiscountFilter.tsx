@@ -1,6 +1,6 @@
 import Checkbox from "@/app/ui/Checkbox";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function DiscountFilter({
   onChange,
@@ -18,9 +18,10 @@ export default function DiscountFilter({
       label: "30% and more",
     },
   ];
-  const [value, setValue] = useState<number | null>(
-    discount ? discount_options[0].value : 0,
-  );
+  const [value, setValue] = useState<number | null>(null);
+  useEffect(() => {
+    setValue(discount ? discount_options[0].value : null);
+  }, [discount]);
   return (
     <div className="flex flex-col items-start justify-center">
       <span className="mb-1 text-sm font-medium uppercase">Discount (%)</span>

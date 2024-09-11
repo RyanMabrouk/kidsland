@@ -1,14 +1,23 @@
 "use client";
 import Product from "@/app/(dashboard)/home/ui/ProductsSection/Product";
 import CustomSwiper from "@/app/ui/swiper";
+import useProductById from "@/hooks/data/products/useProductById";
 import useProducts from "@/hooks/data/products/useProducts";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
 export default function RecommendationSection() {
+  const { productId } = useParams();
+  const { data } = useProductById(String(productId));
+  const product = data?.data;
   const limit = 12;
   const page = 1;
-  const { data: products } = useProducts({ page, limit });
+  const { data: products } = useProducts({
+    page,
+    limit,
+    filters: { category_id: product?.category_id ?? null },
+  });
   return (
     <div className="mt-20 flex flex-col gap-12">
       <div className="flex flex-row items-center justify-center gap-3">
