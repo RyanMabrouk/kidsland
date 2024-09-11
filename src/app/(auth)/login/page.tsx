@@ -5,7 +5,8 @@ import { redirect } from "next/navigation";
 import React from "react";
 
 export default async function Page() {
-  const { session } = await getSession();
+  const { session, error } = await getSession();
+  console.log(session?.user.id);
   if (session) redirect("/home");
   return (
     <div className="flex min-h-screen items-center justify-center">
