@@ -3,6 +3,7 @@ import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { Database, Tables } from "@/types/database.types";
 import { paginateQuery } from "@/helpers/paginateQuery";
+import { match } from "assert";
 export default async function getProducts({
   tableName,
   count = {},
@@ -11,6 +12,7 @@ export default async function getProducts({
   priceRange,
   pagination,
   search,
+  match,
 }: {
   tableName: "products";
   count?: {
@@ -22,8 +24,12 @@ export default async function getProducts({
     column: keyof Tables<"products">;
     ascending: boolean;
   };
+  match?:
+    | Partial<{ [k in keyof Tables<"products">]: Tables<"products">[k] }>
+    | undefined;
   minDiscount?: number;
   priceRange?: number[];
+  category?: string;
   pagination?: {
     limit: number;
     page: number;
@@ -46,6 +52,9 @@ export default async function getProducts({
   }
   if (priceRange) {
     query = query.gte("price", priceRange[0]).lte("price", priceRange[1]);
+  }
+  if (match) {
+    query = query.match(match);
   }
   const { data, error, count: items_count } = await query;
   return {

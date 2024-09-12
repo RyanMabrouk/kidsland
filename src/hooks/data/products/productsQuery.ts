@@ -1,9 +1,9 @@
+import { match } from "assert";
 import { infinityPagination } from "@/helpers/infinityPagination";
 import { Tables } from "@/types/database.types";
-import { formatProduct } from "./formatProducts";
 import getProducts from "@/actions/products/getProducts";
 
-const productsQuery = (args: {
+export interface ProductsQueryType {
   page: number;
   limit: number;
   search?: { column: keyof Tables<"products">; value: string };
@@ -12,11 +12,15 @@ const productsQuery = (args: {
     column: keyof Tables<"products">;
   };
   filters?: {
-    minDiscount: number;
-    priceRange: number[];
+    minDiscount?: number;
+    priceRange?: number[];
   };
-  cartProducts: string[] | undefined;
-}) => ({
+  match?:
+    | Partial<{ [k in keyof Tables<"products">]: Tables<"products">[k] }>
+    | undefined;
+}
+
+const productsQuery = (args: ProductsQueryType) => ({
   queryKey: [
     "products",
     {
@@ -28,23 +32,25 @@ const productsQuery = (args: {
       getProducts({
         tableName: "products",
         ...args,
+        match: args.match,
         minDiscount: args.filters?.minDiscount,
         priceRange: args.filters?.priceRange,
         pagination: {
           page: args.page,
           limit: args.limit,
         },
-      }).then((res) => ({
-        ...res,
-        data: res.data?.map((e) =>
-          formatProduct(e, {
-            cartProducts: args.cartProducts,
-          }),
-        ),
-      })),
+      }),
       getProducts({
         tableName: "products",
         count: { count: "exact", head: true },
+        ...args,
+        match: args.match,
+        minDiscount: args.filters?.minDiscount,
+        priceRange: args.filters?.priceRange,
+        pagination: {
+          page: args.page,
+          limit: args.limit,
+        },
       }).then((res) => ({
         count: res.count,
         error: res.error,
@@ -59,7 +65,6 @@ const productsQuery = (args: {
       error: data.error || countData.error,
     };
   },
-  enabled: args.cartProducts !== undefined,
 });
 
 export { productsQuery };

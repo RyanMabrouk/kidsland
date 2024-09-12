@@ -123,6 +123,7 @@ export type Database = {
           payment_method: Database["public"]["Enums"]["payment_method_enum"]
           phone_number: string
           region: string
+
           status: Database["public"]["Enums"]["status_type_enum"]
           total_price: number
           user_id: string
@@ -140,6 +141,7 @@ export type Database = {
           payment_method?: Database["public"]["Enums"]["payment_method_enum"]
           phone_number?: string
           region?: string
+
           status?: Database["public"]["Enums"]["status_type_enum"]
           total_price: number
           user_id: string
@@ -157,6 +159,7 @@ export type Database = {
           payment_method?: Database["public"]["Enums"]["payment_method_enum"]
           phone_number?: string
           region?: string
+
           status?: Database["public"]["Enums"]["status_type_enum"]
           total_price?: number
           user_id?: string
@@ -259,6 +262,7 @@ export type Database = {
     Enums: {
       discount_type_enum: "percentage" | "fixed"
       payment_method_enum: "cash" | "online"
+
       status_type_enum: "pending" | "cancelled" | "fulfilled"
     }
     CompositeTypes: {

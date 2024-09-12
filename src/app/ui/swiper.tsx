@@ -1,5 +1,5 @@
 import React from "react";
-import { Pagination, Navigation, Virtual } from "swiper/modules";
+import { Pagination, Navigation, Virtual, Autoplay } from "swiper/modules";
 import { Swiper, SwiperProps, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -14,7 +14,7 @@ export default function CustomSwiper(
     <Swiper
       className="w-full"
       {...props}
-      modules={[Virtual, Pagination, Navigation]}
+      modules={[Virtual, Pagination, Navigation, Autoplay]}
       spaceBetween={props.spaceBetween ?? 25}
       slidesPerGroupSkip={props.slidesPerGroupSkip ?? 3}
       pagination={props.pagination ? { clickable: true } : false}

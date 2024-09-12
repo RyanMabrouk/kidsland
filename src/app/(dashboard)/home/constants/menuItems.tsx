@@ -1,107 +1,45 @@
 import { MdToys } from "react-icons/md";
+import { GiBrain } from "react-icons/gi";
+import { MdConstruction } from "react-icons/md";
+import { RiDiscountPercentFill } from "react-icons/ri";
 
 export type MenuItemsType = {
   title: string;
   href: string;
-  subItems: {
+  subItems?: {
     title: string;
-    href: string;
+    filter: string;
     icon: ({ className }: { className: string }) => React.JSX.Element;
   }[];
 }[];
 const menuItems: MenuItemsType = [
   {
     title: "Kidsland moments",
-    href: "/moments",
-    subItems: [
-      {
-        title: "New Arrivals",
-        href: "/new-arrivals",
-        icon: ({ className }: { className: string }) => (
-          <MdToys className={className} />
-        ),
-      },
-      {
-        title: "Best Sellers",
-        href: "/best-sellers",
-        icon: ({ className }: { className: string }) => (
-          <MdToys className={className} />
-        ),
-      },
-      {
-        title: "Trending",
-        href: "/trending",
-        icon: ({ className }: { className: string }) => (
-          <MdToys className={className} />
-        ),
-      },
-    ],
+    href: "/products",
   },
   {
     title: "Toys",
     href: "/products",
     subItems: [
       {
-        title: "Action Figures",
-        href: "/action-figures",
+        title: "Concentration",
+        filter: `category=concentration`,
+        icon: ({ className }: { className: string }) => (
+          <GiBrain className={className} />
+        ),
+      },
+      {
+        title: "Social",
+        filter: `category=social`,
         icon: ({ className }: { className: string }) => (
           <MdToys className={className} />
         ),
       },
       {
-        title: "Dolls",
-        href: "/dolls",
+        title: "Construction",
+        filter: `category=construction`,
         icon: ({ className }: { className: string }) => (
-          <MdToys className={className} />
-        ),
-      },
-      {
-        title: "Educational",
-        href: "/educational",
-        icon: ({ className }: { className: string }) => (
-          <MdToys className={className} />
-        ),
-      },
-      {
-        title: "Games",
-        href: "/games",
-        icon: ({ className }: { className: string }) => (
-          <MdToys className={className} />
-        ),
-      },
-      {
-        title: "Outdoor",
-        href: "/outdoor",
-        icon: ({ className }: { className: string }) => (
-          <MdToys className={className} />
-        ),
-      },
-      {
-        title: "Puzzles",
-        href: "/puzzles",
-        icon: ({ className }: { className: string }) => (
-          <MdToys className={className} />
-        ),
-      },
-      {
-        title: "Remote Control",
-        href: "/remote-control",
-        icon: ({ className }: { className: string }) => (
-          <MdToys className={className} />
-        ),
-      },
-      {
-        title: "Stuffed Animals",
-        href: "/stuffed-animals",
-        icon: ({ className }: { className: string }) => (
-          <MdToys className={className} />
-        ),
-      },
-      {
-        title: "Vehicles",
-        href: "/vehicles",
-        icon: ({ className }: { className: string }) => (
-          <MdToys className={className} />
+          <MdConstruction className={className} />
         ),
       },
     ],
@@ -109,27 +47,13 @@ const menuItems: MenuItemsType = [
 
   {
     title: "Deals",
-    href: "/deals",
+    href: "/products",
     subItems: [
       {
-        title: "Clearance",
-        href: "/clearance",
-        icon: ({ className }: { className: string }) => (
-          <MdToys className={className} />
-        ),
-      },
-      {
         title: "Discounts",
-        href: "/discounts",
+        filter: `discount=true`,
         icon: ({ className }: { className: string }) => (
-          <MdToys className={className} />
-        ),
-      },
-      {
-        title: "Sales",
-        href: "/sales",
-        icon: ({ className }: { className: string }) => (
-          <MdToys className={className} />
+          <RiDiscountPercentFill className={className} />
         ),
       },
     ],
