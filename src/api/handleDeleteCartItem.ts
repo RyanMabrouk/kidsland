@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/server";
 import getUser from "./getUser";
 
-async function handleDelete(id: string) {
+async function handleDeleteCartItem(id: string) {
   const supabase = createClient();
   const {
     data: { user },
@@ -19,4 +19,4 @@ async function handleDelete(id: string) {
   return data;
 }
 
-export default handleDelete;
+export default handleDeleteCartItem;

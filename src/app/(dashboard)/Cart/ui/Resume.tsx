@@ -9,12 +9,12 @@ export default function Resume() {
     0,
   );
   return (
-    <div className="flex w-[20rem] flex-col items-center rounded-xl border-4 border-double border-red-500 p-4 ring-4 ring-red-400 ring-opacity-0 ring-offset-0 transition-all duration-300 hover:ring-opacity-70 hover:ring-offset-4">
+    <div className="fixed left-[70rem] top-40 flex w-[20rem] flex-col items-center gap-2 rounded-xl bg-white p-4 shadow-2xl transition-all duration-300">
       <h1 className="text-2xl text-red-300">Cart Summary</h1>
       <hr />
       <div className="flex w-full items-center justify-between p-3">
-        <h1>Subtotal</h1>
-        <div>{total} TND</div>
+        <h1 className="text-xl">Subtotal</h1>
+        <div className="text-2xl">{total} TND</div>
       </div>
       <hr />
       <OrderButton total={total ?? 0} />

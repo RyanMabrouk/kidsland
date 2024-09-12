@@ -10,7 +10,7 @@ export default function Content() {
   const [up, setUp] = useState(false);
   const [filter, setFilter] = useState("Alphabetically");
   return (
-    <div className="flex w-8/12 justify-between">
+    <div className="flex w-8/12 justify-between p-10">
       <div className="w-8/12">
         <Filters
           filters={cartFilters}

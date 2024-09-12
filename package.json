@@ -18,7 +18,7 @@
     "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/ssr": "^0.5.1",
     "@supabase/supabase-js": "^2.39.7",
-    "@tanstack/react-query": "^5.17.19",
+    "@tanstack/react-query": "^5.56.1",
     "@tanstack/react-query-devtools": "^5.14.2",
     "@tanstack/react-table": "^8.20.5",
     "antd": "^5.12.4",

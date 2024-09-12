@@ -1,15 +1,17 @@
+import { Option } from "@/app/ui/SelectGeneric";
+
 export type CartFilterType = {
   title: string;
-  items: { title: string; icon: string }[];
+  items: Option[];
 };
 
 export const cartFilters: CartFilterType[] = [
   {
     title: "Sorted",
     items: [
-      { title: "Alphabetically", icon: "/Cart/cubes.png" },
-      { title: "By price", icon: "/Cart/dollar.png" },
-      { title: "By Discount", icon: "/Cart/tag.png" },
+      { label: "Alphabetically", value: "Alphabetically" },
+      { label: "By price", value: "By price" },
+      { label: "By Discount", value: "By Discount" },
     ],
   },
   /* {
@@ -21,3 +23,7 @@ export const cartFilters: CartFilterType[] = [
     ],
   }, */
 ];
+
+/* "/Cart/cubes.png"
+"/Cart/dollar.png"
+"/Cart/tag.png" */

@@ -1,7 +1,7 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
+import { UseQueryResult, useQuery } from "@tanstack/react-query";
 import { cartQuery } from "./cartQuery";
 
-export default function useCart() {
+export default function useCart(): UseQueryResult {
   return useQuery(cartQuery());
 }

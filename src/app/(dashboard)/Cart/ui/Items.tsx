@@ -23,13 +23,14 @@ export default function Items({ filter, up }: { filter: string; up: boolean }) {
   const numberOfItems = cart?.reduce((acc, item) => acc + item.quantity, 0);
   if (isLoading) return <div>Loading Cart Items ...</div>;
   return (
-    <div className="w-full border-2 border-red-300">
-      <div className="ml-5 pt-4 text-xl text-rose-300">
+    <div className="w-full rounded-md bg-white shadow-md">
+      <div className="ml-5 py-4 text-xl text-rose-500">
         you have ({numberOfItems}) products in your cart
       </div>
       <Container>
-        {finalCart.map((item) => (
+        {finalCart.map((item, index) => (
           <CartItem
+            key={index}
             product={item.product}
             filter={filter}
             quantity={item.quantity}
@@ -42,6 +43,6 @@ export default function Items({ filter, up }: { filter: string; up: boolean }) {
 
 function Container({ children }: { children: React.ReactNode }) {
   return (
-    <div className="m-5 flex w-full flex-col items-start gap-5">{children}</div>
+    <div className="flex w-full flex-col items-center gap-5">{children}</div>
   );
 }

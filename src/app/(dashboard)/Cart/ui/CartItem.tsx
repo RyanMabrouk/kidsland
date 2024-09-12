@@ -1,4 +1,4 @@
-import handleDelete from "@/api/handleDelete";
+import handleDeleteCartItem from "@/api/handleDeleteCartItem";
 import handleQuantity from "@/api/handleQuantity";
 import { IProduct } from "@/types/database.tables.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -24,7 +24,7 @@ export default function CartItem({
     onError: (error) => alert(error.message),
   });
   const { mutate: Delete } = useMutation({
-    mutationFn: async () => await handleDelete(product.id),
+    mutationFn: async () => await handleDeleteCartItem(product.id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
@@ -32,7 +32,7 @@ export default function CartItem({
   });
 
   return (
-    <div className="w-[95%] border-2 border-solid transition-shadow duration-500 hover:shadow-md">
+    <div className="color w-[95%] border-2 border-solid transition-all duration-500 hover:w-[97%] hover:shadow-md">
       <div className="flex items-center justify-between">
         <div className="flex gap-2">
           <img

@@ -45,6 +45,7 @@ async function getCart() {
       price_after_discount: el.product.discount
         ? el.product.price * (1 - el.product.discount / 100)
         : el.product.price,
+      isInCart: el.quantity > 0,
     };
     return { product: newProduct, quantity: el.quantity } as {
       product: IProduct;

@@ -46,7 +46,7 @@ export function SelectGeneric({
       : "text-gray-600 rounded-br-sm !min-w-8 rounded-tr-sm px-2.5 h-full ";
   if (!options) return;
   return (
-    <FormControl className="group flex w-fit flex-col gap-1">
+    <FormControl className="group flex w-fit flex-col gap-3">
       <Label name={name} required={required} error={error}>
         {label}
       </Label>

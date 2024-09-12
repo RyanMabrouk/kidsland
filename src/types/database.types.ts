@@ -70,6 +70,7 @@ export type Database = {
           price_before_discount: number
           product_id: string
           quantity: number
+          wholesale_price: number
         }
         Insert: {
           created_at?: string
@@ -80,6 +81,7 @@ export type Database = {
           price_before_discount: number
           product_id: string
           quantity: number
+          wholesale_price?: number
         }
         Update: {
           created_at?: string
@@ -90,6 +92,7 @@ export type Database = {
           price_before_discount?: number
           product_id?: string
           quantity?: number
+          wholesale_price?: number
         }
         Relationships: [
           {
@@ -110,28 +113,55 @@ export type Database = {
       }
       orders: {
         Row: {
+          additional_info: string
+          address: string
+          city: string
           created_at: string
+          first_name: string
           id: number
+          last_name: string
+          payment_method: Database["public"]["Enums"]["payment_method_enum"]
+          phone_number: string
+          region: string
           status: Database["public"]["Enums"]["status_type_enum"]
           total_price: number
           user_id: string
           username: string | null
+          wholesale_price: number
         }
         Insert: {
+          additional_info?: string
+          address?: string
+          city?: string
           created_at?: string
+          first_name?: string
           id?: number
+          last_name?: string
+          payment_method?: Database["public"]["Enums"]["payment_method_enum"]
+          phone_number?: string
+          region?: string
           status?: Database["public"]["Enums"]["status_type_enum"]
           total_price: number
           user_id: string
           username?: string | null
+          wholesale_price?: number
         }
         Update: {
+          additional_info?: string
+          address?: string
+          city?: string
           created_at?: string
+          first_name?: string
           id?: number
+          last_name?: string
+          payment_method?: Database["public"]["Enums"]["payment_method_enum"]
+          phone_number?: string
+          region?: string
           status?: Database["public"]["Enums"]["status_type_enum"]
           total_price?: number
           user_id?: string
           username?: string | null
+          wholesale_price?: number
         }
         Relationships: [
           {
@@ -145,6 +175,7 @@ export type Database = {
       }
       products: {
         Row: {
+          category_id: number
           created_at: string
           description: string
           discount: number
@@ -158,6 +189,7 @@ export type Database = {
           wholesale_price: number
         }
         Insert: {
+          category_id: number
           created_at?: string
           description?: string
           discount?: number
@@ -171,6 +203,7 @@ export type Database = {
           wholesale_price?: number
         }
         Update: {
+          category_id?: number
           created_at?: string
           description?: string
           discount?: number
@@ -183,7 +216,15 @@ export type Database = {
           title?: string
           wholesale_price?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "products_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -217,6 +258,7 @@ export type Database = {
     }
     Enums: {
       discount_type_enum: "percentage" | "fixed"
+      payment_method_enum: "cash" | "online"
       status_type_enum: "pending" | "cancelled" | "fulfilled"
     }
     CompositeTypes: {
