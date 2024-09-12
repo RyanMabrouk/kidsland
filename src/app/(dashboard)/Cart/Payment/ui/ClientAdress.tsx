@@ -1,6 +1,6 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import ClientAdressForm from "./ClientAdressForm";
-import { useOrders } from "@/hooks/data/orders/useOrders";
+import { useOrder } from "@/hooks/data/orders/useOrder";
 
 export default function ClientAdress({
   open: o,
@@ -9,10 +9,12 @@ export default function ClientAdress({
   open: "clientAdress" | "paymentOptions" | "none";
   setOpen: Dispatch<SetStateAction<"clientAdress" | "paymentOptions" | "none">>;
 }) {
-  const { data } = useOrders();
+  const { data: a } = useOrder();
+  const order = a?.data;
   const isOpen = o === "clientAdress";
   const open = () => setOpen("clientAdress");
   const close = () => setOpen("none");
+  const next = () => setOpen("paymentOptions");
   return (
     <div className="w-full shadow-lg">
       <div className="flex justify-between">
@@ -27,8 +29,19 @@ export default function ClientAdress({
         )}
       </div>
       <hr />
-      {isOpen || <div className="underline">data will be here soon</div>}
-      {isOpen && <ClientAdressForm close={close} />}
+      {isOpen || (
+        <div className="flex flex-col gap-2 p-4 text-gray-600">
+          <div className="flex gap-2">
+            <div>{order?.first_name}</div>
+            <div>{order?.last_name}</div>
+          </div>
+          <h2>
+            {order?.address} | {order?.region} - {order?.city} | +216{" "}
+            {order?.phone_number}
+          </h2>
+        </div>
+      )}
+      {isOpen && <ClientAdressForm next={next} close={close} />}
     </div>
   );
 }

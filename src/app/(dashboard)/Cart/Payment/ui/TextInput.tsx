@@ -4,10 +4,12 @@ export default function TextInput({
   type,
   name,
   label,
+  defaultValue,
 }: {
   type: string;
   name: string;
   label: string;
+  defaultValue?: string;
 }) {
   const [isFocused, setIsFocused] = useState(false);
   return (
@@ -21,6 +23,7 @@ export default function TextInput({
         {label}
       </label>
       <input
+        defaultValue={defaultValue}
         id="input"
         type={type}
         placeholder="Write here..."

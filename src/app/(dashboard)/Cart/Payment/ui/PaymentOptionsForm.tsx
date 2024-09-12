@@ -1,13 +1,30 @@
+import { choosePaymentMethod } from "@/api/choosePaymentMethod";
+import { useOrder } from "@/hooks/data/orders/useOrder";
+import { useToast } from "@/hooks/useToast";
+import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
 
 export default function PaymentOptionsForm({ close }: { close: () => void }) {
+  const { data: a } = useOrder();
+  const order = a?.data;
+  const { toast } = useToast();
   const [selectedOption, setSelectedOption] = useState<"delivery" | "card">(
-    "delivery",
+    order?.payment_method === "cash" ? "delivery" : "card",
   );
+  const { mutate } = useMutation({
+    mutationFn: choosePaymentMethod,
+    onSuccess: () => {
+      toast.success("Payment method chosen");
+      close();
+    },
+    onError: (e: Error) => {
+      toast.error(e.message);
+    },
+  });
   const delivery = selectedOption === "delivery";
 
   return (
-    <form className="p-4">
+    <form action={mutate}>
       <div className="p-6">
         <div className="mb-4 border-b pb-4">
           <div className="flex items-center gap-2">
@@ -95,9 +112,15 @@ export default function PaymentOptionsForm({ close }: { close: () => void }) {
           )}
         </div>
 
-        <div className="text-right">
+        <div className="flex justify-end gap-2 text-right">
           <button
             onClick={close}
+            className="rounded-md bg-red-400 px-4 py-2 font-semibold text-white transition-all duration-300 hover:bg-red-500 hover:shadow-sm hover:shadow-red-500"
+          >
+            Annuler
+          </button>
+          <button
+            type="submit"
             className="rounded bg-orange-500 px-4 py-2 font-semibold text-white hover:bg-orange-600"
           >
             CONFIRMER LE MODE DE PAIEMENT

@@ -1,5 +1,6 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import PaymentOptionsForm from "./PaymentOptionsForm";
+import { useOrder } from "@/hooks/data/orders/useOrder";
 
 export default function PaymentOptions({
   open: o,
@@ -8,6 +9,8 @@ export default function PaymentOptions({
   open: "clientAdress" | "paymentOptions" | "none";
   setOpen: Dispatch<SetStateAction<"clientAdress" | "paymentOptions" | "none">>;
 }) {
+  const { data: a } = useOrder();
+  const order = a?.data;
   const isOpen = o === "paymentOptions";
   const open = () => setOpen("paymentOptions");
   const close = () => setOpen("none");
@@ -25,7 +28,11 @@ export default function PaymentOptions({
           </button>
         )}
       </div>
-      {isOpen || <div>data will be here soon</div>}
+      {isOpen || (
+        <div className="p-4 text-gray-500">
+          <h1>Payment Method : {order?.payment_method}</h1>
+        </div>
+      )}
       {isOpen && <PaymentOptionsForm close={close} />}
     </div>
   );

@@ -3,12 +3,11 @@
 import { TablesInsert } from "@/types/database.types";
 import getUser from "./getUser";
 import { postOrder } from "./postOrder";
-import { useCart } from "@/hooks/data/products/useCart";
+import useCart from "@/hooks/data/products/useCart";
+import getCart from "./getCart";
 
 export async function handleClientAdress(formData: FormData) {
-  console.log(1);
-  const { data: cart } = useCart();
-  console.log(2);
+  const cart = await getCart();
   const user = (await getUser()).data?.user;
   const user_id = user?.id;
   const wholesale_price =

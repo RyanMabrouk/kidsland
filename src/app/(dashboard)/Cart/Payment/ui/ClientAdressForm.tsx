@@ -5,16 +5,26 @@ import { useMutation } from "@tanstack/react-query";
 import { handleClientAdress } from "@/api/handleClientAdress";
 import { useToast } from "@/hooks/useToast";
 import TextInput from "./TextInput";
-import { useOrders } from "@/hooks/data/orders/useOrders";
+import { useOrder } from "@/hooks/data/orders/useOrder";
 
-export default function ClientAdressForm({ close }: { close: () => void }) {
-  const [state, setState] = useState<State | undefined>(undefined);
+export default function ClientAdressForm({
+  close,
+  next,
+}: {
+  close: () => void;
+  next: () => void;
+}) {
+  const { data: a } = useOrder();
+  const order = a?.data;
+  const [state, setState] = useState<State | undefined>(
+    states.find((e) => e.state === order?.region),
+  );
   const { toast } = useToast();
   const { mutate } = useMutation({
     mutationFn: handleClientAdress,
     onSuccess: () => {
       toast.success("Adresse modifiée avec succès");
-      close();
+      next();
     },
     onError: (e: Error) => {
       toast.error(e.message);
@@ -27,6 +37,7 @@ export default function ClientAdressForm({ close }: { close: () => void }) {
       <div className="grid grid-cols-12 gap-6">
         <div className="col-span-6">
           <TextInput
+            defaultValue={order?.first_name}
             name="firstName"
             type="text"
             label="Prénom / nom de la société"
@@ -34,6 +45,7 @@ export default function ClientAdressForm({ close }: { close: () => void }) {
         </div>
         <div className="col-span-6">
           <TextInput
+            defaultValue={order?.last_name}
             name="lastName"
             type="text"
             label="Nom / matricule fiscale-RNE"
@@ -41,21 +53,33 @@ export default function ClientAdressForm({ close }: { close: () => void }) {
         </div>
         <div className="col-span-1">Préfixe +216</div>
         <div className="col-span-5">
-          <TextInput name="telephone" type="number" label="Téléphone mobile" />
+          <TextInput
+            name="telephone"
+            defaultValue={order?.phone_number}
+            type="number"
+            label="Téléphone mobile"
+          />
         </div>
         <div className="col-span-1">Préfixe +216</div>
         <div className="col-span-5">
           <TextInput
+            defaultValue=""
             name="telephone2"
             type="number"
             label="Téléphone mobile supplémentaire"
           />
         </div>
         <div className="col-span-12">
-          <TextInput name="adress" type="email" label="Adresse" />
+          <TextInput
+            name="adress"
+            defaultValue={order?.address}
+            type="email"
+            label="Adresse"
+          />
         </div>
         <div className="col-span-12">
           <TextInput
+            defaultValue={order?.additional_info}
             name="addInfo"
             type="text"
             label="Informations Supplémentaires"
@@ -64,6 +88,7 @@ export default function ClientAdressForm({ close }: { close: () => void }) {
       </div>
       <div className="mb-3 flex items-center justify-around">
         <SelectGeneric
+          defaultValue={{ label: order?.region, value: order?.region ?? "" }}
           name="state"
           label="Region"
           onChange={(state: string) =>
@@ -75,6 +100,7 @@ export default function ClientAdressForm({ close }: { close: () => void }) {
           }))}
         />
         <SelectGeneric
+          defaultValue={{ label: order?.city, value: order?.city ?? "" }}
           label="City"
           name="city"
           group={true}
