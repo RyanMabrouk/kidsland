@@ -24,7 +24,7 @@ export default function HomeSwiper() {
         speed={1500}
         autoplay={{
           delay: 5000,
-          disableOnInteraction: false,
+          disableOnInteraction: true,
         }}
       />
     </div>
