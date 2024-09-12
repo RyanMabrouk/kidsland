@@ -40,12 +40,12 @@ export default function Page() {
     mutationFn: async (formData: FormData) => {
       // Extract form data
       const title = String(formData.get("title"));
-      const price = String(formData.get("price"));
-      const discount = String(formData.get("discount"));
-      const stock = String(formData.get("stock"));
+      const price = Number(formData.get("price"));
+      const discount = Number(formData.get("discount"));
+      const stock = Number(formData.get("stock"));
       const description = String(formData.get("description"));
       const subtitle = String(formData.get("subtitle"));
-      const wholesale_price = String(formData.get("wholesale_price"));
+      const wholesale_price = Number(formData.get("wholesale_price"));
 
       // Validate form data
       const result = schema.safeParse({

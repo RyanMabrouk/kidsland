@@ -19,6 +19,7 @@ export default function useOrders({
     ascending: boolean;
     column: keyof Tables<"orders">;
   };
+
   search?: { column: keyof Tables<"orders">; value: string };
   filter?: {
     column: keyof Tables<"orders">;

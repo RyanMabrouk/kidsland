@@ -6,14 +6,12 @@ import React, { useState, useEffect } from 'react';
 
 export default function Item({ item }: { item: Tables<"order_products"> }) {
   const [title, setTitle] = useState<string | null>(null);
-  const [wholesalePrice, setWholesalePrice] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-        const { title, wholesalePrice } = await getProductTitleAndWholesalePrice(item.product_id);
+        const { title } = await getProductTitleAndWholesalePrice(item.product_id);
         setTitle(title);
-        setWholesalePrice(wholesalePrice);
       } catch (error) {
         console.error("Error fetching product details:", error);
       }
@@ -37,12 +35,13 @@ export default function Item({ item }: { item: Tables<"order_products"> }) {
           />
         </div>
       ) : (
-        <div className="grid grid-cols-5 gap-2 text-sm text-slate-500">
-          <div className='col-span-3'>
-            {title} * {item.quantity}
-          </div>
-          <div>{price}</div>
-          <div>{price - (item.quantity * (wholesalePrice || 0))}</div>
+        <div className="grid grid-cols-8 gap-2 text-sm text-gray-600 items-center">
+          <div className='col-span-2'>{title}</div>
+          <div className='text-center'>{item.quantity}</div>
+          <div className='text-center'>{price/item.quantity}</div>
+          <div className='text-center col-span-2'>{item.wholesale_price/item.quantity}</div>
+          <div className='text-center'>{price}</div>
+          <div className='text-center'>{price - item.wholesale_price}</div>
         </div>
       )}
     </>

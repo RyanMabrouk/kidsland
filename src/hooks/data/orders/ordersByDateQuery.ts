@@ -27,7 +27,7 @@ const ordersByDateQuery = (args: {
       pagination: args.pagination,
     });
     const data = Array.isArray(result.data) ? result.data : [];
-    return infinityPagination(data, {
+    return infinityPagination(data as Tables<"orders">[], {
       total_count: result.count || 0,
       limit: args.pagination?.limit,
       page: args.pagination?.page,

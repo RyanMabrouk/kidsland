@@ -48,24 +48,33 @@ export default async function getOrders({
   filter,
 }: getOrdersParams) {
   const supabase = createServerComponentClient<Database>({ cookies });
+  
   let query = supabase
     .from("orders")
-    .select(column, { count: count.count || undefined })
-  if (status) {
-    query.eq("status", status);
-  }
-  if (match) {
-    query = query.match(match);
-  }
-  if (sort) {
-    query = query.order(sort.column, { ascending: sort.ascending });
-  }
-  if (search) {
-    query = query.ilike(search.column, `%${search.value}%`);
-  }
+    .select(column, { count: count.count || undefined });
+
   if (filter) {
     query = query.filter(filter.column, filter.operator || "eq", filter.value);
   }
+
+  if (search) {
+    query = query.ilike(search.column, `%${search.value}%`);
+  }
+
+
+
+  if (status) {
+    query.eq("status", status);
+  }
+
+  if (match) {
+    query = query.match(match);
+  }
+
+  if (sort) {
+    query = query.order(sort.column, { ascending: sort.ascending });
+  }
+
   if (pagination) {
     const start =
       pagination.page === 1 ? 0 : (pagination.page - 1) * pagination.limit;
@@ -75,6 +84,7 @@ export default async function getOrders({
         : start + pagination.limit - 1;
     query = query.range(start, end);
   }
+
   const { data, error, count: items_count } = await query;
   return {
     data: data as unknown as Tables<"orders"> | null,

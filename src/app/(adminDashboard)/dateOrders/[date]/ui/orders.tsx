@@ -15,7 +15,8 @@ import {
 } from "@/components/ui/dialog";
 import OrderDetails from './orderDetails';
 import DeleteOrder from './deleteOrder';
-import EditOrder from './editOrder';
+import EditOrderStatus from './editOrderStatus';
+import Image from 'next/image';
 
 export default function Orders({ searchQuery }: { searchQuery: string }) {
   const { date } = useParams();
@@ -62,7 +63,7 @@ export default function Orders({ searchQuery }: { searchQuery: string }) {
           <p>Loading...</p>
         ) : (
           orders?.data.map((order: Tables<"orders">) => (
-            <Dialog key={order.id}>
+            <Dialog  key={order.id}>
               <DialogTrigger>
                 <div
                   className="py-5 px-5 cursor-pointer shadow-lg grid grid-cols-7 gap-5 font-semibold text-slate-700 bg-white rounded-lg transition-all duration-300 transform hover:bg-blue-50 hover:shadow-xl hover:scale-105"
@@ -70,33 +71,43 @@ export default function Orders({ searchQuery }: { searchQuery: string }) {
                   <h2 className='text-center col-span-2'>{order.username}</h2>
                   <h2 className='text-center col-span-2'>{order.total_price} dt</h2>
                   <div
-                    className={`text-center col-span-2
-                      ${order.status === 'fulfilled' ? 'text-green-500' : ''}
-                      ${order.status === 'cancelled' ? 'text-red-500' : ''}
-                      ${order.status === 'pending' ? 'text-yellow-500' : ''}
-                    `}
-                  >
-                    {order.status}
+                      className='flex justify-center col-span-2'
+                      onClick={(e) => e.stopPropagation()} 
+                    >
+                    <EditOrderStatus status={order.status} id={order.id} />
                   </div>
-                  <div className='flex gap-3 justify-center'>
+                  
                     <div
+                      className='flex justify-center'
                       onClick={(e) => e.stopPropagation()} 
                     >
                       <DeleteOrder id={order.id} />
                     </div>
-                    <div
-                      onClick={(e) => e.stopPropagation()} 
-                    >
-                      <EditOrder id={order.id} status={order.status} />
-                    </div>
-                  </div>
                 </div>
               </DialogTrigger>
 
-              <DialogContent className='ml-[7rem]'>
-                <DialogHeader>
-                  <DialogTitle className='font-bold text-slate-900 text-lg'>Order Details</DialogTitle>
-                  <OrderDetails orderId={order.id} order_total_Price={order.total_price} order_wholesale_price={order.wholesale_price} />
+              <DialogContent className='ml-[7rem] w-[60rem] maw-w-full'>
+                <DialogHeader >
+                  <DialogTitle className='font-bold text-color5 text-lg'>      
+                    <div className="flex flex-row items-center  gap-3">
+                    <Image
+                      src="/home/icons/flower_yellow.png"
+                      alt=""
+                      height={15}
+                      width={15}
+                    />
+                    <div className=" font-bold uppercase text-color5 sm:text-2xl">
+                     Orders Details
+                    </div>
+                    <Image
+                      src="/home/icons/flower_yellow.png"
+                      alt=""
+                      height={15}
+                      width={15}
+                    />
+                  </div>
+                  </DialogTitle>
+                  <OrderDetails orderId={order.id} order_total_Price={order.total_price} order_wholesale_price={order.wholesale_price} client={order.username} status={order.status} />
                 </DialogHeader>
               </DialogContent>
             </Dialog>

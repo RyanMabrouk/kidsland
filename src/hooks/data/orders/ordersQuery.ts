@@ -13,6 +13,7 @@ const ordersQuery = (args: {
     ascending: boolean;
     column: keyof Tables<"orders">;
   };
+
   filter?: {
     column: keyof Tables<"orders">;
     value: string;

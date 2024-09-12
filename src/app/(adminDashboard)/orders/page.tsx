@@ -16,7 +16,7 @@ export default function Page() {
     filter: {
       column: "created_at",
       value: firstDayOfMonth,
-      operator: "gte", // Get orders from the start of the month onwards
+      operator: "gte",
     },
   });
 
@@ -60,7 +60,7 @@ export default function Page() {
       <div className=" flex flex-col gap-2 mt-5 ">
       {groupedOrders ? (
         Object.keys(groupedOrders).map((date) => (
-            <Day date={date} groupedOrders={groupedOrders} />
+            <Day key={groupedOrders} date={date} groupedOrders={groupedOrders} />
         ))
       ) : (
         <p>No orders found for this month.</p>

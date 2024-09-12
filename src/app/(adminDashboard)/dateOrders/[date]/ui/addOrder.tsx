@@ -120,26 +120,27 @@ export default function AddOrder() {
                     className="w-full p-2 focus:outline-none sm:w-96"
                   />
                 </div>
-                <div className="flex flex-col">
-                  {searchQuery && filteredProducts?.map((product) => (
-                    <div
-                      key={product?.id}
-                      className="cursor-pointer p-2 border-b"
-                      onClick={() => handleSelectProduct(product)}
-                    >
-                      <div className="flex gap-4 items-center">
-                        <Image
-                          src={product?.image_url || "/path/to/default-image.png"}
-                          alt={product?.title || "yes"}
-                          width={40}
-                          height={40}
-                          className="rounded-md"
-                        />
-                        <div>{product?.title}</div>
-                      </div>
+                <div className="flex flex-col shadow-lg">
+                    {searchQuery && filteredProducts?.map((product) => (
+                        <div
+                        key={product?.id}
+                        className="cursor-pointer p-2 border-b transition duration-300 ease-in-out transform hover:scale-105 hover:bg-gray-100 hover:shadow-xl"
+                        onClick={() => handleSelectProduct(product)}
+                        >
+                        <div className="flex gap-4 items-center">
+                            <Image
+                            src={product?.image_url || "/path/to/default-image.png"}
+                            alt={product?.title || "yes"}
+                            width={40}
+                            height={40}
+                            className="rounded-md"
+                            />
+                            <div>{product?.title}</div>
+                        </div>
+                        </div>
+                    ))}
                     </div>
-                  ))}
-                </div>
+
               </div>
 
               {selectedProducts.length > 0 && (
