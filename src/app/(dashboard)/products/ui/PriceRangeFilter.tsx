@@ -21,8 +21,7 @@ export default function PriceRangeFilter({
     return () => {
       debouncedOnChange.cancel();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [value[0], value[1]]);
+  }, value);
 
   return (
     <div className="flex flex-col items-start justify-center">

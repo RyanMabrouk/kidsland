@@ -1,3 +1,4 @@
+import { match } from "assert";
 import { infinityPagination } from "@/helpers/infinityPagination";
 import { Tables } from "@/types/database.types";
 import getProducts from "@/actions/products/getProducts";
@@ -13,8 +14,10 @@ export interface ProductsQueryType {
   filters?: {
     minDiscount?: number;
     priceRange?: number[];
-    category_id?: number | null;
   };
+  match?:
+    | Partial<{ [k in keyof Tables<"products">]: Tables<"products">[k] }>
+    | undefined;
 }
 
 const productsQuery = (args: ProductsQueryType) => ({
@@ -29,11 +32,7 @@ const productsQuery = (args: ProductsQueryType) => ({
       getProducts({
         tableName: "products",
         ...args,
-        match: args.filters?.category_id
-          ? {
-              category_id: args.filters.category_id,
-            }
-          : undefined,
+        match: args.match,
         minDiscount: args.filters?.minDiscount,
         priceRange: args.filters?.priceRange,
         pagination: {
@@ -44,6 +43,14 @@ const productsQuery = (args: ProductsQueryType) => ({
       getProducts({
         tableName: "products",
         count: { count: "exact", head: true },
+        ...args,
+        match: args.match,
+        minDiscount: args.filters?.minDiscount,
+        priceRange: args.filters?.priceRange,
+        pagination: {
+          page: args.page,
+          limit: args.limit,
+        },
       }).then((res) => ({
         count: res.count,
         error: res.error,

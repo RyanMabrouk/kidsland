@@ -1,6 +1,7 @@
 import Checkbox from "@/app/ui/Checkbox";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useMemo } from "react";
 
 export default function DiscountFilter({
   onChange,
@@ -8,7 +9,8 @@ export default function DiscountFilter({
   onChange: (value: number) => void;
 }) {
   const discount = useSearchParams().get("discount");
-  const discount_options = [
+  
+  const discount_options = useMemo(() => [
     {
       value: 10,
       label: "10% and more",
@@ -17,11 +19,11 @@ export default function DiscountFilter({
       value: 30,
       label: "30% and more",
     },
-  ];
+  ], []);
   const [value, setValue] = useState<number | null>(null);
   useEffect(() => {
     setValue(discount ? discount_options[0].value : null);
-  }, [discount]);
+  }, [discount, discount_options]);
   return (
     <div className="flex flex-col items-start justify-center">
       <span className="mb-1 text-sm font-medium uppercase">Discount (%)</span>

@@ -21,7 +21,7 @@ export default function HomeSwiper() {
         pagination
         loop
         allowTouchMove
-        autoplay={{ delay: 3000, pauseOnMouseEnter: true }}
+        autoplay
       />
     </div>
   );
