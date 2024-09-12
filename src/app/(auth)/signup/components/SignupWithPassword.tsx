@@ -77,9 +77,27 @@ export default function SignupWithPassword() {
     <form className="flex-1 space-y-6" action={mutate}>
       <h2 className="text-2xl font-bold text-gray-800">Create Account</h2>
 
-      <Input name="email" label="Email" type="email" required />
-      <Input name="password" label="Password" type="password" required />
-      <Input name="confirm" label="Confirm Password" type="password" required />
+      <Input
+        name="email"
+        label="Email"
+        type="email"
+        required
+        placeholder="Enter Your Email"
+      />
+      <Input
+        name="password"
+        label="Password"
+        type="password"
+        required
+        placeholder="Enter Password"
+      />
+      <Input
+        name="confirm"
+        label="Confirm Password"
+        type="password"
+        required
+        placeholder="Confirm Password"
+      />
 
       <div className="flex items-center space-x-4">
         <input name="policies" type="checkbox" id="terms" required />

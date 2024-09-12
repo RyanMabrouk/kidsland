@@ -18,7 +18,7 @@ export default function ForgotPasswordForm() {
   const [errors, setErrors] = React.useState<string[]>([]);
   const [successMessage, setSuccessMessage] = React.useState<string>("");
   const router = useRouter();
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: async (formData: FormData) => {
       const email = formData.get("email") as string;
 
@@ -82,7 +82,9 @@ export default function ForgotPasswordForm() {
               )}
             </div>
 
-            <PrimaryButton className="w-full">Send Reset Link</PrimaryButton>
+            <PrimaryButton loading={isPending} className="w-full">
+              Send Reset Link
+            </PrimaryButton>
           </form>
 
           <div className="mt-6 flex w-full flex-col items-center justify-center gap-6">

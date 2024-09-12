@@ -31,7 +31,7 @@ export default function ChangePasswordForm() {
   const [errors, setErrors] = React.useState<string[]>([]);
   const [successMessage, setSuccessMessage] = React.useState<string>("");
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: async (formData: FormData) => {
       const formObject = Object.fromEntries(formData) as {
         newPassword: string;
@@ -102,7 +102,9 @@ export default function ChangePasswordForm() {
           <p className="text-sm text-green-500">{successMessage}</p>
         )}
 
-        <PrimaryButton className="w-full">Change Password</PrimaryButton>
+        <PrimaryButton loading={isPending} className="w-full">
+          Change Password
+        </PrimaryButton>
       </form>
     </div>
   );
