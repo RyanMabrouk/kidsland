@@ -16,7 +16,7 @@ export default function TooltipGeneric({
   };
   return (
     <div
-      className={`tooltip ${positions[position ?? "top"]} z-[1000]`}
+      className={`tooltip ${positions[position ?? "top"]} z-[40]`}
       data-tip={tip}
     >
       {children}

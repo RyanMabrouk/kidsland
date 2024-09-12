@@ -16,7 +16,7 @@ export default function RecommendationSection() {
   const { data: products } = useProducts({
     page,
     limit,
-    filters: { category_id: product?.category_id ?? null },
+    match: { category_id: product?.category_id },
   });
   return (
     <div className="mt-20 flex flex-col gap-12">
@@ -44,7 +44,10 @@ export default function RecommendationSection() {
           <CustomSwiper
             loop
             allowTouchMove
-            autoplay
+            autoplay={{
+              delay: 5000,
+              disableOnInteraction: true,
+            }}
             spaceBetween={0}
             navigation={{
               prevEl: ".btn_swiper_arrow_left",

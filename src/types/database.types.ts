@@ -113,8 +113,16 @@ export type Database = {
       }
       orders: {
         Row: {
+          additional_info: string
+          address: string
+          city: string
           created_at: string
+          first_name: string
           id: number
+          last_name: string
+          payment_method: Database["public"]["Enums"]["payment_method_enum"]
+          phone_number: string
+          region: string
           status: Database["public"]["Enums"]["status_type_enum"]
           total_price: number
           user_id: string
@@ -122,8 +130,16 @@ export type Database = {
           wholesale_price: number
         }
         Insert: {
+          additional_info?: string
+          address?: string
+          city?: string
           created_at?: string
+          first_name?: string
           id?: number
+          last_name?: string
+          payment_method?: Database["public"]["Enums"]["payment_method_enum"]
+          phone_number?: string
+          region?: string
           status?: Database["public"]["Enums"]["status_type_enum"]
           total_price: number
           user_id: string
@@ -131,8 +147,16 @@ export type Database = {
           wholesale_price?: number
         }
         Update: {
+          additional_info?: string
+          address?: string
+          city?: string
           created_at?: string
+          first_name?: string
           id?: number
+          last_name?: string
+          payment_method?: Database["public"]["Enums"]["payment_method_enum"]
+          phone_number?: string
+          region?: string
           status?: Database["public"]["Enums"]["status_type_enum"]
           total_price?: number
           user_id?: string
@@ -225,6 +249,39 @@ export type Database = {
           },
         ]
       }
+      wishlist: {
+        Row: {
+          created_at: string
+          product_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          product_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          product_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wishlist_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wishlist_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -234,6 +291,7 @@ export type Database = {
     }
     Enums: {
       discount_type_enum: "percentage" | "fixed"
+      payment_method_enum: "cash" | "online"
       status_type_enum: "pending" | "cancelled" | "fulfilled"
     }
     CompositeTypes: {

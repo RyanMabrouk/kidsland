@@ -1,5 +1,5 @@
 "use client";
-import { useAddToCart } from "@/hooks/data/cart/addToCartMutation";
+import { useAddToCart } from "@/hooks/data/cart/addToCart";
 import { cn } from "@/lib/utils";
 import { FaShoppingCart } from "react-icons/fa";
 import { FaCheckCircle } from "react-icons/fa";
