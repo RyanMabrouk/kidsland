@@ -5,9 +5,12 @@ import getUser from "./getUser";
 import { postOrder } from "./postOrder";
 import useCart from "@/hooks/data/products/useCart";
 import getCart from "./getCart";
+import { updateOrder } from "./updateOrder";
+import { getOrder } from "./getOrder";
 
-export async function addClientAdress(formData: FormData) {
+export async function updateClientAdress(formData: FormData) {
   const cart = await getCart();
+  const { data: order } = await getOrder();
   const user = (await getUser()).data?.user;
   const user_id = user?.id;
   const wholesale_price =
@@ -43,7 +46,7 @@ export async function addClientAdress(formData: FormData) {
     city: city as string,
     payment_method: "cash", // TODO: not always it is like this, maybe it should be null
   };
-  const { data } = await postOrder(newOrder);
+  const { data } = await updateOrder(newOrder, order.id);
 
   return;
 }

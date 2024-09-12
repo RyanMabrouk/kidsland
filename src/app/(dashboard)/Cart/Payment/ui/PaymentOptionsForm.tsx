@@ -31,7 +31,7 @@ export default function PaymentOptionsForm({ close }: { close: () => void }) {
             <input
               type="radio"
               name="paymentOption"
-              value="delivery"
+              value="cash"
               id="delivery"
               checked={delivery}
               onChange={() => setSelectedOption("delivery")}
