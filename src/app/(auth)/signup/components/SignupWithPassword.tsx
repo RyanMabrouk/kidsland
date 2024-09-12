@@ -25,9 +25,9 @@ const schema = z
 export default function SignupWithPassword() {
   const router = useRouter();
   const [errors, setErrors] = React.useState<string[]>([]);
-  const { mutate } = useMutation({
+  const [successMessage, setSuccessMessage] = React.useState<string>("");
+  const { mutate, isPending } = useMutation({
     mutationFn: async (formData: FormData) => {
-      // Convert FormData to plain object
       const formObject = Object.fromEntries(formData) as {
         email: string;
         password: string;
@@ -35,7 +35,6 @@ export default function SignupWithPassword() {
         policies: string;
       };
 
-      // Convert policies from string to boolean
       const policies = formObject.policies === "on";
 
       // Create an object with the converted policies
@@ -51,6 +50,7 @@ export default function SignupWithPassword() {
         schema.parse(data);
         setErrors([]); // Clear errors if validation is successful
       } catch (err) {
+        setSuccessMessage("");
         if (err instanceof z.ZodError) {
           // Set the errors from Zod validation
           setErrors(err.errors.map((e) => e.message));
@@ -69,7 +69,7 @@ export default function SignupWithPassword() {
       }
     },
     onSuccess: () => {
-      router.push("/home");
+      setSuccessMessage("An email has been sent to confirm your account...");
     },
   });
 
@@ -95,7 +95,6 @@ export default function SignupWithPassword() {
           of this online store.
         </label>
       </div>
-
       {errors.length > 0 && (
         <div className="space-y-1">
           {errors.map((error, index) => (
@@ -105,9 +104,13 @@ export default function SignupWithPassword() {
           ))}
         </div>
       )}
-
+      {successMessage && (
+        <p className="text-sm text-green-500">{successMessage}</p>
+      )}
       <div className="flex justify-between gap-4 max-sm:flex-col">
-        <PrimaryButton className="max-sm:w-full">Sign Up</PrimaryButton>
+        <PrimaryButton className="max-sm:w-full" loading={isPending}>
+          Sign Up
+        </PrimaryButton>
         <SecondaryLink href={"/login"} className="max-sm:w-full">
           You have an account
         </SecondaryLink>

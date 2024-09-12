@@ -15,39 +15,46 @@ const loginSchema = z.object({
 
 export default function LoginWithPassword() {
   const [errors, setErrors] = React.useState<string[]>([]);
+  const [successMessage, setSuccessMessage] = React.useState<string>("");
 
-  const { mutate } = useMutation({
-    mutationFn: async (formData: FormData) => {
-      // Convert FormData to plain object
-      const formObject = Object.fromEntries(formData) as {
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (formObject: FormData) => {
+      const data = Object.fromEntries(formObject) as {
         email: string;
         password: string;
       };
 
-      // Validate data with Zod
       try {
-        loginSchema.parse(formObject);
-        setErrors([]); // Clear errors if validation is successful
+        loginSchema.parse(data);
+        setErrors([]);
       } catch (err) {
+        setSuccessMessage("");
         if (err instanceof z.ZodError) {
-          // Set the errors from Zod validation
           setErrors(err.errors.map((e) => e.message));
         } else {
           setErrors(["An unexpected error occurred"]);
         }
-        throw err; // rethrow the error to stop further processing
+        console.error("Validation error:", err);
+        throw err;
       }
 
       // Proceed with login if validation passes
-      const { email, password } = formObject;
+      const email = formObject.get("email") as string;
+      const password = formObject.get("password") as string;
       const { error } = await login({ email, password });
+      console.log("Login API response:", { error });
+
       if (error) {
         setErrors([error.message]);
         throw error;
       }
+
+      setSuccessMessage("Login successful");
+      // Optionally handle redirection or other success behavior here
     },
     onSuccess: () => {
-      // Redirect or handle success
+      // Optionally handle success behavior here
+      console.log("Login successful, handling success...");
     },
   });
 
@@ -58,8 +65,20 @@ export default function LoginWithPassword() {
         If you have an account, log in with your email address.
       </p>
 
-      <Input name="email" label="Your email" type="email" required />
-      <Input name="password" label="Password" type="password" required />
+      <Input
+        name="email"
+        label="Your email"
+        type="email"
+        required
+        placeholder="Enter Your Email"
+      />
+      <Input
+        name="password"
+        label="Password"
+        type="password"
+        required
+        placeholder="Enter Your Password"
+      />
 
       {errors.length > 0 && (
         <div className="space-y-1">
@@ -71,10 +90,16 @@ export default function LoginWithPassword() {
         </div>
       )}
 
+      {successMessage && (
+        <p className="text-sm text-green-500">{successMessage}</p>
+      )}
+
       <div className="flex items-center justify-between gap-4 max-sm:flex-col">
-        <PrimaryButton className="max-sm:w-full">Login</PrimaryButton>
+        <PrimaryButton className="max-sm:w-full" loading={isPending}>
+          Sign Up
+        </PrimaryButton>
         <Link
-          href="/forgot-password"
+          href="/forget_password"
           className="text-sm text-blue-500 hover:underline"
         >
           Forgot your password?
