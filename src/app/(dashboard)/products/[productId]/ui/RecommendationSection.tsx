@@ -1,6 +1,6 @@
 "use client";
 import Product from "@/app/(dashboard)/home/ui/ProductsSection/Product";
-import CustomSwiper from "@/app/ui/swiper";
+import CustomSwiper from "@/app/ui/Swiper";
 import useProductById from "@/hooks/data/products/useProductById";
 import useProducts from "@/hooks/data/products/useProducts";
 import Image from "next/image";

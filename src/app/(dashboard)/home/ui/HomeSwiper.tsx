@@ -1,5 +1,5 @@
 "use client";
-import CustomSwiper from "@/app/ui/swiper";
+import CustomSwiper from "@/app/ui/Swiper";
 import Image from "next/image";
 
 export default function HomeSwiper() {
@@ -21,7 +21,11 @@ export default function HomeSwiper() {
         pagination
         loop
         allowTouchMove
-        autoplay
+        speed={1500}
+        autoplay={{
+          delay: 5000,
+          disableOnInteraction: false,
+        }}
       />
     </div>
   );
