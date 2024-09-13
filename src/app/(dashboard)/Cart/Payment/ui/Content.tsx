@@ -10,7 +10,7 @@ export default function Content() {
   );
 
   return (
-    <div className="flex w-7/12 flex-col items-center gap-7 bg-white">
+    <div className="my-7 flex w-7/12 flex-col items-center gap-7 bg-white">
       <ClientAdress open={open} setOpen={setOpen} />
       <PaymentOptions open={open} setOpen={setOpen} />
     </div>

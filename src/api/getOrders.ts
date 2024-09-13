@@ -1,14 +1,15 @@
 "use server";
 
-import { createClient } from "@/lib/server";
+import { cookies } from "next/headers";
 import getUser from "./getUser";
 import { Tables } from "@/types/database.types";
+import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 
 export async function getOrders() {
   const {
     data: { user },
   } = await getUser();
-  const supabase = createClient();
+  const supabase = createServerActionClient({ cookies });
   const { data, error } = await supabase
     .from("orders")
     .select("*")

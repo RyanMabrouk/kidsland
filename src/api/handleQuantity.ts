@@ -1,13 +1,14 @@
 "use server";
 
-import { createClient } from "@/lib/server";
+import { cookies } from "next/headers";
 import getUser from "./getUser";
+import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 
 async function handleQuantity(id: string, quantity: number) {
   if (quantity < 0) {
     return;
   }
-  const supabase = createClient();
+  const supabase = createServerActionClient({ cookies });
   const {
     data: { user },
   } = await getUser();

@@ -1,27 +1,29 @@
 import { choosePaymentMethod } from "@/api/choosePaymentMethod";
 import { useOrder } from "@/hooks/data/orders/useOrder";
 import { useToast } from "@/hooks/useToast";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 
 export default function PaymentOptionsForm({ close }: { close: () => void }) {
+  const queryClient = useQueryClient();
   const { data: a } = useOrder();
   const order = a?.data;
   const { toast } = useToast();
-  const [selectedOption, setSelectedOption] = useState<"delivery" | "card">(
-    order?.payment_method === "cash" ? "delivery" : "card",
-  );
+  const [selectedOption, setSelectedOption] = useState<
+    "cash" | "online" | undefined
+  >(order?.payment_method);
   const { mutate } = useMutation({
     mutationFn: choosePaymentMethod,
     onSuccess: () => {
       toast.success("Payment method chosen");
+      queryClient.invalidateQueries({ queryKey: ["order"] });
       close();
     },
     onError: (e: Error) => {
       toast.error(e.message);
     },
   });
-  const delivery = selectedOption === "delivery";
+  const cash = selectedOption === "cash";
 
   return (
     <form action={mutate}>
@@ -32,12 +34,12 @@ export default function PaymentOptionsForm({ close }: { close: () => void }) {
               type="radio"
               name="paymentOption"
               value="cash"
-              id="delivery"
-              checked={delivery}
-              onChange={() => setSelectedOption("delivery")}
+              id="cash"
+              checked={cash}
+              onChange={() => setSelectedOption("cash")}
               className="h-5 w-5 transform rounded-full border-0 transition duration-300 ease-out checked:scale-125"
             />
-            <label htmlFor="delivery" className="text-lg font-semibold">
+            <label htmlFor="cash" className="text-lg font-semibold">
               Payez plus tard à la livraison par carte bancaire ou par cash
             </label>
           </div>
@@ -45,7 +47,7 @@ export default function PaymentOptionsForm({ close }: { close: () => void }) {
             Paiement au moment de la livraison ou à nos points de relais une
             fois que votre commande est livrée
           </p>
-          {delivery && (
+          {cash && (
             <div className="mt-3 rounded bg-gray-100 p-3">
               <p className="text-sm text-gray-700">
                 Payez plus tard en espèces ou par carte bancaire au moment de la
@@ -71,13 +73,13 @@ export default function PaymentOptionsForm({ close }: { close: () => void }) {
             <input
               type="radio"
               name="paymentOption"
-              value="card"
-              id="card"
-              checked={!delivery}
-              onChange={() => setSelectedOption("card")}
+              value="online"
+              id="online"
+              checked={!cash}
+              onChange={() => setSelectedOption("online")}
               className="h-5 w-5 transform rounded-full border-2 border-gray-300 text-orange-500 transition duration-300 ease-out checked:scale-125"
             />
-            <label htmlFor="card" className="text-lg font-semibold">
+            <label htmlFor="online" className="text-lg font-semibold">
               Payez en ligne maintenant !
             </label>
           </div>
@@ -85,7 +87,7 @@ export default function PaymentOptionsForm({ close }: { close: () => void }) {
             Réglez vos achats à travers JumiaPay, en utilisant votre carte
             Mastercard ou Visa.
           </p>
-          {!delivery && (
+          {!cash && (
             <div className="mt-3 rounded bg-gray-100 p-3">
               <h1 className="mb-3 w-fit rounded-md bg-color1 p-2 text-white">
                 Credit balance KidsLand : 0.00TND

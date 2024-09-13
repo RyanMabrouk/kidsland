@@ -1,10 +1,11 @@
 "use server";
 
-import { createClient } from "@/lib/server";
+import { cookies } from "next/headers";
 import { Tables, TablesInsert } from "@/types/database.types";
+import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 
 export async function postOrder(payload: TablesInsert<"orders">) {
-  const supabase = createClient();
+  const supabase = createServerActionClient({ cookies });
   const { data, error } = await supabase
     .from("orders")
     .insert(payload)

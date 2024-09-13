@@ -1,10 +1,11 @@
 "use server";
 
-import { createClient } from "@/lib/server";
 import { Tables } from "@/types/database.types";
+import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 
 export async function deleteOrder(id: number) {
-  const supabase = createClient();
+  const supabase = createServerActionClient({ cookies });
   const { data, error } = await supabase
     .from("orders")
     .delete()

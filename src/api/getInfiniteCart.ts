@@ -1,17 +1,18 @@
 "use server";
 
-import { createClient } from "@/lib/server";
 import getUser from "./getUser";
 import { Tables } from "@/types/database.types";
 import { PostgrestError } from "@supabase/supabase-js";
 import { Cart, IProduct } from "@/types/database.tables.types";
+import { cookies } from "next/headers";
+import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 
 async function getInfiniteCart({ PageParam = 0 }: { PageParam: number }) {
   const {
     data: { user },
   } = await getUser();
   const id = user.id;
-  const supabase = createClient();
+  const supabase = createServerActionClient({ cookies });
   const { data, error } = (await supabase
     .from("cart")
     .select("*")
@@ -52,6 +53,7 @@ async function getInfiniteCart({ PageParam = 0 }: { PageParam: number }) {
       price_after_discount: el.product.discount
         ? el.product.price * (1 - el.product.discount / 100)
         : el.product.price,
+      isInCart: true,
     };
     return { product: newProduct, quantity: el.quantity } as {
       product: IProduct;
