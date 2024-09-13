@@ -9,9 +9,10 @@ import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 
 async function getCart() {
   const {
-    data: { user },
+    data: {
+      user: { id },
+    },
   } = await getUser();
-  const id = user.id;
   const supabase = createServerActionClient({ cookies });
   const { data, error } = (await supabase
     .from("cart")

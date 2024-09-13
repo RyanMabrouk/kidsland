@@ -9,8 +9,7 @@ export default function ClientAdress({
   open: "clientAdress" | "paymentOptions" | "none";
   setOpen: Dispatch<SetStateAction<"clientAdress" | "paymentOptions" | "none">>;
 }) {
-  const { data: a } = useOrder();
-  const order = a?.data;
+  const { data: order } = useOrder();
   const isOpen = o === "clientAdress";
   const open = () => setOpen("clientAdress");
   const close = () => setOpen("none");

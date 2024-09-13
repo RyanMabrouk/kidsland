@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/useToast";
 import TextInput from "./TextInput";
 import { useOrder } from "@/hooks/data/orders/useOrder";
 import { updateClientAdress } from "@/api/updateClientAdress";
+import { getOrder } from "@/api/getOrder";
 
 export default function ClientAdressForm({
   close,
@@ -15,8 +16,7 @@ export default function ClientAdressForm({
   close: () => void;
   next: () => void;
 }) {
-  const { data: a } = useOrder();
-  const order = a?.data;
+  const { data: order } = useOrder();
   const [state, setState] = useState<State | undefined>(
     states.find((e) => e.state === order?.region),
   );
@@ -27,18 +27,7 @@ export default function ClientAdressForm({
   }, [order, setState, states]);
   const queryClient = useQueryClient();
   const { toast } = useToast();
-  const { mutate: add } = useMutation({
-    mutationFn: addClientAdress,
-    onSuccess: () => {
-      toast.success("Adresse insérée avec succès");
-      queryClient.invalidateQueries({ queryKey: ["order"] });
-      next();
-    },
-    onError: (e: Error) => {
-      toast.error(e.message);
-    },
-  });
-  const { mutate: update } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: updateClientAdress,
     onSuccess: () => {
       toast.success("Adresse modifiée avec succès");
@@ -52,10 +41,7 @@ export default function ClientAdressForm({
   });
 
   return (
-    <form
-      action={order === undefined ? add : update}
-      className="flex flex-col gap-5 p-5"
-    >
+    <form action={mutate} className="flex flex-col gap-5 p-5">
       <div className="font-bold">Modifier l'adresse</div>
       <div className="grid grid-cols-12 gap-6">
         <div className="col-span-6">

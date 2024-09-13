@@ -10,7 +10,7 @@ import { getOrder } from "./getOrder";
 
 export async function updateClientAdress(formData: FormData) {
   const cart = await getCart();
-  const { data: order } = await getOrder();
+  const order = await getOrder();
   const user = (await getUser()).data?.user;
   const user_id = user?.id;
   const wholesale_price =
@@ -21,21 +21,12 @@ export async function updateClientAdress(formData: FormData) {
       0,
     ) ?? 0;
 
-  const {
-    firstName,
-    lastName,
-    telephone,
-    telephone2, // TODO: the field doesn't exist in the database
-    adress,
-    addInfo,
-    state,
-    city,
-  } = Object.fromEntries(formData);
+  const { firstName, lastName, telephone, adress, addInfo, state, city } =
+    Object.fromEntries(formData);
   const newOrder: TablesInsert<"orders"> = {
     total_price,
     user_id,
-    status: "pending", // TODO
-    username: "", // TODO
+    status: "created", // TODO
     wholesale_price,
     first_name: firstName as string,
     last_name: lastName as string,

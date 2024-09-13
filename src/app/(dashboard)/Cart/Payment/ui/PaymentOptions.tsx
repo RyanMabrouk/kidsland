@@ -9,8 +9,7 @@ export default function PaymentOptions({
   open: "clientAdress" | "paymentOptions" | "none";
   setOpen: Dispatch<SetStateAction<"clientAdress" | "paymentOptions" | "none">>;
 }) {
-  const { data: a } = useOrder();
-  const order = a?.data;
+  const { data: order } = useOrder();
   const isOpen = o === "paymentOptions";
   const open = () => setOpen("paymentOptions");
   const close = () => setOpen("none");

@@ -6,8 +6,7 @@ import React, { useState } from "react";
 
 export default function PaymentOptionsForm({ close }: { close: () => void }) {
   const queryClient = useQueryClient();
-  const { data: a } = useOrder();
-  const order = a?.data;
+  const { data: order } = useOrder();
   const { toast } = useToast();
   const [selectedOption, setSelectedOption] = useState<
     "cash" | "online" | undefined
