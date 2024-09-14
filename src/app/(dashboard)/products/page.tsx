@@ -48,6 +48,9 @@ function Page() {
     limit,
     sort,
     filters,
+    match: filters.category_id
+      ? { category_id: filters.category_id }
+      : undefined,
   });
   const queryClient = useQueryClient();
   useEffect(() => {
@@ -58,10 +61,13 @@ function Page() {
           limit,
           sort,
           filters,
+          match: filters.category_id
+            ? { category_id: filters.category_id }
+            : undefined,
         }),
       );
     }
-  }, [page, products?.meta?.has_next_page, sort, filters]);
+  }, [page, products?.meta?.has_next_page, sort, filters, queryClient]);
   return (
     <div className="flex flex-col">
       <Image

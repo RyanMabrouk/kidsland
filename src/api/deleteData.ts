@@ -20,7 +20,6 @@ export default async function deleteData<ITableName extends dbTableType>({
   if (match) {
     query = query.match(match);
   }
-  Object.keys;
   if (matchInArray) {
     query = query.in(matchInArray.column as string, matchInArray.in);
   }

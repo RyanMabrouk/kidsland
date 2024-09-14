@@ -3,9 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import { productsQuery, ProductsQueryType } from "./productsQuery";
 import useCart from "../cart/useCart";
 import { formatProduct } from "./formatProducts";
+import useWishlist from "../wishlist/useWishlist";
 
 export default function useProducts(args: ProductsQueryType) {
   const { data: cart } = useCart();
+  const { data: wishlist } = useWishlist();
   const query = useQuery(
     productsQuery({
       ...args,
@@ -17,7 +19,8 @@ export default function useProducts(args: ProductsQueryType) {
       ...query.data,
       data: query.data?.data?.map((e) =>
         formatProduct(e, {
-          cartProducts: cart?.data,
+          cart: cart?.data,
+          wishlist: wishlist?.data,
         }),
       ),
     },

@@ -18,7 +18,7 @@ export function OffersContainer() {
     },
   ];
   return (
-    <div className="flex flex-row items-center justify-center gap-10">
+    <div className="flex flex-row items-center justify-center gap-10 max-[1000px]:flex-col max-[1000px]:gap-2">
       {offers.map((e, i) => (
         <Offer key={i} {...e} />
       ))}

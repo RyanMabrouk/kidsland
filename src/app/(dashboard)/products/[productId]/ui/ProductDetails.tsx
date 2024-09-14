@@ -3,6 +3,7 @@ import AddToCartBtn from "@/app/(dashboard)/home/ui/ProductsSection/AddToCartBtn
 import useProductById from "@/hooks/data/products/useProductById";
 import Image from "next/image";
 import { useParams } from "next/navigation";
+import { WishlistHart } from "@/app/(dashboard)/home/ui/ProductsSection/WishListHart";
 
 export default function ProductDetails() {
   const { productId } = useParams();
@@ -24,9 +25,16 @@ export default function ProductDetails() {
             </div>
           </div>
           <div className="self-center px-4 md:flex-1">
-            <h2 className="mb-2 text-3xl font-bold text-gray-800 dark:text-white">
-              {product?.title}
-            </h2>
+            <div className="relative flex flex-row gap-2">
+              <h2 className="mb-2 text-3xl font-bold text-gray-800 dark:text-white">
+                {product?.title}
+              </h2>
+              <WishlistHart
+                variant="relative"
+                product_id={product?.id}
+                isInWishlist={product?.isInWishlist}
+              />
+            </div>
             <p className="mb-4 text-sm text-gray-600 dark:text-gray-300">
               {product?.subtitle}
             </p>
