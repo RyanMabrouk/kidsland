@@ -113,30 +113,51 @@ export type Database = {
       }
       orders: {
         Row: {
+          additional_info: string
+          address: string
+          city: string
           created_at: string
+          first_name: string
           id: number
+          last_name: string
+          payment_method: Database["public"]["Enums"]["payment_method_enum"]
+          phone_number: string
+          region: string
           status: Database["public"]["Enums"]["status_type_enum"]
           total_price: number
           user_id: string
-          username: string | null
           wholesale_price: number
         }
         Insert: {
+          additional_info?: string
+          address?: string
+          city?: string
           created_at?: string
+          first_name?: string
           id?: number
+          last_name?: string
+          payment_method?: Database["public"]["Enums"]["payment_method_enum"]
+          phone_number?: string
+          region?: string
           status?: Database["public"]["Enums"]["status_type_enum"]
           total_price: number
           user_id: string
-          username?: string | null
           wholesale_price?: number
         }
         Update: {
+          additional_info?: string
+          address?: string
+          city?: string
           created_at?: string
+          first_name?: string
           id?: number
+          last_name?: string
+          payment_method?: Database["public"]["Enums"]["payment_method_enum"]
+          phone_number?: string
+          region?: string
           status?: Database["public"]["Enums"]["status_type_enum"]
           total_price?: number
           user_id?: string
-          username?: string | null
           wholesale_price?: number
         }
         Relationships: [
@@ -204,22 +225,52 @@ export type Database = {
       }
       profiles: {
         Row: {
-          is_admin: boolean
+          id: string
+        }
+        Insert: {
+          id: string
+        }
+        Update: {
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wishlist: {
+        Row: {
+          created_at: string
+          product_id: string
           user_id: string
         }
         Insert: {
-          is_admin?: boolean
+          created_at?: string
+          product_id: string
           user_id: string
         }
         Update: {
-          is_admin?: boolean
+          created_at?: string
+          product_id?: string
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "profiles_user_id_fkey"
+            foreignKeyName: "wishlist_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wishlist_user_id_fkey"
             columns: ["user_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
           },
@@ -234,7 +285,8 @@ export type Database = {
     }
     Enums: {
       discount_type_enum: "percentage" | "fixed"
-      status_type_enum: "pending" | "cancelled" | "fulfilled"
+      payment_method_enum: "cash" | "online"
+      status_type_enum: "pending" | "cancelled" | "fulfilled" | "created"
     }
     CompositeTypes: {
       [_ in never]: never

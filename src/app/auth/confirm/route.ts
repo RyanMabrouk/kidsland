@@ -3,6 +3,7 @@ import { type NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
+
 // Creating a handler to a GET request to route /auth/confirm
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
