@@ -17,7 +17,7 @@ const forgotPasswordSchema = z.object({
 export default function ForgotPasswordForm() {
   const [errors, setErrors] = React.useState<string[]>([]);
   const [successMessage, setSuccessMessage] = React.useState<string>("");
-  const router = useRouter();
+
   const { mutate, isPending } = useMutation({
     mutationFn: async (formData: FormData) => {
       const email = formData.get("email") as string;
