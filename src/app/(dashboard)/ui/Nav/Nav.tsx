@@ -74,6 +74,7 @@ function PhoneMenu() {
           <div className="mt-20 flex h-full flex-col items-center justify-start gap-6">
             {menuItems.map((item) => (
               <Link
+                key={item.title}
                 href={item.href}
                 className="cursor-pointer hover:font-semibold hover:text-color1"
                 onClick={() => {
