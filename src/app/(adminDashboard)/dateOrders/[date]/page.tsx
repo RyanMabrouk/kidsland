@@ -7,7 +7,7 @@ import {
   useOrdersPagination,
 } from "./context/useOrdersPagination";
 import Orders from "./ui/orders";
-import AddOrder from "./ui/addOrder";
+import AddOrder from "./ui/(addorder)/addOrder";
 
 function ProductListPage() {
   const { date } = useParams();

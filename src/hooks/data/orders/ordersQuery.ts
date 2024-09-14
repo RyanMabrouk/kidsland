@@ -1,17 +1,23 @@
 import getOrders from "@/api/Orders/getOrders";
 import { infinityPagination } from "@/helpers/infinityPagination";
 import { Enums, Tables } from "@/types/database.types";
+import Column from "antd/es/table/Column";
 
 const ordersQuery = (args: {
   pagination?:{
     limit: number;
     page: number;
   }
+  columns?: (keyof Tables<"orders">)[];
   status?: Enums<"status_type_enum">;
   search?: { column: keyof Tables<"orders">; value: string };
   sort?: {
     ascending: boolean;
     column: keyof Tables<"orders">;
+  };
+  date?: {
+    from: string;
+    to: string;
   };
 
   filter?: {
@@ -33,20 +39,12 @@ const ordersQuery = (args: {
   queryKey: [
     "orders",
     {
-      page: args.pagination?.page,
-      limit: args.pagination?.limit,
-      search: args.search,
-      sort: args.sort,
-      filter: args.filter,
+     ...args,
     },
   ],
   queryFn: async () => {
     const result = await getOrders({
-      pagination: args.pagination,
-      search: args.search,
-      sort: args.sort,
-      filter: args.filter,
-      status : args.status
+      ...args
     });
     const data = Array.isArray(result.data) ? result.data : [];
     return infinityPagination(data, {
@@ -55,9 +53,7 @@ const ordersQuery = (args: {
       page: args.pagination?.page,
       
     });
-  },
-  keepPreviousData: true,
-  staleTime: 5000,
+  }
 });
 
 export { ordersQuery };

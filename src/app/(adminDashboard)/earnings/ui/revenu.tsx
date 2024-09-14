@@ -42,7 +42,7 @@ export default function Revenu() {
 
     data.forEach((purchase) => {
       const dateKey = format(new Date(purchase.created_at), 'yyyy-MM-dd');
-      const income = purchase.price_before_discount - purchase.discount;
+      const income = purchase.total_price - purchase.wholesale_price;
       if (grouped[dateKey]) {
         grouped[dateKey] += income;
       } else {
@@ -103,12 +103,12 @@ export default function Revenu() {
     return '';
   };
 return (
-    <div className='flex flex-col gap-4 p-4'>
+    <div className='flex flex-col gap-4 '>
       <div className='flex flex-col sm:px-7 sm:flex-row justify-between items-center gap-4'>
         <div className='text-slate-700 text-lg md:text-xl font-semibold'>Revenue</div>
         <SelectGeneric
           defaultValue={{ value: 'week', label: 'Last Week' }}
-          setValueInParent={setTime}
+          onChange={(e) => setTime(e)}
           className="placeholder:text-sm placeholder:text-gray-300"
           options={options}
         />

@@ -46,7 +46,7 @@ export default function Day({ date, groupedOrders }: { groupedOrders: any; date:
         <h2>{date}</h2>
         <h2>{groupedOrders[date].length} Orders</h2>
         <div className="flex justify-between">
-          <h2>{totalIncome !== null ? `$${totalIncome}` : 'Loading...'}</h2>
+          <h2>{totalIncome !== null ? `${totalIncome}dt` : 'Loading...'}</h2>
           <div>{statusIcon}</div>
         </div>
       </div>

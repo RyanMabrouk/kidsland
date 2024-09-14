@@ -2,6 +2,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Revenu from './ui/revenu';
+import LastYearIncome from './ui/lastYearIncome';
 
 export default function Page() {
   return (
@@ -23,7 +24,9 @@ export default function Page() {
           width={15}
         />
       </div>
+      <LastYearIncome />
       <Revenu />
+
     </div>
   );
 }

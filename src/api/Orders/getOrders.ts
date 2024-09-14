@@ -5,7 +5,11 @@ import { Database, Enums, Tables } from "@/types/database.types";
 
 export type getOrdersParams = {
   match?: Partial<Tables<"orders">>;
-  column?: string;
+  date?: {
+    from: string;
+    to: string;
+  };
+  columns?: (keyof Tables<"orders">)[];
   status?: Enums<"status_type_enum">;
   count?: {
     head?: boolean;
@@ -38,9 +42,10 @@ export type getOrdersParams = {
 };
 
 export default async function getOrders({
+  date,
   status,
   match,
-  column = "*",
+  columns,
   count = {},
   sort,
   pagination,
@@ -48,10 +53,15 @@ export default async function getOrders({
   filter,
 }: getOrdersParams) {
   const supabase = createServerComponentClient<Database>({ cookies });
-  
+
   let query = supabase
     .from("orders")
-    .select(column, { count: count.count || undefined });
+    .select(columns?.join(",") ??  "*", count );
+  
+    if (date) {
+      query = query.gte("created_at", date.from).lte("created_at", date.to);
+    }
+    
 
   if (filter) {
     query = query.filter(filter.column, filter.operator || "eq", filter.value);
@@ -60,8 +70,6 @@ export default async function getOrders({
   if (search) {
     query = query.ilike(search.column, `%${search.value}%`);
   }
-
-
 
   if (status) {
     query.eq("status", status);
@@ -87,7 +95,7 @@ export default async function getOrders({
 
   const { data, error, count: items_count } = await query;
   return {
-    data: data as unknown as Tables<"orders"> | null,
+    data: data as unknown as Tables<"orders">[] | null,  // Ensure it returns an array
     error,
     count: items_count,
   };

@@ -4,12 +4,19 @@ import { Enums, Tables } from "@/types/database.types";
 import { ordersQuery } from "./ordersQuery";
 
 export default function useOrders({
+  columns,
+  date,
   status,
   pagination,
   sort,
   search,
   filter,
 }: {
+  columns?: (keyof Tables<"orders">)[];
+  date?: {
+    from: string;
+    to: string;
+  };
   status?: Enums<"status_type_enum">;
   pagination?:{
     limit: number;
@@ -37,5 +44,5 @@ export default function useOrders({
       | "not_in";
   };
 }) {
-  return useQuery(ordersQuery({status, pagination, sort, search,filter }));
+  return useQuery(ordersQuery({status, pagination, sort, search,filter ,date ,columns}));
 }

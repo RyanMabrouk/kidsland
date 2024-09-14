@@ -45,7 +45,7 @@ export default function Product({
         />
         <Link href={`/editProduct/${id}`}>
           <button
-            className="absolute bottom-[5%] left-[17.5%] sm:left-[22.5%] flex h-[2rem] sm:h-[2.5rem] w-[9rem] sm:w-[10rem] flex-row items-center justify-center gap-2 rounded-xl border border-slate-700 bg-white px-2 sm:px-3 py-1 sm:py-2 text-center text-xs sm:text-sm font-semibold capitalize text-slate-700 opacity-0 transition-all ease-linear hover:bg-slate-700 hover:text-white group-hover:opacity-100"
+            className="absolute bottom-[5%] left-[17.5%] z-0 flex h-[2.5rem] w-[10rem] flex-row items-center justify-center  rounded-xl-center gap-2 rounded-xl border border-slate-700 bg-white px-2 sm:px-3 py-1 sm:py-2 text-center text-xs sm:text-sm font-semibold capitalize text-slate-700 opacity-0 transition-all ease-linear hover:bg-slate-700 hover:text-white group-hover:opacity-100"
           >
             <span>Edit Article</span>
             <FaPen className="size-[1rem]" />
