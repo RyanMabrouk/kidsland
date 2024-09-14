@@ -63,7 +63,7 @@ export default function SearchBar() {
   }));
   return (
     <>
-      <Search className="relative">
+      <Search className="relative max-[400px]:w-[50%]">
         <SearchIconWrapper>
           <IoSearchSharp className="z-[70] h-5 w-5 text-slate-500 group-focus-within:text-slate-900" />
         </SearchIconWrapper>
@@ -75,7 +75,7 @@ export default function SearchBar() {
           onChange={(e) => setValue(e.target.value)}
         />
         {value && (
-          <div className="absolute -right-[12.5%] top-[110%] z-[70] flex h-fit w-[125%] flex-col rounded-b-lg rounded-t-sm bg-white">
+          <div className="absolute -right-[12.5%] top-[110%] z-[70] flex h-fit w-[125%] max-[400px]:w-[200%] max-[400px]:-right-[70%] flex-col rounded-b-lg rounded-t-sm bg-white">
             {products.data?.map((product) => (
               <Link
                 href={`/products/${product?.id}`}

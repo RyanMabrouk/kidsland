@@ -12,8 +12,8 @@ export default function HomeSwiper() {
             src={`/home/banners/banner-${i + 1}.jpg`}
             alt=""
             width={1920}
-            height={500}
-            className="h-fit w-full"
+            height={1000}
+            className="w-full object-cover h-[50vh]"
           />
         ))}
         initialSlide={0}

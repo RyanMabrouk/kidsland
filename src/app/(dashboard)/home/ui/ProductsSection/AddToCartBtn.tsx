@@ -19,17 +19,17 @@ export default function AddToCartBtn({
       {isInCart ? (
         <div
           className={cn(
-            "absolute bottom-[5%] left-[17.5%] z-0 flex h-[2.5rem] w-[10rem] flex-row items-center justify-center gap-2 rounded-xl border border-green-700 bg-white px-3 py-2 text-center text-sm font-semibold capitalize text-green-700 opacity-0 transition-all ease-linear hover:bg-green-700 hover:text-white group-hover:opacity-100",
+            "absolute bottom-[5%] left-[17.5%] max-[540px]:text-sm  z-0 flex h-[2.5rem] w-[10rem] max-[540px]:left-[10%] max-[540px]:w-[8rem] flex-row items-center justify-center gap-2 rounded-xl border border-green-700 bg-white px-3 py-2 text-center text-sm font-semibold capitalize text-green-700 opacity-0 transition-all ease-linear hover:bg-green-700 hover:text-white group-hover:opacity-100",
             className,
           )}
         >
-          <span>added to cart</span>
+          <span>added</span>
           <FaCheckCircle className="size-[1rem]" />
         </div>
       ) : (
         <button
           className={cn(
-            `absolute bottom-[5%] left-[17.5%] z-0 flex h-[2.5rem] w-[10rem] flex-row items-center justify-center gap-2 rounded-xl border border-slate-700 bg-white px-3 py-2 text-center text-sm font-semibold capitalize text-slate-700 opacity-0 transition-all ease-linear hover:bg-slate-700 hover:text-white group-hover:opacity-100`,
+            `absolute bottom-[5%] left-[17.5%] z-0 flex h-[2.5rem] w-[10rem] max-[540px]:left-[10%] max-[540px]:w-[8rem] flex-row items-center justify-center gap-2 rounded-xl border border-slate-700 bg-white px-3 py-2 text-center text-sm font-semibold capitalize text-slate-700 opacity-0 transition-all ease-linear hover:bg-slate-700 hover:text-white group-hover:opacity-100`,
             className,
           )}
           disabled={isPending}

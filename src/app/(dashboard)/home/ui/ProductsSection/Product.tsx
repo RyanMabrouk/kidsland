@@ -26,7 +26,7 @@ export default function Product({
   isInWishlist,
 }: Partial<ProductProps>) {
   return (
-    <div className="relative flex h-[25rem] w-[15rem] flex-col items-center justify-center gap-4 overflow-hidden">
+    <div className="relative flex h-[25rem] w-[15rem] flex-col items-center justify-center gap-4 overflow-hidden max-[540px]:h-[17.5rem] max-[540px]:w-[10rem]">
       <div className="group h-full w-full overflow-hidden rounded-md border transition-all ease-linear hover:backdrop-brightness-75">
         {!!discount && (
           <Image
@@ -49,11 +49,15 @@ export default function Product({
         <AddToCartBtn product_id={id ?? ""} isInCart={isInCart} />
       </div>
       <div className="fle z-20 w-full flex-col items-center justify-center gap-6 text-lg">
-        <WishlistHart product_id={id} isInWishlist={isInWishlist}  variant="absolute"/>
+        <WishlistHart
+          product_id={id}
+          isInWishlist={isInWishlist}
+          variant="absolute"
+        />
         <TooltipGeneric tip={title ?? ""}>
           <span className="z-0 mr-9 line-clamp-1 text-left">{title}</span>
         </TooltipGeneric>
-        <div className="flex flex-row items-center justify-start gap-4">
+        <div className="flex flex-row items-center justify-start gap-4 max-[540px]:text-sm">
           {!!discount && (
             <span className="text-color8">{price_after_discount} TND</span>
           )}

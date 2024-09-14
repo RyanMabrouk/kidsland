@@ -10,14 +10,14 @@ export type OfferProps = {
 export function Offer({ name, description, image_url, variant }: OfferProps) {
   return (
     <div className="group mt-10 flex cursor-pointer flex-row items-center overflow-hidden">
-      <div className="relative h-[20rem] w-[35rem]">
+      <div className="relative h-[20rem] w-[35rem] max-[1300px]:w-full max-[1300px]:h-[15rem]">
         <div
-          className={`absolute left-5 top-5 z-50 flex flex-col items-start justify-center gap-4 ${
+          className={`absolute px-5 top-5 z-50 flex flex-col items-start justify-center gap-3  ${
             variant === "white" ? "text-white" : "text-slate-600"
           }`}
         >
           <span className="text-3xl font-semibold">{name}</span>
-          <span className="mb-6 max-w-[50%] font-normal">{description}</span>
+          <span className="min-[440px]:max-w-[50%] font-normal min-[1300px]:mb-6 ">{description}</span>
           <Link
             href="#"
             className={`rounded-lg border bg-transparent px-3 py-2 text-center font-semibold transition-all ease-linear ${
