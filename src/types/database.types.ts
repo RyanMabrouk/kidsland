@@ -288,8 +288,7 @@ export type Database = {
     }
     Enums: {
       discount_type_enum: "percentage" | "fixed"
-      payment_method_enum: "cash" | "online"
-      status_type_enum: "pending" | "cancelled" | "fulfilled" | "created"
+      status_type_enum: "pending" | "cancelled" | "fulfilled"
     }
     CompositeTypes: {
       [_ in never]: never

@@ -12,4 +12,5 @@ export interface IProduct extends Tables<"products"> {
   available: boolean;
   price_after_discount: number;
   isInCart: boolean;
+  isInWishlist: boolean;
 }

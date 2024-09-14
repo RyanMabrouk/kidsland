@@ -1,9 +1,10 @@
 import Image from "next/image";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
+import { menuItems } from "../home/constants/menuItems";
+import Link from "next/link";
 
 export default function Footer() {
-  const categories = ["Toys", "Dolls", "Action Figures", "Board Games"];
   const kidsLandLinks = ["About Us", "Contact Us", "Privacy Policy"];
   return (
     <footer className="mt-[5rem] flex flex-row items-start justify-center gap-[3rem] bg-gray-100 px-[2rem] pb-12 pt-10">
@@ -16,14 +17,17 @@ export default function Footer() {
       />
       <div className="flex flex-col items-center gap-2">
         <div className="mb-2 text-xl font-bold">Categories</div>
-        {categories.map((category, i) => (
-          <div
-            className="cursor-pointer leading-6 transition-all ease-linear hover:font-medium hover:text-slate-500 hover:underline"
-            key={i}
-          >
-            {category}
-          </div>
-        ))}
+        {menuItems
+          .find((e) => e.title === "Toys")
+          ?.subItems?.map((category, i) => (
+            <Link
+              href={`/products?${category.filter}`}
+              className="cursor-pointer leading-6 transition-all ease-linear hover:font-medium hover:text-slate-500 hover:underline"
+              key={i}
+            >
+              {category.title}
+            </Link>
+          ))}
       </div>
       <div className="flex flex-col items-center gap-2">
         <div className="mb-2 text-xl font-bold">KidsLand</div>
@@ -36,7 +40,7 @@ export default function Footer() {
           </div>
         ))}
       </div>
-      <div className="flex -mr-[5rem] flex-col items-center justify-center gap-8">
+      <div className="-mr-[5rem] flex flex-col items-center justify-center gap-8">
         <div className="flex flex-col items-center justify-center gap-3">
           <div className="text-xl font-bold">Follow Us</div>
           <div className="flex flex-row gap-2 [&>*]:size-[1.5rem] [&>*]:cursor-pointer">

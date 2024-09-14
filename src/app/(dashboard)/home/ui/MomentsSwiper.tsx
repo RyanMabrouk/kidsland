@@ -51,19 +51,32 @@ export default function MomentsSwiper() {
   ];
   return (
     <div className="flex w-full flex-col gap-6 bg-gray-100 px-4 pb-10 pt-6 text-center">
-      <span className="text-[2rem] font-semibold text-slate-800">
+      <span className="text-[2rem] font-semibold text-slate-800 max-[830px]:text-[1.5rem] max-[530px]:text-[1rem]">
         Every moment is important. Choose your own!
       </span>
-      <div className="mx-auto max-w-[75rem]">
+      <div className="mx-auto max-w-[75vw] max-[500px]:max-w-[90vw]">
         <CustomSwiper
           slidesPerView={4}
-          spaceBetween={15}
+          spaceBetween={25}
+          breakpoints={{
+            0: {
+              slidesPerView: 1,
+              spaceBetween: 10,
+            },
+            600: {
+              slidesPerView: 2,
+              spaceBetween: 20,
+            },
+            1200: {
+              slidesPerView: 4,
+            },
+          }}
           loop
           autoplay
           slides={moments.map((e, i) => (
             <div
               key={i}
-              className={`flex h-[8rem] max-w-[18rem] flex-row items-center justify-center gap-4 rounded-lg ${e.bg} p-6`}
+              className={`flex h-[8rem] max-[600px]:h-[6rem] flex-row items-center justify-center gap-4 rounded-lg ${e.bg} p-6`}
             >
               <span className="text-lg font-bold text-white">{e.title}</span>
               {e.icon}
