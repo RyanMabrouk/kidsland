@@ -11,15 +11,7 @@ const changePasswordSchema = z
   .object({
     newPassword: z
       .string()
-      .min(6, "New password must be at least 6 characters")
-      .refine(
-        (val) => /[A-Z]/.test(val),
-        "Password must contain at least one uppercase letter",
-      )
-      .refine(
-        (val) => /[0-9]/.test(val),
-        "Password must contain at least one number",
-      ),
+      .min(6, "New password must be at least 6 characters"),
     confirmPassword: z.string(),
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
