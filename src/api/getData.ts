@@ -1,29 +1,10 @@
 "use server";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { Database } from "@/types/database.types";
-import { PostgrestError } from "@supabase/supabase-js";
-import { tableType } from "@/types/database.tables.types";
+import { Database, Tables } from "@/types/database.types";
+import { dbTableType } from "@/types/database.tables.types";
 import getSession from "./getSession";
-type getDataParams = {
-  tableName: tableType;
-  user?: boolean;
-  match?: Record<string, unknown>;
-  column?: string;
-  count?: {
-    head?: boolean;
-    count?: "exact" | "planned" | "estimated";
-  };
-  sort?: {
-    column: string;
-    ascending: boolean;
-  };
-  pagination?: {
-    limit: number;
-    page: number;
-  };
-};
-export default async function getData<T = any>({
+export default async function getData<ITableName extends dbTableType>({
   tableName,
   user,
   match,
@@ -31,12 +12,27 @@ export default async function getData<T = any>({
   count = {},
   sort,
   pagination,
-}: getDataParams): Promise<{
-  data: T[] | null;
-  error: PostgrestError | null;
-  count: number | null;
-}> {
-  const supabase = createServerComponentClient<Database>({ cookies });
+  search,
+}: {
+  tableName: ITableName;
+  user?: boolean;
+  match?: Partial<Tables<ITableName>>;
+  column?: string;
+  count?: {
+    head?: boolean;
+    count?: "exact" | "planned" | "estimated";
+  };
+  search?: { column: keyof Tables<ITableName>; value: string };
+  sort?: {
+    column: keyof Tables<ITableName>;
+    ascending: boolean;
+  };
+  pagination?: {
+    limit: number;
+    page: number;
+  };
+}) {
+  const supabase = createServerActionClient<Database>({ cookies });
   let query = supabase.from(tableName).select(column, count);
   if (match) {
     query = query.match(match);
@@ -59,7 +55,10 @@ export default async function getData<T = any>({
     query = query.eq("user_id", user_id);
   }
   if (sort) {
-    query = query.order(sort.column, { ascending: sort.ascending });
+    query = query.order(sort.column as string, { ascending: sort.ascending });
+  }
+  if (search) {
+    query = query.ilike(search.column as string, `%${search.value}%`);
   }
   if (pagination) {
     const start =
@@ -70,7 +69,11 @@ export default async function getData<T = any>({
         : start + pagination.limit - 1;
     query = query.range(start, end);
   }
+
   const { data, error, count: items_count } = await query;
-  // @ts-ignore BUG : possible bug in supabase type GenericStringError[] in data is never returned
-  return { data: data, error: error, count: items_count };
+  return {
+    data: data as Tables<ITableName>[] | null,
+    error,
+    count: items_count,
+  };
 }

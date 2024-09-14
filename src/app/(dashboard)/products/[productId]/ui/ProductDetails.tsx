@@ -1,7 +1,9 @@
 "use client";
+import AddToCartBtn from "@/app/(dashboard)/home/ui/ProductsSection/AddToCartBtn";
 import useProductById from "@/hooks/data/products/useProductById";
 import Image from "next/image";
 import { useParams } from "next/navigation";
+import { WishlistHart } from "@/app/(dashboard)/home/ui/ProductsSection/WishListHart";
 
 export default function ProductDetails() {
   const { productId } = useParams();
@@ -23,9 +25,16 @@ export default function ProductDetails() {
             </div>
           </div>
           <div className="self-center px-4 md:flex-1">
-            <h2 className="mb-2 text-3xl font-bold text-gray-800 dark:text-white">
-              {product?.title}
-            </h2>
+            <div className="relative flex flex-row gap-2">
+              <h2 className="mb-2 text-3xl font-bold text-gray-800 dark:text-white">
+                {product?.title}
+              </h2>
+              <WishlistHart
+                variant="relative"
+                product_id={product?.id}
+                isInWishlist={product?.isInWishlist}
+              />
+            </div>
             <p className="mb-4 text-sm text-gray-600 dark:text-gray-300">
               {product?.subtitle}
             </p>
@@ -60,13 +69,13 @@ export default function ProductDetails() {
                 </span>
               </div>
             </div>
-            <div className="-mx-2 mb-4 flex">
-              <div className="w-[25%] px-2">
-                <button
-                  className={`flex h-[2.5rem] w-[10rem] items-center justify-center rounded-xl border border-slate-700 bg-slate-700 px-3 py-2 text-center text-sm font-semibold capitalize text-white transition-all ease-linear hover:bg-white hover:text-slate-700`}
-                >
-                  add to cart
-                </button>
+            <div className="mb-4 flex">
+              <div className="">
+                <AddToCartBtn
+                  product_id={product?.id ?? ""}
+                  isInCart={product?.isInCart}
+                  className="relative bottom-0 left-0 flex h-[2.5rem] w-[10rem] items-center justify-center opacity-100"
+                />
               </div>
             </div>
             <div>

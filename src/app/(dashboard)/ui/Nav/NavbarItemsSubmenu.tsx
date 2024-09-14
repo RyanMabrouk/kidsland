@@ -23,16 +23,18 @@ export function NavbarItemsSubmenu(item: MenuItemsType[number]) {
           onMouseLeave={() => setIsHovering(false)}
           id="account-menu"
           className={`${
-            item.subItems.length > 6 ? "grid grid-cols-2" : "flex flex-col"
+            item.subItems && item.subItems.length > 6
+              ? "grid grid-cols-2"
+              : "flex flex-col"
           } absolute left-0 top-[100%] z-50 w-max min-w-full bg-white py-0 shadow-lg`}
         >
-          {item.subItems.map((subItem) => {
+          {item.subItems?.map((subItem) => {
             const Icon = subItem.icon;
             return (
               <Link
                 key={subItem.title}
                 className="group flex cursor-pointer flex-row items-center gap-4 py-3 pl-3 pr-6 transition-all ease-linear hover:bg-color1 hover:text-white"
-                href={item.href + subItem.href}
+                href={`${item.href}?${subItem.filter}`}
               >
                 <span>
                   {<Icon className="size-6 group-hover:text-white" />}

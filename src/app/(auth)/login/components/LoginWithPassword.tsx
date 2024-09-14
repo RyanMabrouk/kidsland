@@ -96,7 +96,7 @@ export default function LoginWithPassword() {
 
       <div className="flex items-center justify-between gap-4 max-sm:flex-col">
         <PrimaryButton className="max-sm:w-full" loading={isPending}>
-          Sign Up
+          Sign In
         </PrimaryButton>
         <Link
           href="/forget_password"

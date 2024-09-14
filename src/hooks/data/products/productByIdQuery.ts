@@ -1,19 +1,13 @@
 import getData from "@/api/getData";
-import { Tables } from "@/types/database.types";
-import { formatProduct } from "./formatProducts";
-
-const productByIdQuery = (id: string) => ({
+const productByIdQuery = ({ id }: { id: string }) => ({
   queryKey: ["products", { id }],
   queryFn: async () => {
-    return await getData<Tables<"products">>({
+    return await getData<"products">({
       tableName: "products",
       match: { id },
-    }).then((res) => ({
-      ...res,
-      data: formatProduct(res.data?.[0]),
-    }));
+    });
   },
-  enabled: !!id,
+  enabled: id !== undefined && id !== null && id !== "undefined",
 });
 
 export { productByIdQuery };

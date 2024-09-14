@@ -1,31 +1,56 @@
-import getData from "@/api/getData";
+import { match } from "assert";
 import { infinityPagination } from "@/helpers/infinityPagination";
 import { Tables } from "@/types/database.types";
-import { formatProduct } from "./formatProducts";
+import getProducts from "@/actions/products/getProducts";
 
-const productsQuery = ({ page, limit }: { page: number; limit: number }) => ({
+export interface ProductsQueryType {
+  page: number;
+  limit: number;
+  search?: { column: keyof Tables<"products">; value: string };
+  sort?: {
+    ascending: boolean;
+    column: keyof Tables<"products">;
+  };
+  filters?: {
+    minDiscount?: number;
+    priceRange?: number[];
+  };
+  match?:
+    | Partial<{ [k in keyof Tables<"products">]: Tables<"products">[k] }>
+    | undefined;
+}
+
+const productsQuery = (args: ProductsQueryType) => ({
   queryKey: [
     "products",
     {
-      page,
-      limit,
+      ...args,
     },
   ],
   queryFn: async () => {
     const [data, countData] = await Promise.all([
-      getData<Tables<"products">>({
+      getProducts({
         tableName: "products",
+        ...args,
+        match: args.match,
+        minDiscount: args.filters?.minDiscount,
+        priceRange: args.filters?.priceRange,
         pagination: {
-          page,
-          limit,
+          page: args.page,
+          limit: args.limit,
         },
-      }).then((res) => ({
-        ...res,
-        data: res.data?.map((e) => formatProduct(e)),
-      })),
-      getData<any>({
+      }),
+      getProducts({
         tableName: "products",
         count: { count: "exact", head: true },
+        ...args,
+        match: args.match,
+        minDiscount: args.filters?.minDiscount,
+        priceRange: args.filters?.priceRange,
+        pagination: {
+          page: args.page,
+          limit: args.limit,
+        },
       }).then((res) => ({
         count: res.count,
         error: res.error,
@@ -33,8 +58,8 @@ const productsQuery = ({ page, limit }: { page: number; limit: number }) => ({
     ]);
     return {
       ...infinityPagination(data?.data ?? [], {
-        page,
-        limit,
+        page: args.page,
+        limit: args.limit,
         total_count: countData.count ?? 0,
       }),
       error: data.error || countData.error,

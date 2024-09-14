@@ -6,24 +6,36 @@ import { useEffect, useState } from "react";
 import { Pagination } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
 import { productsQuery } from "@/hooks/data/products/productsQuery";
+import { useMemo } from "react";
+import CustomSwiper from "@/app/ui/Swiper";
+import { ProductSwiper } from "@/app/(dashboard)/products/[productId]/ui/ProductSwiper";
 
 export function ProductsSection() {
   const [page, setPage] = useState(1);
   const limit = 8;
-  const { data: products } = useProducts({ page, limit });
+
+  const sort = useMemo(
+    () => ({
+      column: "discount" as const,
+      ascending: false,
+    }),
+    [],
+  );
+  const { data: products } = useProducts({ page, limit, sort });
   const queryClient = useQueryClient();
   useEffect(() => {
-    if (products?.meta.has_next_page) {
+    if (products?.meta?.has_next_page) {
       queryClient.prefetchQuery(
         productsQuery({
           page: page + 1,
           limit,
+          sort,
         }),
       );
     }
-  }, [page, products?.meta.has_next_page, queryClient]);
+  }, [page, products?.meta?.has_next_page, sort, queryClient]);
   return (
-    <div className="mt-20 flex flex-col gap-12">
+    <div className="mt-20 flex min-h-screen flex-col gap-12">
       <div className="flex flex-row items-center justify-center gap-3">
         <Image
           src="/home/icons/flower_yellow.png"
@@ -41,17 +53,16 @@ export function ProductsSection() {
           width={15}
         />
       </div>
-      <div className="mx-auto grid w-fit grid-cols-4 gap-x-10 gap-y-10">
+      <div className="mx-auto grid min-h-screen w-fit grid-cols-4 gap-x-10 gap-y-10 max-[1150px]:grid-cols-3 max-[830px]:grid-cols-2">
         {products?.data?.map((product, key) => (
           <Product key={key} {...product} />
         ))}
       </div>
       <Pagination
         className="flex w-full justify-center"
-        count={products?.meta.total_pages}
+        count={2}
         page={page}
-        boundaryCount={3}
-        siblingCount={3}
+        boundaryCount={1}
         onChange={(e, value) => setPage(value)}
       />
     </div>

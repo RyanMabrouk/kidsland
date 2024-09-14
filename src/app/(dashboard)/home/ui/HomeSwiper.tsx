@@ -1,5 +1,5 @@
 "use client";
-import CustomSwiper from "@/app/ui/swiper";
+import CustomSwiper from "@/app/ui/Swiper";
 import Image from "next/image";
 
 export default function HomeSwiper() {
@@ -12,8 +12,8 @@ export default function HomeSwiper() {
             src={`/home/banners/banner-${i + 1}.jpg`}
             alt=""
             width={1920}
-            height={500}
-            className="h-fit w-full"
+            height={1000}
+            className="w-full object-cover h-[50vh]"
           />
         ))}
         initialSlide={0}
@@ -21,7 +21,11 @@ export default function HomeSwiper() {
         pagination
         loop
         allowTouchMove
-        autoplay={{ delay: 3000, pauseOnMouseEnter: true }}
+        speed={1500}
+        autoplay={{
+          delay: 5000,
+          disableOnInteraction: true,
+        }}
       />
     </div>
   );
