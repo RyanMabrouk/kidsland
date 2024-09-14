@@ -1,12 +1,12 @@
 import { confirmOrder } from "@/api/Order/confirmOrder";
-import useCart from "@/hooks/data/products/useCart";
+import useCartPopulated from "@/hooks/data/cart/useCartPopulated";
 import { useToast } from "@/hooks/useToast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 
 export default function OrderResume() {
   const queryClient = useQueryClient();
-  const { data: cart } = useCart();
+  const { data: cart } = useCartPopulated();
   const { toast } = useToast();
   const { mutate } = useMutation({
     mutationFn: confirmOrder,
@@ -16,12 +16,11 @@ export default function OrderResume() {
     },
     onError: (error: Error) => toast.error(error.message),
   });
-  const total_articles = cart?.reduce((a, b) => a + b.quantity, 0);
-  const total_price = cart?.reduce(
-    (a, b) => a + b.quantity * b.product.price_after_discount,
+  const total_articles = cart?.data?.reduce((a, b) => a + b.quantity, 0);
+  const total_price = cart?.data?.reduce(
+    (a, b) => a + b.quantity * (b.product?.price_after_discount ?? 0),
     0,
   );
-
   return (
     <div className="fixed left-[70rem] flex w-[18rem] flex-col gap-2 rounded-xl bg-white p-4 shadow-2xl transition-all duration-300">
       <h1 className="p-2 text-center">Order Resume</h1>

@@ -4,7 +4,6 @@ import { cookies } from "next/headers";
 import getUser from "../getUser";
 import { Tables, TablesInsert } from "@/types/database.types";
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
-import getCart from "../Cart/getCart";
 
 export async function getOrder() {
   const supabase = createServerActionClient({ cookies });

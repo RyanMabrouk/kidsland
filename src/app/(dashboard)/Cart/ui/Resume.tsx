@@ -1,11 +1,11 @@
-import useCart from "@/hooks/data/products/useCart";
 import React from "react";
 import OrderButton from "./OrderButton";
+import useCartPopulated from "@/hooks/data/cart/useCartPopulated";
 
 export default function Resume() {
-  const { data: cart } = useCart();
-  const total = cart?.reduce(
-    (a, b) => a + b.product.price_after_discount * b.quantity,
+  const { data: cart } = useCartPopulated();
+  const total = cart?.data?.reduce(
+    (a, b) => a + (b.product?.price_after_discount ?? 0) * b.quantity,
     0,
   );
   return (

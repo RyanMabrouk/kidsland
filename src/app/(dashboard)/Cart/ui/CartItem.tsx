@@ -2,20 +2,24 @@ import handleDeleteCartItem from "@/api/Cart/handleDeleteCartItem";
 import handleProductQuantity from "@/api/Cart/handleProductQuantity";
 import { IProduct } from "@/types/database.tables.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import React, { useOptimistic, useState } from "react";
+import Image from "next/image";
+import React from "react";
 
 export default function CartItem({
   product,
   quantity,
   filter,
 }: {
-  product: IProduct;
+  product: IProduct | null;
   quantity: number;
   filter: string;
 }) {
   const queryClient = useQueryClient();
   const { mutate: change } = useMutation({
     mutationFn: async (quantity: number) => {
+      if (!product) {
+        throw new Error("Product not found");
+      }
       return await handleProductQuantity(product.id, quantity);
     },
     onSuccess: () => {
@@ -24,7 +28,12 @@ export default function CartItem({
     onError: (error) => alert(error.message),
   });
   const { mutate: Delete } = useMutation({
-    mutationFn: async () => await handleDeleteCartItem(product.id),
+    mutationFn: async () => {
+      if (!product) {
+        throw new Error("Product not found");
+      }
+      await handleDeleteCartItem(product.id);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
@@ -35,16 +44,18 @@ export default function CartItem({
     <div className="color w-[95%] border-2 border-solid transition-all duration-200 hover:w-[97%] hover:shadow-md">
       <div className="flex items-center justify-between">
         <div className="flex gap-2">
-          <img
-            src={product.image_url ?? ""}
+          <Image
+            src={product?.image_url ?? ""}
             alt="item_img"
             className="h-[7rem] w-[7rem] p-3"
+            width={500}
+            height={500}
           />
           <div className="pt-7">
-            <div className={`${product.available || "text-red-600"}`}>
-              {product.title}
+            <div className={`${product?.available ?? "text-red-600"}`}>
+              {product?.title}
             </div>
-            {product.available ? (
+            {product?.available ? (
               <div>Available</div>
             ) : (
               <div className="text-gray-500">Not Available</div>
@@ -53,9 +64,9 @@ export default function CartItem({
         </div>
         <div className="flex flex-col gap-2 p-3">
           <div className="text-right">
-            {Math.round(product.price_after_discount * 100) / 100} TND
+            {Math.round((product?.price_after_discount ?? 0) * 100) / 100} TND
           </div>
-          {product.discount > 0 && (
+          {product?.discount && product.discount > 0 && (
             <div className="flex items-center gap-2">
               <div className="text-gray-600 line-through">
                 {product.price} TND

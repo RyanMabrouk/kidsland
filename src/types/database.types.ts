@@ -225,14 +225,17 @@ export type Database = {
       }
       profiles: {
         Row: {
+          email: string
           is_admin: boolean
           user_id: string
         }
         Insert: {
+          email: string
           is_admin?: boolean
           user_id: string
         }
         Update: {
+          email?: string
           is_admin?: boolean
           user_id?: string
         }
@@ -288,7 +291,8 @@ export type Database = {
     }
     Enums: {
       discount_type_enum: "percentage" | "fixed"
-      status_type_enum: "pending" | "cancelled" | "fulfilled"
+      payment_method_enum: "cash" | "online"
+      status_type_enum: "pending" | "cancelled" | "fulfilled" | "created"
     }
     CompositeTypes: {
       [_ in never]: never

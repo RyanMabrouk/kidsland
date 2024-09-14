@@ -2,11 +2,11 @@ import { SelectGeneric } from "@/app/ui/SelectGeneric";
 import React, { useEffect, useState } from "react";
 import { State, states } from "../constants/statesAndCities";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addClientAdress } from "@/api/Order/handleClientAdress";
+import { addClientAddress } from "@/api/Order/handleClientAdress";
 import { useToast } from "@/hooks/useToast";
 import TextInput from "./TextInput";
 import { useOrder } from "@/hooks/data/orders/useOrder";
-import { updateClientAdress } from "@/api/Order/updateClientAdress";
+import { updateClientAddress } from "@/api/Order/updateClientAdress";
 import { getOrder } from "@/api/Order/getOrder";
 
 export default function ClientAdressForm({
@@ -28,7 +28,7 @@ export default function ClientAdressForm({
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const { mutate } = useMutation({
-    mutationFn: updateClientAdress,
+    mutationFn: updateClientAddress,
     onSuccess: () => {
       toast.success("Adresse modifiée avec succès");
       queryClient.invalidateQueries({ queryKey: ["order"] });

@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useCart from "./useCart";
 import deleteData from "@/api/deleteData";
 
-export function useClearCart(): ReturnType<typeof useMutation> {
+export function useClearCart() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { data: oldCart } = useCart();
