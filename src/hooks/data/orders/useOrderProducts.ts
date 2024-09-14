@@ -1,4 +1,4 @@
-import getOrderProducts from "@/api/getOrderProducts";
+import getOrderProducts from "@/api/Order products/getOrderProducts";
 import { Tables } from "@/types/database.types";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 

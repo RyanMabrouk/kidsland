@@ -1,21 +1,17 @@
 "use server";
 
 import { cookies } from "next/headers";
-import getUser from "./getUser";
 import { Tables } from "@/types/database.types";
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 
-export async function getOrders() {
-  const {
-    data: { user },
-  } = await getUser();
+export async function getOrderProducts(id: number) {
   const supabase = createServerActionClient({ cookies });
-  const { data, error } = await supabase
-    .from("orders")
+  const { data, error } = (await supabase
+    .from("order_products")
     .select("*")
-    .eq("user_id", user.id);
+    .eq("order_id", id)) as { data: Tables<"order_products">[]; error: any };
   if (error) throw new Error(error.message);
-  return { data } as { data: Tables<"orders">[] };
+  return { data };
 }
 
-export default getOrders;
+export default getOrderProducts;

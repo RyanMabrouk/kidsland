@@ -1,5 +1,5 @@
-import handleDeleteCartItem from "@/api/handleDeleteCartItem";
-import handleQuantity from "@/api/handleQuantity";
+import handleDeleteCartItem from "@/api/Cart/handleDeleteCartItem";
+import handleProductQuantity from "@/api/Cart/handleProductQuantity";
 import { IProduct } from "@/types/database.tables.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useOptimistic, useState } from "react";
@@ -16,7 +16,7 @@ export default function CartItem({
   const queryClient = useQueryClient();
   const { mutate: change } = useMutation({
     mutationFn: async (quantity: number) => {
-      return await handleQuantity(product.id, quantity);
+      return await handleProductQuantity(product.id, quantity);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
@@ -32,7 +32,7 @@ export default function CartItem({
   });
 
   return (
-    <div className="color w-[95%] border-2 border-solid transition-all duration-500 hover:w-[97%] hover:shadow-md">
+    <div className="color w-[95%] border-2 border-solid transition-all duration-200 hover:w-[97%] hover:shadow-md">
       <div className="flex items-center justify-between">
         <div className="flex gap-2">
           <img
@@ -52,7 +52,9 @@ export default function CartItem({
           </div>
         </div>
         <div className="flex flex-col gap-2 p-3">
-          <div className="text-right">{product.price_after_discount} TND</div>
+          <div className="text-right">
+            {Math.round(product.price_after_discount * 100) / 100} TND
+          </div>
           {product.discount > 0 && (
             <div className="flex items-center gap-2">
               <div className="text-gray-600 line-through">

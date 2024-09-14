@@ -1,6 +1,6 @@
 "use server";
 
-import getUser from "./getUser";
+import getUser from "../getUser";
 import { Tables } from "@/types/database.types";
 import { PostgrestError } from "@supabase/supabase-js";
 import { Cart, IProduct } from "@/types/database.tables.types";

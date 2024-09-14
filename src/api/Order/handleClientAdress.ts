@@ -1,16 +1,13 @@
 "use server";
 
 import { TablesInsert } from "@/types/database.types";
-import getUser from "./getUser";
+import getUser from "../getUser";
 import { postOrder } from "./postOrder";
 import useCart from "@/hooks/data/products/useCart";
-import getCart from "./getCart";
-import { updateOrder } from "./updateOrder";
-import { getOrder } from "./getOrder";
+import getCart from "../Cart/getCart";
 
-export async function updateClientAdress(formData: FormData) {
+export async function addClientAdress(formData: FormData) {
   const cart = await getCart();
-  const order = await getOrder();
   const user = (await getUser()).data?.user;
   const user_id = user?.id;
   const wholesale_price =
@@ -21,12 +18,20 @@ export async function updateClientAdress(formData: FormData) {
       0,
     ) ?? 0;
 
-  const { firstName, lastName, telephone, adress, addInfo, state, city } =
-    Object.fromEntries(formData);
+  const {
+    firstName,
+    lastName,
+    telephone,
+    telephone2, // TODO: the field doesn't exist in the database
+    adress,
+    addInfo,
+    state,
+    city,
+  } = Object.fromEntries(formData);
   const newOrder: TablesInsert<"orders"> = {
     total_price,
     user_id,
-    status: "created", // TODO
+    status: "pending", // TODO
     wholesale_price,
     first_name: firstName as string,
     last_name: lastName as string,
@@ -37,7 +42,7 @@ export async function updateClientAdress(formData: FormData) {
     city: city as string,
     payment_method: "cash", // TODO: not always it is like this, maybe it should be null
   };
-  const { data } = await updateOrder(newOrder, order.id);
+  const { data } = await postOrder(newOrder);
 
   return;
 }

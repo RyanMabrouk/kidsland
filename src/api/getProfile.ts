@@ -7,7 +7,6 @@ export default async function getProfile() {
   const {
     data: { session },
   } = await supabase.auth.getSession();
-  console.log(session?.user.id);
   const { data, error } = await supabase
     .from("profiles")
     .select()

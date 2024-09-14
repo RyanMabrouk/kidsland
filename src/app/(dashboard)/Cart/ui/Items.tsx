@@ -43,6 +43,8 @@ export default function Items({ filter, up }: { filter: string; up: boolean }) {
 
 function Container({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex w-full flex-col items-center gap-5">{children}</div>
+    <div className="flex w-full flex-col items-center gap-5 pb-4">
+      {children}
+    </div>
   );
 }

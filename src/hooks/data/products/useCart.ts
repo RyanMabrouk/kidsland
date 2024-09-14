@@ -1,4 +1,4 @@
-import getCart from "@/api/getCart";
+import getCart from "@/api/Cart/getCart";
 import { Cart } from "@/types/database.tables.types";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 

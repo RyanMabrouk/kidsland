@@ -3,11 +3,10 @@
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { getOrder } from "./getOrder";
-import getUser from "./getUser";
+import getUser from "../getUser";
 import { Tables } from "@/types/database.types";
 
 export async function confirmOrder() {
-  console.log("function called");
   const order = await getOrder();
   if (
     !order.first_name ||
@@ -41,7 +40,6 @@ export async function confirmOrder() {
   if (deleteError) {
     throw new Error(deleteError.message);
   }
-  console.log(deletedRows);
 
   return { data } as { data: Tables<"orders"> };
 }

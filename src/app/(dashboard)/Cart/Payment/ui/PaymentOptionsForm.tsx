@@ -1,4 +1,4 @@
-import { choosePaymentMethod } from "@/api/choosePaymentMethod";
+import { choosePaymentMethod } from "@/api/Order/choosePaymentMethod";
 import { useOrder } from "@/hooks/data/orders/useOrder";
 import { useToast } from "@/hooks/useToast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

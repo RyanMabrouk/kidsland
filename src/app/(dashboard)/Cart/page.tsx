@@ -1,4 +1,4 @@
-import getCart from "@/api/getCart";
+import getCart from "@/api/Cart/getCart";
 import Content from "./ui/Content";
 
 export default async function page() {

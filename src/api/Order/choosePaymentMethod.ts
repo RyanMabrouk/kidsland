@@ -8,8 +8,7 @@ import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 export async function choosePaymentMethod(formData: FormData) {
   const { paymentOption } = Object.fromEntries(formData);
   const supabase = createServerActionClient({ cookies });
-  console.log(paymentOption);
-  const { data: order } = await getOrder();
+  const order = await getOrder();
   const { data, error } = await supabase
     .from("orders")
     .update({ payment_method: paymentOption })

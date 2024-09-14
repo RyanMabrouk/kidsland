@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import getUser from "./getUser";
+import getUser from "../getUser";
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 
 async function handleDeleteCartItem(id: string) {

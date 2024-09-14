@@ -1,4 +1,4 @@
-import { confirmOrder } from "@/api/confirmOrder";
+import { confirmOrder } from "@/api/Order/confirmOrder";
 import useCart from "@/hooks/data/products/useCart";
 import { useToast } from "@/hooks/useToast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -28,7 +28,7 @@ export default function OrderResume() {
       <hr />
       <div className="flex justify-between p-2">
         <h1>Total Articles : ({total_articles})</h1>
-        <h1>{total_price} TND</h1>
+        <h1>{Math.round((total_price ?? 0) * 100) / 100} TND</h1>
       </div>
       <hr />
       <div className="flex justify-between p-2">
@@ -38,7 +38,9 @@ export default function OrderResume() {
       <hr />
       <div className="flex justify-between p-2">
         <h1>Total :</h1>
-        <h1 className="text-xl">{total_price ? total_price + 8 : 8} TND</h1>
+        <h1 className="text-xl">
+          {Math.round((total_price ?? 0) * 100) / 100 + 8} TND
+        </h1>
       </div>
       <hr />
       <button

@@ -2,12 +2,12 @@ import { SelectGeneric } from "@/app/ui/SelectGeneric";
 import React, { useEffect, useState } from "react";
 import { State, states } from "../constants/statesAndCities";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addClientAdress } from "@/api/handleClientAdress";
+import { addClientAdress } from "@/api/Order/handleClientAdress";
 import { useToast } from "@/hooks/useToast";
 import TextInput from "./TextInput";
 import { useOrder } from "@/hooks/data/orders/useOrder";
-import { updateClientAdress } from "@/api/updateClientAdress";
-import { getOrder } from "@/api/getOrder";
+import { updateClientAdress } from "@/api/Order/updateClientAdress";
+import { getOrder } from "@/api/Order/getOrder";
 
 export default function ClientAdressForm({
   close,

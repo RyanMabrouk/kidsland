@@ -14,7 +14,9 @@ export default function Resume() {
       <hr />
       <div className="flex w-full items-center justify-between p-3">
         <h1 className="text-xl">Subtotal</h1>
-        <div className="text-2xl">{total} TND</div>
+        <div className="text-2xl">
+          {Math.round(total ? total * 100 : 0) / 100} TND
+        </div>
       </div>
       <hr />
       <OrderButton total={total ?? 0} />

@@ -6,7 +6,7 @@ import PaymentOptions from "./PaymentOptions";
 import OrderResume from "./OrderResume";
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/useToast";
-import { getOrder } from "@/api/getOrder";
+import { getOrder } from "@/api/Order/getOrder";
 
 export default function Content() {
   const [open, setOpen] = useState<"clientAdress" | "paymentOptions" | "none">(

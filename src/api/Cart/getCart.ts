@@ -2,7 +2,7 @@
 
 import { Tables } from "@/types/database.types";
 import { PostgrestError } from "@supabase/supabase-js";
-import getUser from "./getUser";
+import getUser from "../getUser";
 import { Cart, IProduct } from "@/types/database.tables.types";
 import { cookies } from "next/headers";
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
