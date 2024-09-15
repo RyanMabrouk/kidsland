@@ -1,30 +1,24 @@
+"use server";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
-import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url);
-  const code = searchParams.get("code");
-  // if "next" is in param, use it as the redirect URL; default to /home if not provided
-  const next = searchParams.get("next") ?? "/home";
-
-  if (code) {
-    const supabase = createRouteHandlerClient({ cookies });
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (!error) {
-      const forwardedHost = request.headers.get("x-forwarded-host"); // original origin before load balancer
-      const isLocalEnv = process.env.NODE_ENV === "development";
-      if (isLocalEnv) {
-        // we can be sure that there is no load balancer in between, so no need to watch for X-Forwarded-Host
-        return NextResponse.redirect(`${origin}${next}`);
-      } else if (forwardedHost) {
-        return NextResponse.redirect(`https://${forwardedHost}${next}`);
-      } else {
-        return NextResponse.redirect(`${origin}${next}`);
-      }
+export async function GET(request: NextRequest) {
+  const requestUrl = new URL(request.url);
+  const code = requestUrl.searchParams.get("code");
+  try {
+    if (!code) {
+      const error = requestUrl.searchParams.get("error");
+      const error_description =
+        requestUrl.searchParams.get("error_description");
+      console.error(error + " description :" + error_description);
+      throw new Error("code is not defined");
     }
+    const supabase = createRouteHandlerClient({ cookies });
+    await supabase.auth.exchangeCodeForSession(code);
+    const redirectUrl = `${requestUrl.protocol}//${requestUrl.host}/home`;
+    return NextResponse.redirect(redirectUrl);
+  } catch (error) {
+    return NextResponse.redirect(`${requestUrl.origin}`);
   }
-
-  // return the user to an error page with instructions
-  return NextResponse.redirect(`${origin}/auth/auth-code-error`);
 }
