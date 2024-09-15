@@ -8,9 +8,11 @@ export default async function getSession() {
     error,
   } = await supabase.auth.getUser();
   return {
-    session: {
-      user,
-    },
+    session: user
+      ? {
+          user,
+        }
+      : null,
     error,
   };
 }
