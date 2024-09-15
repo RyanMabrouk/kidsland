@@ -23,6 +23,9 @@ const MyClass = plugin(function ({ addUtilities }: any) {
     ".scroll-snap-y": {
       scrollSnapType: "y",
     },
+    ".text-shadow": {
+      textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+    },
   });
 });
 const config: Config = {
@@ -130,6 +133,9 @@ const config: Config = {
         color6: "#2095f2",
         color7: "#8977d2",
         color8: "#ff6900 ",
+      },
+      boxShadow: {
+        text: "2px 2px 4px rgba(0, 0, 0, 0.5)",
       },
     },
   },

@@ -126,7 +126,6 @@ export type Database = {
           status: Database["public"]["Enums"]["status_type_enum"]
           total_price: number
           user_id: string
-          username: string | null
           wholesale_price: number
         }
         Insert: {
@@ -143,7 +142,6 @@ export type Database = {
           status?: Database["public"]["Enums"]["status_type_enum"]
           total_price: number
           user_id: string
-          username?: string | null
           wholesale_price?: number
         }
         Update: {
@@ -160,7 +158,6 @@ export type Database = {
           status?: Database["public"]["Enums"]["status_type_enum"]
           total_price?: number
           user_id?: string
-          username?: string | null
           wholesale_price?: number
         }
         Relationships: [
@@ -228,14 +225,17 @@ export type Database = {
       }
       profiles: {
         Row: {
+          email: string
           is_admin: boolean
           user_id: string
         }
         Insert: {
+          email: string
           is_admin?: boolean
           user_id: string
         }
         Update: {
+          email?: string
           is_admin?: boolean
           user_id?: string
         }
@@ -292,7 +292,7 @@ export type Database = {
     Enums: {
       discount_type_enum: "percentage" | "fixed"
       payment_method_enum: "cash" | "online"
-      status_type_enum: "pending" | "cancelled" | "fulfilled"
+      status_type_enum: "pending" | "cancelled" | "fulfilled" | "created"
     }
     CompositeTypes: {
       [_ in never]: never
