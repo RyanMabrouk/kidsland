@@ -44,3 +44,4 @@ firebase-debug.log*sendgrid.env
 sw.*
 workbox-*
 swe-worker-*
+supabase
