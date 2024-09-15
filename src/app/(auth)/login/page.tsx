@@ -1,10 +1,18 @@
-import React from "react";
 import getSession from "@/api/getSession";
+import LoginForm from "@/app/(auth)/login/components/LoginForm";
+import { createClient } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
-import Form from "./form";
+import React from "react";
 
 export default async function Page() {
   const { session } = await getSession();
+
   if (session) redirect("/home");
-  return <Form />;
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="z-10 w-full">
+        <LoginForm />
+      </div>
+    </div>
+  );
 }

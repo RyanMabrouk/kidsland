@@ -16,10 +16,6 @@ export async function GET(request: NextRequest) {
     }
     const supabase = createRouteHandlerClient({ cookies });
     await supabase.auth.exchangeCodeForSession(code);
-    const { error: signOutErr } = await supabase.auth.signOut();
-    if (signOutErr) {
-      throw new Error(signOutErr.message);
-    }
     const redirectUrl = `${requestUrl.protocol}//${requestUrl.host}/home`;
     return NextResponse.redirect(redirectUrl);
   } catch (error) {

@@ -1,6 +1,5 @@
 "use client";
 import { LiaBabyCarriageSolid } from "react-icons/lia";
-import Link from "next/link";
 import { PiBaby } from "react-icons/pi";
 import { GiBalloons, GiClothes, GiSpiralLollipop } from "react-icons/gi";
 import CustomSwiper from "@/app/ui/Swiper";

@@ -4,8 +4,13 @@ import { cookies } from "next/headers";
 export default async function getSession() {
   const supabase = createServerComponentClient({ cookies });
   const {
-    data: { session },
+    data: { user },
     error,
-  } = await supabase.auth.getSession();
-  return { session, error };
+  } = await supabase.auth.getUser();
+  return {
+    session: {
+      user,
+    },
+    error,
+  };
 }
