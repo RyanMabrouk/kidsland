@@ -1,6 +1,6 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import PaymentOptionsForm from "./PaymentOptionsForm";
-import { useOrder } from "@/hooks/data/orders/useOrder";
+import getLocalValues from "@/helpers/getLocalValues";
 
 export default function PaymentOptions({
   open: o,
@@ -9,10 +9,10 @@ export default function PaymentOptions({
   open: "clientAdress" | "paymentOptions" | "none";
   setOpen: Dispatch<SetStateAction<"clientAdress" | "paymentOptions" | "none">>;
 }) {
-  const { data: order } = useOrder();
   const isOpen = o === "paymentOptions";
   const open = () => setOpen("paymentOptions");
   const close = () => setOpen("none");
+  const paymentOption = getLocalValues("paymentOptionsForm").paymentOption;
 
   return (
     <div className="w-full shadow-lg">
@@ -29,7 +29,7 @@ export default function PaymentOptions({
       </div>
       {isOpen || (
         <div className="p-4 text-gray-500">
-          <h1>Payment Method : {order?.payment_method}</h1>
+          <h1>Payment Method : {paymentOption}</h1>
         </div>
       )}
       {isOpen && <PaymentOptionsForm close={close} />}

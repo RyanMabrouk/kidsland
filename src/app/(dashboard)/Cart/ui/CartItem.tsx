@@ -1,44 +1,18 @@
-import handleDeleteCartItem from "@/api/Cart/handleDeleteCartItem";
-import handleProductQuantity from "@/api/Cart/handleProductQuantity";
+import useChangeQuantity from "@/hooks/data/cart/changeQuantity";
+import useDeleteCartItem from "@/hooks/data/cart/deleteCartItem";
 import { IProduct } from "@/types/database.tables.types";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import React from "react";
 
 export default function CartItem({
   product,
   quantity,
-  filter,
 }: {
   product: IProduct | null;
   quantity: number;
-  filter: string;
 }) {
-  const queryClient = useQueryClient();
-  const { mutate: change } = useMutation({
-    mutationFn: async (quantity: number) => {
-      if (!product) {
-        throw new Error("Product not found");
-      }
-      return await handleProductQuantity(product.id, quantity);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
-    },
-    onError: (error) => alert(error.message),
-  });
-  const { mutate: Delete } = useMutation({
-    mutationFn: async () => {
-      if (!product) {
-        throw new Error("Product not found");
-      }
-      await handleDeleteCartItem(product.id);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
-    },
-    onError: (error) => alert(error.message),
-  });
+  const { mutate: change } = useChangeQuantity(product);
+  const { mutate: remove } = useDeleteCartItem(product);
 
   return (
     <div className="color w-[95%] border-2 border-solid transition-all duration-200 hover:w-[97%] hover:shadow-md">
@@ -81,7 +55,7 @@ export default function CartItem({
       <hr />
       <div className="flex items-center justify-between p-4">
         <button
-          onClick={() => Delete()}
+          onClick={() => remove()}
           className="min-w-[6rem] rounded-xl border-2 bg-red-700 p-2 text-white transition-all duration-300 hover:border-red-700 hover:bg-white hover:text-red-700"
         >
           Delete

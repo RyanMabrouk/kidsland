@@ -3,6 +3,7 @@ import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { dbTableType } from "@/types/database.tables.types";
 import { Tables, TablesUpdate } from "@/types/database.types";
+import { PostgrestError } from "@supabase/supabase-js";
 export default async function updateData<ITableName extends dbTableType>({
   tableName,
   payload,
@@ -18,5 +19,8 @@ export default async function updateData<ITableName extends dbTableType>({
     .update(payload)
     .match(match)
     .select();
-  return { data: data, error: error };
+  return { data: data, error } as {
+    data: Tables<ITableName>[] | null;
+    error: PostgrestError | null;
+  };
 }

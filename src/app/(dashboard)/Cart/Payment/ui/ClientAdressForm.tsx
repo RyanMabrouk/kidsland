@@ -1,13 +1,9 @@
 import { SelectGeneric } from "@/app/ui/SelectGeneric";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { State, states } from "../constants/statesAndCities";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addClientAddress } from "@/api/Order/handleClientAdress";
-import { useToast } from "@/hooks/useToast";
 import TextInput from "./TextInput";
-import { useOrder } from "@/hooks/data/orders/useOrder";
-import { updateClientAddress } from "@/api/Order/updateClientAdress";
-import { getOrder } from "@/api/Order/getOrder";
+import getLocalValues from "@/helpers/getLocalValues";
+import postLocalValues from "@/helpers/postLocalValues";
 
 export default function ClientAdressForm({
   close,
@@ -16,37 +12,22 @@ export default function ClientAdressForm({
   close: () => void;
   next: () => void;
 }) {
-  const { data: order } = useOrder();
+  const defaultFormValues = getLocalValues("clientAddressForm");
   const [state, setState] = useState<State | undefined>(
-    states.find((e) => e.state === order?.region),
+    states.find((e) => e.state === defaultFormValues.state),
   );
-  useEffect(() => {
-    if (order !== undefined) {
-      setState(states.find((e) => e.state === order.region));
-    }
-  }, [order, setState, states]);
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
-  const { mutate } = useMutation({
-    mutationFn: updateClientAddress,
-    onSuccess: () => {
-      toast.success("Adresse modifiée avec succès");
-      queryClient.invalidateQueries({ queryKey: ["order"] });
-
-      next();
-    },
-    onError: (e: Error) => {
-      toast.error(e.message);
-    },
-  });
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    postLocalValues("clientAddressForm", event);
+    next();
+  };
 
   return (
-    <form action={mutate} className="flex flex-col gap-5 p-5">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-5 p-5">
       <div className="font-bold">Modifier l'adresse</div>
       <div className="grid grid-cols-12 gap-6">
         <div className="col-span-6">
           <TextInput
-            defaultValue={order?.first_name}
+            defaultValue={defaultFormValues.firstName}
             name="firstName"
             type="text"
             label="Prénom / nom de la société"
@@ -54,7 +35,7 @@ export default function ClientAdressForm({
         </div>
         <div className="col-span-6">
           <TextInput
-            defaultValue={order?.last_name}
+            defaultValue={defaultFormValues.lastName}
             name="lastName"
             type="text"
             label="Nom / matricule fiscale-RNE"
@@ -63,8 +44,8 @@ export default function ClientAdressForm({
         <div className="col-span-1">Préfixe +216</div>
         <div className="col-span-5">
           <TextInput
+            defaultValue={defaultFormValues.telephone}
             name="telephone"
-            defaultValue={order?.phone_number}
             type="number"
             label="Téléphone mobile"
           />
@@ -72,7 +53,6 @@ export default function ClientAdressForm({
         <div className="col-span-1">Préfixe +216</div>
         <div className="col-span-5">
           <TextInput
-            defaultValue=""
             name="telephone2"
             type="number"
             label="Téléphone mobile supplémentaire"
@@ -80,15 +60,15 @@ export default function ClientAdressForm({
         </div>
         <div className="col-span-12">
           <TextInput
+            defaultValue={defaultFormValues.adress}
             name="adress"
-            defaultValue={order?.address}
             type="email"
             label="Adresse"
           />
         </div>
         <div className="col-span-12">
           <TextInput
-            defaultValue={order?.additional_info}
+            defaultValue={defaultFormValues.addInfo}
             name="addInfo"
             type="text"
             label="Informations Supplémentaires"
@@ -109,7 +89,10 @@ export default function ClientAdressForm({
           }))}
         />
         <SelectGeneric
-          defaultValue={{ label: order?.city, value: order?.city ?? "" }}
+          defaultValue={{
+            label: defaultFormValues.city,
+            value: defaultFormValues.city,
+          }}
           label="City"
           name="city"
           group={true}

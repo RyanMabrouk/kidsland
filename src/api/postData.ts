@@ -1,7 +1,8 @@
 "use server";
 import { dbTableType } from "@/types/database.tables.types";
-import { TablesInsert } from "@/types/database.types";
+import { Tables, TablesInsert } from "@/types/database.types";
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
+import { PostgrestError } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 export default async function postData<ITableName extends dbTableType>({
   tableName,
@@ -15,5 +16,8 @@ export default async function postData<ITableName extends dbTableType>({
     .from(tableName)
     .insert(payload)
     .select();
-  return { data: data, error: error };
+  return { data, error } as {
+    data: Tables<ITableName>[] | null;
+    error: PostgrestError | null;
+  };
 }

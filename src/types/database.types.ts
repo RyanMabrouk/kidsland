@@ -115,6 +115,7 @@ export type Database = {
         Row: {
           additional_info: string
           address: string
+          cancel_reason: string
           city: string
           created_at: string
           first_name: string
@@ -125,12 +126,13 @@ export type Database = {
           region: string
           status: Database["public"]["Enums"]["status_type_enum"]
           total_price: number
-          user_id: string
+          user_id: string | null
           wholesale_price: number
         }
         Insert: {
           additional_info?: string
           address?: string
+          cancel_reason?: string
           city?: string
           created_at?: string
           first_name?: string
@@ -141,12 +143,13 @@ export type Database = {
           region?: string
           status?: Database["public"]["Enums"]["status_type_enum"]
           total_price: number
-          user_id: string
+          user_id?: string | null
           wholesale_price?: number
         }
         Update: {
           additional_info?: string
           address?: string
+          cancel_reason?: string
           city?: string
           created_at?: string
           first_name?: string
@@ -157,7 +160,7 @@ export type Database = {
           region?: string
           status?: Database["public"]["Enums"]["status_type_enum"]
           total_price?: number
-          user_id?: string
+          user_id?: string | null
           wholesale_price?: number
         }
         Relationships: [
@@ -292,7 +295,7 @@ export type Database = {
     Enums: {
       discount_type_enum: "percentage" | "fixed"
       payment_method_enum: "cash" | "online"
-      status_type_enum: "pending" | "cancelled" | "fulfilled" | "created"
+      status_type_enum: "pending" | "cancelled" | "fulfilled" | "approved"
     }
     CompositeTypes: {
       [_ in never]: never

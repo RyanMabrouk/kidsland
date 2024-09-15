@@ -3,9 +3,6 @@ import { Tables } from "@/types/database.types";
 export interface ICartResponse extends Tables<"cart"> {
   products: Tables<"products">;
 }
-export interface ICart extends Tables<"cart"> {
-  product: Tables<"products">;
-}
 const cartPopulatedQuery = () => ({
   queryKey: [
     "cart",

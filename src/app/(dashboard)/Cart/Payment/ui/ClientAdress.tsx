@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import ClientAdressForm from "./ClientAdressForm";
-import { useOrder } from "@/hooks/data/orders/useOrder";
+import { get } from "http";
+import getLocalValues from "@/helpers/getLocalValues";
 
 export default function ClientAdress({
   open: o,
@@ -9,7 +10,8 @@ export default function ClientAdress({
   open: "clientAdress" | "paymentOptions" | "none";
   setOpen: Dispatch<SetStateAction<"clientAdress" | "paymentOptions" | "none">>;
 }) {
-  const { data: order } = useOrder();
+  const defaultFormValues = getLocalValues("clientAddressForm");
+  console.log(defaultFormValues);
   const isOpen = o === "clientAdress";
   const open = () => setOpen("clientAdress");
   const close = () => setOpen("none");
@@ -31,12 +33,13 @@ export default function ClientAdress({
       {isOpen || (
         <div className="flex flex-col gap-2 p-4 text-gray-600">
           <div className="flex gap-2">
-            <div>{order?.first_name}</div>
-            <div>{order?.last_name}</div>
+            <div>{defaultFormValues?.firstName ?? ""}</div>
+            <div>{defaultFormValues?.lastName ?? ""}</div>
           </div>
           <h2>
-            {order?.address} | {order?.region} - {order?.city} | +216{" "}
-            {order?.phone_number}
+            {defaultFormValues?.adress ?? ""} | {defaultFormValues?.state ?? ""}{" "}
+            - {defaultFormValues?.city ?? ""} | +216{" "}
+            {defaultFormValues?.telephone ?? ""}
           </h2>
         </div>
       )}
