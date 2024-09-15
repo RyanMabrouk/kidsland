@@ -3,6 +3,7 @@ import getLocalValues from "@/helpers/getLocalValues";
 import getData from "@/api/getData";
 import { ICartResponse } from "../../hooks/data/cart/cartPopulatedQuery";
 import { TablesInsert } from "@/types/database.types";
+import { z } from "zod";
 
 export default async function createOrder() {
   const clientAdressForm = getLocalValues("clientAddressForm");
@@ -15,6 +16,7 @@ export default async function createOrder() {
     city,
     phone_number,
     additional_info,
+    payment_method,
   } = {
     first_name: clientAdressForm?.firstName,
     last_name: clientAdressForm?.lastName,
@@ -23,10 +25,35 @@ export default async function createOrder() {
     city: clientAdressForm?.city,
     phone_number: clientAdressForm?.telephone,
     additional_info: clientAdressForm?.addInfo,
-  };
-  const { payment_method } = {
     payment_method: paymentOptionsForm?.paymentOption,
   };
+
+  const schema = z.object({
+    first_name: z.string().min(1, "First name is required"),
+    last_name: z.string().min(1, "Last name is required"),
+    address: z.string().min(1, "Address is required"),
+    region: z.string().min(1, "Region is required"),
+    city: z.string().min(1, "City is required"),
+    phone_number: z.string().length(8, "Phone number must be 8 digits"),
+    additional_info: z.string(),
+    payment_method: z.string().min(1, "Payment method is required"),
+  });
+
+  try {
+    const validatedData = schema.parse({
+      first_name,
+      last_name,
+      address,
+      region,
+      city,
+      phone_number,
+      additional_info,
+      payment_method,
+    });
+  } catch (e: any) {
+    throw new Error(e.toString());
+  }
+
   const { data: cart } = await getData<"cart", ICartResponse[]>({
     tableName: "cart",
     column: "*,products(*)",
@@ -96,7 +123,7 @@ export default async function createOrder() {
             }) as TablesInsert<"order_products">,
         ) ?? [],
     });
-    if (error) throw new Error(error.message);
+    if (error) throw new Error("failed to create order prodcts");
   }
   return user_id;
 }

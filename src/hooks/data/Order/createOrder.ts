@@ -20,7 +20,14 @@ export default function useCreateOrder() {
       });
     },
     onError: (error) => {
-      toast.error(error.message, "error");
+      if (!error.message.includes("{")) {
+        toast.error(error.message, "error");
+      } else {
+        const parsedError = JSON.parse(error.message);
+        parsedError.forEach((err: any) => {
+          toast.error(err.message);
+        });
+      }
     },
   });
 }

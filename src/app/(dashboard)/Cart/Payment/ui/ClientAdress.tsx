@@ -11,7 +11,6 @@ export default function ClientAdress({
   setOpen: Dispatch<SetStateAction<"clientAdress" | "paymentOptions" | "none">>;
 }) {
   const defaultFormValues = getLocalValues("clientAddressForm");
-  console.log(defaultFormValues);
   const isOpen = o === "clientAdress";
   const open = () => setOpen("clientAdress");
   const close = () => setOpen("none");
