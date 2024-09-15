@@ -7,8 +7,6 @@ import { Pagination } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
 import { productsQuery } from "@/hooks/data/products/productsQuery";
 import { useMemo } from "react";
-import CustomSwiper from "@/app/ui/Swiper";
-import { ProductSwiper } from "@/app/(dashboard)/products/[productId]/ui/ProductSwiper";
 
 export function ProductsSection() {
   const [page, setPage] = useState(1);
