@@ -14,7 +14,7 @@ const loginSchema = z.object({
 });
 
 export default function LoginWithPassword() {
-  const [errors, setErrors] = React.useState<string[]>([]);
+  const [errors, setErrors] = React.useState<Record<string, string>>({});
   const [successMessage, setSuccessMessage] = React.useState<string>("");
 
   const { mutate, isPending } = useMutation({
@@ -26,34 +26,37 @@ export default function LoginWithPassword() {
 
       try {
         loginSchema.parse(data);
-        setErrors([]);
+        setErrors({});
       } catch (err) {
         setSuccessMessage("");
         if (err instanceof z.ZodError) {
-          setErrors(err.errors.map((e) => e.message));
+          const errorObj: Record<string, string> = {};
+          err.errors.forEach((e) => {
+            if (e.path[0]) {
+              errorObj[e.path[0] as string] = e.message;
+            }
+          });
+          setErrors(errorObj);
         } else {
-          setErrors(["An unexpected error occurred"]);
+          setErrors({ general: "An unexpected error occurred" });
         }
         console.error("Validation error:", err);
         throw err;
       }
 
-      // Proceed with login if validation passes
       const email = formObject.get("email") as string;
       const password = formObject.get("password") as string;
       const { error } = await login({ email, password });
       console.log("Login API response:", { error });
 
       if (error) {
-        setErrors([error.message]);
+        setErrors({ general: error.message });
         throw error;
       }
 
       setSuccessMessage("Login successful");
-      // Optionally handle redirection or other success behavior here
     },
     onSuccess: () => {
-      // Optionally handle success behavior here
       console.log("Login successful, handling success...");
     },
   });
@@ -71,6 +74,7 @@ export default function LoginWithPassword() {
         type="email"
         required
         placeholder="Enter Your Email"
+        error={errors.email}
       />
       <Input
         name="password"
@@ -78,20 +82,15 @@ export default function LoginWithPassword() {
         type="password"
         required
         placeholder="Enter Your Password"
+        error={errors.password}
       />
-
-      {errors.length > 0 && (
-        <div className="space-y-1">
-          {errors.map((error, index) => (
-            <p key={index} className="text-sm text-red-500">
-              {error}
-            </p>
-          ))}
-        </div>
-      )}
 
       {successMessage && (
         <p className="text-sm text-green-500">{successMessage}</p>
+      )}
+
+      {errors.general && (
+        <p className="text-sm text-red-500">{errors.general}</p>
       )}
 
       <div className="flex items-center justify-between gap-4 max-sm:flex-col">

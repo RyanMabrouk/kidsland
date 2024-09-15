@@ -6,7 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { z } from "zod";
 
-// Define Zod schema for password validation
+// Zod schema for password validation
 const changePasswordSchema = z
   .object({
     newPassword: z
@@ -16,11 +16,15 @@ const changePasswordSchema = z
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
     message: "Passwords don't match",
-    path: ["confirmPassword"], // path to error in the form
+    path: ["confirmPassword"], // path to show error for confirmPassword
   });
 
 export default function ChangePasswordForm() {
-  const [errors, setErrors] = React.useState<string[]>([]);
+  // State for storing field-specific errors
+  const [fieldErrors, setFieldErrors] = React.useState({
+    newPassword: "",
+    confirmPassword: "",
+  });
   const [successMessage, setSuccessMessage] = React.useState<string>("");
 
   const { mutate, isPending } = useMutation({
@@ -30,33 +34,51 @@ export default function ChangePasswordForm() {
         confirmPassword: string;
       };
 
-      // Validate data using Zod
+      // Validate form data using Zod schema
       try {
         changePasswordSchema.parse(formObject);
-        setErrors([]); // Clear errors if validation is successful
+        // Clear errors if validation passes
+        setFieldErrors({
+          newPassword: "",
+          confirmPassword: "",
+        });
       } catch (err) {
         if (err instanceof z.ZodError) {
-          // Set the errors from Zod validation
-          setErrors(err.errors.map((e) => e.message));
+          const errors = {
+            newPassword: "",
+            confirmPassword: "",
+          };
+
+          // Map Zod errors to the respective fields
+          err.errors.forEach((e) => {
+            errors[e.path[0] as keyof typeof errors] = e.message;
+          });
+          setFieldErrors(errors);
         } else {
-          setErrors(["An unexpected error occurred"]);
+          setFieldErrors({
+            newPassword: "",
+            confirmPassword: "An unexpected error occurred",
+          });
         }
         throw err; // Stop further processing
       }
 
-      // Proceed with the change password logic here (replace with actual API)
+      // Update password logic here
       const { error } = await updatePassword({
         newPassword: formObject.newPassword,
       });
 
       if (error) {
-        setErrors([error.message]);
+        setFieldErrors({
+          ...fieldErrors,
+          newPassword: error.message,
+        });
         throw new Error(error.message);
       }
 
+      // Set success message
       setSuccessMessage("Your password has been successfully changed.");
     },
-    onSuccess: () => {},
   });
 
   return (
@@ -71,6 +93,7 @@ export default function ChangePasswordForm() {
           type="password"
           required
           name="newPassword"
+          error={fieldErrors.newPassword} // Pass error to the Input component
         />
         <Input
           label="Confirm New Password"
@@ -78,17 +101,8 @@ export default function ChangePasswordForm() {
           type="password"
           required
           name="confirmPassword"
+          error={fieldErrors.confirmPassword} // Pass error to the Input component
         />
-
-        {errors.length > 0 && (
-          <div className="space-y-1">
-            {errors.map((error, index) => (
-              <p key={index} className="text-sm text-red-500">
-                {error}
-              </p>
-            ))}
-          </div>
-        )}
 
         {successMessage && (
           <p className="text-sm text-green-500">{successMessage}</p>

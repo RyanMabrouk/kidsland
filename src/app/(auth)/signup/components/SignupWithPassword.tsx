@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { z } from "zod";
 
+// Zod schema for validation
 const schema = z
   .object({
     email: z.string().email("Invalid email address"),
@@ -24,8 +25,14 @@ const schema = z
 
 export default function SignupWithPassword() {
   const router = useRouter();
-  const [errors, setErrors] = React.useState<string[]>([]);
+  const [fieldErrors, setFieldErrors] = React.useState({
+    email: "",
+    password: "",
+    confirm: "",
+    policies: "",
+  });
   const [successMessage, setSuccessMessage] = React.useState<string>("");
+
   const { mutate, isPending } = useMutation({
     mutationFn: async (formData: FormData) => {
       const formObject = Object.fromEntries(formData) as {
@@ -37,7 +44,6 @@ export default function SignupWithPassword() {
 
       const policies = formObject.policies === "on";
 
-      // Create an object with the converted policies
       const data = {
         email: formObject.email,
         password: formObject.password,
@@ -48,27 +54,49 @@ export default function SignupWithPassword() {
       // Validate data with Zod
       try {
         schema.parse(data);
-        setErrors([]); // Clear errors if validation is successful
+        setFieldErrors({
+          email: "",
+          password: "",
+          confirm: "",
+          policies: "",
+        });
       } catch (err) {
         setSuccessMessage("");
         if (err instanceof z.ZodError) {
-          // Set the errors from Zod validation
-          setErrors(err.errors.map((e) => e.message));
+          const errors = {
+            email: "",
+            password: "",
+            confirm: "",
+            policies: "",
+          };
+
+          // Map each error to the corresponding field
+          err.errors.forEach((e) => {
+            errors[e.path[0] as keyof typeof errors] = e.message;
+          });
+          setFieldErrors(errors);
         } else {
-          setErrors(["An unexpected error occurred"]);
+          setFieldErrors({
+            email: "",
+            password: "",
+            confirm: "",
+            policies: "An unexpected error occurred",
+          });
         }
-        throw err; // rethrow the error to stop further processing
+        throw err;
       }
 
       // Proceed with signup if validation passes
       const { email, password } = data;
       const { error } = await signUp({ email, password });
       if (error?.message) {
-        setErrors([error.message]);
+        setFieldErrors({
+          ...fieldErrors,
+          email: error.message,
+        });
         throw error;
       }
-    },
-    onSuccess: () => {
+
       setSuccessMessage("An email has been sent to confirm your account...");
     },
   });
@@ -83,6 +111,7 @@ export default function SignupWithPassword() {
         type="email"
         required
         placeholder="Enter Your Email"
+        error={fieldErrors.email} // Pass email error
       />
       <Input
         name="password"
@@ -90,6 +119,7 @@ export default function SignupWithPassword() {
         type="password"
         required
         placeholder="Enter Password"
+        error={fieldErrors.password} // Pass password error
       />
       <Input
         name="confirm"
@@ -97,6 +127,7 @@ export default function SignupWithPassword() {
         type="password"
         required
         placeholder="Confirm Password"
+        error={fieldErrors.confirm} // Pass confirm password error
       />
 
       <div className="flex items-center space-x-4">
@@ -113,18 +144,14 @@ export default function SignupWithPassword() {
           of this online store.
         </label>
       </div>
-      {errors.length > 0 && (
-        <div className="space-y-1">
-          {errors.map((error, index) => (
-            <p key={index} className="text-sm text-red-500">
-              {error}
-            </p>
-          ))}
-        </div>
+      {fieldErrors.policies && (
+        <p className="text-sm text-red-500">{fieldErrors.policies}</p>
       )}
+
       {successMessage && (
         <p className="text-sm text-green-500">{successMessage}</p>
       )}
+
       <div className="flex justify-between gap-4 max-sm:flex-col">
         <PrimaryButton className="max-sm:w-full" loading={isPending}>
           Sign Up
