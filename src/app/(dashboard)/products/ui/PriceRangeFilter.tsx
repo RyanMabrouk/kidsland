@@ -27,7 +27,7 @@ export default function PriceRangeFilter({
     <div className="flex flex-col items-start justify-center">
       <span className="mb-1 text-sm font-medium uppercase">Price (TND)</span>
       <Slider
-        className="mx-1 text-color8"
+        className="!mx-1 !text-color8"
         onChange={(e, newValue) => {
           setValue(newValue as number[]);
         }}
