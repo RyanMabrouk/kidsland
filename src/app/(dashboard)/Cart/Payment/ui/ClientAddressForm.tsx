@@ -4,8 +4,9 @@ import { State, states } from "../constants/statesAndCities";
 import TextInput from "./TextInput";
 import getLocalValues from "@/helpers/getLocalValues";
 import postLocalValues from "@/helpers/postLocalValues";
+import Textarea from "./Textarea";
 
-export default function ClientAdressForm({
+export default function ClientAddressForm({
   close,
   next,
 }: {
@@ -23,14 +24,13 @@ export default function ClientAdressForm({
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5 p-5">
-      <div className="font-bold">Modifier l'adresse</div>
       <div className="grid grid-cols-12 gap-6">
         <div className="col-span-6">
           <TextInput
             defaultValue={defaultFormValues.firstName}
             name="firstName"
             type="text"
-            label="Prénom / nom de la société"
+            label="First Name"
           />
         </div>
         <div className="col-span-6">
@@ -38,24 +38,48 @@ export default function ClientAdressForm({
             defaultValue={defaultFormValues.lastName}
             name="lastName"
             type="text"
-            label="Nom / matricule fiscale-RNE"
+            label="Last Name"
           />
         </div>
-        <div className="col-span-1">Préfixe +216</div>
+        <div className="col-span-1 mt-3 text-gray-500">Prefix +216</div>
         <div className="col-span-5">
           <TextInput
             defaultValue={defaultFormValues.telephone}
             name="telephone"
             type="number"
-            label="Téléphone mobile"
+            label="Phone number"
           />
         </div>
-        <div className="col-span-1">Préfixe +216</div>
-        <div className="col-span-5">
-          <TextInput
-            name="telephone2"
-            type="number"
-            label="Téléphone mobile supplémentaire"
+        <div className="col-span-6 flex flex-row items-end justify-between">
+          <SelectGeneric
+            variant="oversized"
+            defaultValue={
+              state ? { label: state?.state, value: state?.state } : undefined
+            }
+            name="state"
+            inputLabel="State"
+            onChange={(state: string) =>
+              setState(states.find((e) => e.state === state))
+            }
+            options={states.map((e) => ({
+              label: e.state,
+              value: e.state,
+            }))}
+          />
+          <SelectGeneric
+            variant="oversized"
+            defaultValue={
+              defaultFormValues.city
+                ? {
+                    label: defaultFormValues.city,
+                    value: defaultFormValues.city,
+                  }
+                : undefined
+            }
+            name="city"
+            inputLabel={state ? "City" : "Select a state"}
+            group={true}
+            options={state?.cities.map((e) => ({ label: e, value: e })) ?? []}
           />
         </div>
         <div className="col-span-12">
@@ -66,56 +90,29 @@ export default function ClientAdressForm({
             label="Adresse"
           />
         </div>
-        <div className="col-span-12">
-          <TextInput
+        <div className="col-span-12 row-span-2">
+          <Textarea
             defaultValue={defaultFormValues.addInfo}
             name="addInfo"
             type="text"
-            label="Informations Supplémentaires"
+            label="Additional information"
           />
         </div>
       </div>
-      <div className="mb-3 flex items-center justify-around">
-        <SelectGeneric
-          defaultValue={{ label: state?.state, value: state?.state ?? "" }}
-          name="state"
-          label="Region"
-          onChange={(state: string) =>
-            setState(states.find((e) => e.state === state))
-          }
-          options={states.map((e) => ({
-            label: e.state,
-            value: e.state,
-          }))}
-        />
-        <SelectGeneric
-          defaultValue={{
-            label: defaultFormValues.city,
-            value: defaultFormValues.city,
-          }}
-          label="City"
-          name="city"
-          group={true}
-          options={
-            state
-              ? state.cities.map((e) => ({ label: e, value: e }))
-              : [{ label: "", value: "", group_name: "select a state first" }]
-          }
-        />
-      </div>
+      <div className="mb-3 flex items-center justify-around"></div>
       <hr />
       <div className="flex justify-end gap-2">
         <button
           onClick={close}
-          className="rounded-md bg-red-400 p-4 font-semibold text-white transition-all duration-300 hover:bg-red-500 hover:shadow-sm hover:shadow-red-500"
+          className="rounded-md bg-red-400 px-4 py-2 font-semibold text-white transition-all duration-300 hover:bg-red-500 hover:shadow-sm hover:shadow-red-500"
         >
-          Annuler
+          Cancel
         </button>
         <button
           type="submit"
-          className="rounded-md bg-orange-400 p-4 font-semibold text-white transition-all duration-300 hover:bg-orange-500 hover:shadow-sm hover:shadow-orange-500"
+          className="rounded bg-orange-500 px-4 py-2 font-semibold text-white hover:bg-orange-600"
         >
-          Enregistrer
+          Save
         </button>
       </div>
     </form>

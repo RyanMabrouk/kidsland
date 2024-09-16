@@ -7,7 +7,7 @@ import Link from "next/link";
 export default function Footer() {
   const kidsLandLinks = ["About Us", "Contact Us", "Privacy Policy"];
   return (
-    <footer className="mt-[5rem] flex flex-row items-start justify-center gap-[3rem] bg-gray-100 px-[2rem] pb-12 pt-10">
+    <footer className="flex flex-row items-start justify-center gap-[3rem] bg-gray-100 px-[2rem] pb-12 pt-10">
       <Image
         src="/logo/logo-2.png"
         alt="logo"

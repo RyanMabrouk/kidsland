@@ -1,14 +1,10 @@
-import useCreateOrder from "@/hooks/data/Order/createOrder";
+import useCreateOrder from "@/hooks/data/orders/createOrder";
 import useCartPopulated from "@/hooks/data/cart/useCartPopulated";
 import React from "react";
 
 export default function OrderResume() {
   const { data: cart } = useCartPopulated();
   const total_articles = cart?.data?.reduce((a, b) => a + b.quantity, 0);
-  const total_price = cart?.data?.reduce(
-    (a, b) => a + b.quantity * (b.product?.price_after_discount ?? 0),
-    0,
-  );
   const { mutate } = useCreateOrder();
   return (
     <form
@@ -19,19 +15,24 @@ export default function OrderResume() {
       <hr />
       <div className="flex justify-between p-2">
         <h1>Total Articles : ({total_articles})</h1>
-        <h1>{Math.round((total_price ?? 0) * 100) / 100} TND</h1>
+        <h1>{cart.total_after_discount} TND</h1>
       </div>
       <hr />
-      <div className="flex justify-between p-2">
+      <div className="flex flex-row justify-between p-2">
         <h1>Delivery Costs :</h1>
-        <h1>8 TND</h1>
+        <div className="flex flex-row items-center gap-2">
+          <span>{cart.delivery_cost} TND</span>
+          {cart.delivery_cost == 0 && (
+            <del className="text-color8">
+              {cart.delivery_cost_before_discount} TND
+            </del>
+          )}
+        </div>
       </div>
       <hr />
       <div className="flex justify-between p-2">
         <h1>Total :</h1>
-        <h1 className="text-xl">
-          {Math.round((total_price ?? 0) * 100) / 100 + 8} TND
-        </h1>
+        <h1 className="text-xl">{cart.total_after_discount} TND</h1>
       </div>
       <hr />
       <button

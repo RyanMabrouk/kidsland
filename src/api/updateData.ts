@@ -12,15 +12,15 @@ export default async function updateData<ITableName extends dbTableType>({
   tableName: ITableName;
   payload: TablesUpdate<ITableName>;
   match: Partial<Tables<ITableName>>;
-}) {
+}): Promise<{
+  data: Tables<ITableName>[] | null;
+  error: PostgrestError | null;
+}> {
   const supabase = createServerActionClient({ cookies });
   const { data, error } = await supabase
     .from(tableName)
     .update(payload)
     .match(match)
     .select();
-  return { data: data, error } as {
-    data: Tables<ITableName>[] | null;
-    error: PostgrestError | null;
-  };
+  return { data, error };
 }

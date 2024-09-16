@@ -14,9 +14,8 @@ export default function useCreateOrder() {
     },
     onSuccess: () => {
       toast.success("Order created successfully", "success");
-      queryClient.invalidateQueries({ queryKey: ["cart", { user: true }] });
       queryClient.invalidateQueries({
-        queryKey: ["cart", { populated: true, user: true }],
+        queryKey: ["cart"],
       });
     },
     onError: (error) => {

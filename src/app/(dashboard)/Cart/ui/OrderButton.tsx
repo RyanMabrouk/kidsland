@@ -1,17 +1,15 @@
 import useCartPopulated from "@/hooks/data/cart/useCartPopulated";
 import Link from "next/link";
 
-export default function OrderButton({ total }: { total: number }) {
-  const {
-    data: { data: cart },
-  } = useCartPopulated();
-  const quantity = cart?.reduce((acc, item) => acc + item.quantity, 0);
+export default function OrderButton() {
+  const { data: cart } = useCartPopulated();
+  const quantity = cart?.data?.reduce((acc, item) => acc + item.quantity, 0);
 
-  if (cart?.length === 0) {
+  if (cart?.data?.length === 0) {
     return (
       <Link
         href="products"
-        className="w-full rounded-lg bg-gray-600 p-3 text-center text-xl font-semibold text-white transition-all duration-300 hover:bg-gray-800"
+        className="w-full rounded-lg cursor-not-allowed bg-color1 p-3 text-center text-xl font-semibold text-white transition-all duration-300 hover:bg-gray-800"
       >
         Order Some Products first
       </Link>
@@ -30,7 +28,7 @@ export default function OrderButton({ total }: { total: number }) {
       href="/Cart/Payment"
       className="w-full rounded-lg bg-color1 p-3 text-center text-xl font-semibold text-white transition-all duration-300 hover:bg-red-400"
     >
-      Order ({Math.round(total * 100) / 100} TND)
+      Order ({cart.total_after_discount} TND)
     </Link>
   );
 }

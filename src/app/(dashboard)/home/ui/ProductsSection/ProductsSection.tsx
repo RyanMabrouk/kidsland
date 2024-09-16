@@ -33,7 +33,7 @@ export function ProductsSection() {
     }
   }, [page, products?.meta?.has_next_page, sort, queryClient]);
   return (
-    <div className="mt-20 flex min-h-screen flex-col gap-12">
+    <div className="my-20 flex min-h-screen flex-col gap-12">
       <div className="flex flex-row items-center justify-center gap-3">
         <Image
           src="/home/icons/flower_yellow.png"

@@ -10,14 +10,14 @@ export default async function postData<ITableName extends dbTableType>({
 }: {
   tableName: ITableName;
   payload: TablesInsert<ITableName>[];
-}) {
+}): Promise<{
+  data: Tables<ITableName>[] | null;
+  error: PostgrestError | null;
+}> {
   const supabase = createServerActionClient({ cookies });
   const { data, error } = await supabase
     .from(tableName)
     .insert(payload)
     .select();
-  return { data, error } as {
-    data: Tables<ITableName>[] | null;
-    error: PostgrestError | null;
-  };
+  return { data, error };
 }
