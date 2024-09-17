@@ -17,8 +17,8 @@ function ProductListPage() {
   }
 
   return (
-    <div className="mt-10 flex flex-col gap-6 px-5 pb-5 sm:px-10">
-      <div className="flex flex-row items-center justify-center gap-3">
+    <div className="mt-10 flex flex-col gap-6 px-5 pb-5 sm:px-10 sm:w-full m-auto justify-center items-center  ">
+      <div className="flex flex-row items-center sm:justify-center gap-3">
         <Image
           src="/home/icons/flower_yellow.png"
           alt=""
@@ -35,19 +35,20 @@ function ProductListPage() {
           width={15}
         />
       </div>
-      <div className="flex max-w-full flex-row items-center gap-1 rounded-lg border-2 border-gray-200 px-2 sm:max-w-[40rem] lg:mx-auto">
+      <div className="flex  flex-row items-center gap-1 rounded-full border-2 border-gray-200 px-2  w-56 sm:mx-auto sm:w-96 ">
         <Image
           src="/MagnifyingGlass.Png"
           alt="Search Icon"
           width={20}
           height={20}
+          
         />
         <input
           type="text"
           placeholder="Search products..."
           value={searchQuery}
           onChange={handleSearchChange}
-          className="w-full p-2 focus:outline-none sm:w-96"
+          className=" sm:text-base text-sm p-2 focus:outline-none "
         />
       </div>
 

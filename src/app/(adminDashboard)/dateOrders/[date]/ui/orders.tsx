@@ -22,14 +22,14 @@ import { Player } from '@lottiefiles/react-lottie-player';
 export default function Orders({ searchQuery }: { searchQuery: string }) {
   const { date } = useParams();
   const { page, setPage } = useOrdersPagination(); 
-  const limit = 8; 
+  const limit = 4; 
   const { data: orders, isLoading } = useOrders({
     date : {
       from: `${date}T00:00:00`,
       to: `${date}T23:59:59`
     },
     search: {
-      column: "first_name",
+      columns: ["first_name","last_name"],
       value: searchQuery,
     },
     pagination: {
@@ -49,7 +49,7 @@ export default function Orders({ searchQuery }: { searchQuery: string }) {
             to: `${date}T23:59:59`
           },
           search: {
-            column: "first_name",
+            columns: ["first_name","last_name"],
             value: searchQuery,
           },
           pagination: {
@@ -83,7 +83,7 @@ export default function Orders({ searchQuery }: { searchQuery: string }) {
         ) : (
           orders?.data.map((order: Tables<"orders">) => (
             <Dialog  key={order.id}>
-              <DialogTrigger>
+              <DialogTrigger >
                 <div
                   className="py-5 px-5 cursor-pointer shadow-lg grid grid-cols-7 gap-5 font-semibold text-slate-700 bg-white rounded-lg transition-all duration-300 transform hover:bg-blue-50 hover:shadow-xl hover:scale-105"
                 >
@@ -105,7 +105,7 @@ export default function Orders({ searchQuery }: { searchQuery: string }) {
                 </div>
               </DialogTrigger>
 
-              <DialogContent className='ml-[7rem] w-[60rem] maw-w-full'>
+              <DialogContent className='ml-[7rem] w-[60rem] max-w-full'>
                 <DialogHeader >
                   <DialogTitle className='font-bold text-color5 text-lg'>   
                     <div className='flex justify-between pr-5'>

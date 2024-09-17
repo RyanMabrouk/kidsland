@@ -14,7 +14,7 @@ export default function SideBar() {
 
   return (
     <>
-     <div className="hidden md:flex md:flex-col w-[17rem] bg-slate-900 ">
+     <div className="hidden sm:flex sm:flex-col w-[17rem] bg-slate-900 ">
       <div className="p-3">
       <Link href={"/home"}>
         <Image

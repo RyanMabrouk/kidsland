@@ -8,11 +8,12 @@ import { uploadFile } from "@/api/uploadFile";
 import postData from "@/api/postData";
 import { TablesInsert } from "@/types/database.types";
 import { SelectGeneric } from "@/app/ui/SelectGeneric";
+import { useToast } from "@/hooks/useToast";
 
 const schema = z.object({
   title: z.string().min(1, "Title is required"),
   price: z.number().positive("Price must be a positive number"),
-  priceAfterDiscount: z.number().optional(),
+  discount: z.number().optional(),
   stock: z.number().positive("Stock must be a positive number"),
   description: z.string().min(1, "Description is required"),
   subtitle: z.string().min(1, "Subtitle is required"),
@@ -21,6 +22,7 @@ const schema = z.object({
 });
 
 export default function Page() {
+  const { toast } = useToast();
   const [preview, setPreview] = useState<string>("");
   const queryClient = useQueryClient();
   const Options: { label: string; value: string }[] = [
@@ -44,14 +46,11 @@ export default function Page() {
       setPreview(objectUrl);
     }
   };
-
-
-  // Mutation to add a new article
   const AddArticleMutation = useMutation({
     mutationFn: async (formData: FormData) => {
       const title = String(formData.get("title"));
       const price = Number(formData.get("price"));
-      const priceAfterDiscount = Number(formData.get("priceAfterDiscount"));
+      const discount = Number(formData.get("discount"));
       const stock = Number(formData.get("stock"));
       const description = String(formData.get("description"));
       const subtitle = String(formData.get("subtitle"));
@@ -61,7 +60,7 @@ export default function Page() {
       const result = schema.safeParse({
         title,
         price,
-        priceAfterDiscount,
+        discount,
         stock,
         description,
         subtitle,
@@ -72,14 +71,15 @@ export default function Page() {
       if (!result.success) {
         throw new Error("Validation error");
       }
+      let image_url=""
+      if (formData.get("filepicture")) {
+         image_url = await uploadFile({
+          formData,
+          name: "filepicture",
+          title: title,
+        });
 
-      // Upload image and post data
-      const image_url = await uploadFile({
-        formData,
-        name: "filepicture",
-        title: title,
-      });
-
+      }
       await postData({
         payload: [
           {
@@ -88,8 +88,10 @@ export default function Page() {
             stock,
             description,
             subtitle,
+            discount,
+            discount_type:"fixed",
             wholesale_price: wholesalePrice,
-            image_url,
+            image_url : image_url || "",
             category_id
           },
         ],
@@ -97,18 +99,18 @@ export default function Page() {
       });
     },
     onSuccess: () => {
-      alert("Success");
+      toast.success("Article added successfully!", "The product was created.");
       queryClient.invalidateQueries({ queryKey: ["products"] });
     },
     onError: (error) => {
-      console.error(error);
+      toast.error("Error", error.message || "An error occurred while adding the article.");
     },
   });
 
   return (
 <form
   action={AddArticleMutation.mutate}
-  className="flex flex-col gap-10 m-auto w-full max-w-[50rem] justify-center mt-20 px-4 pb-4 sm:px-10"
+  className="flex flex-col gap-10 m-auto w-full max-w-[50rem] justify-center mt-20 px-3 pb-4 sm:px-10"
 >
   <div className="flex flex-row items-center gap-3 justify-center">
     <Image
@@ -117,7 +119,7 @@ export default function Page() {
       height={15}
       width={15}
     />
-    <div className="text-xl sm:text-2xl font-bold uppercase text-color5">
+    <div className="text-lg sm:text-2xl font-bold uppercase text-color5">
       Add A New Article
     </div>
     <Image

@@ -27,7 +27,7 @@ export default function useOrders({
     column: keyof Tables<"orders">;
   };
 
-  search?: { column: keyof Tables<"orders">; value: string };
+  search?: { columns: (keyof Tables<"orders">)[]; value: string };
   filter?: {
     column: keyof Tables<"orders">;
     value: string;

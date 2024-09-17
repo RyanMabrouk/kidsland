@@ -15,7 +15,7 @@ export type getOrdersParams = {
     head?: boolean;
     count?: "exact" | "planned" | "estimated";
   };
-  search?: { column: keyof Tables<"orders">; value: string };
+  search?: { columns: (keyof Tables<"orders">)[]; value: string };
   sort?: {
     column: keyof Tables<"orders">;
     ascending: boolean;
@@ -56,23 +56,24 @@ export default async function getOrders({
 
   let query = supabase
     .from("orders")
-    .select(columns?.join(",") ??  "*", count );
-  
-    if (date) {
-      query = query.gte("created_at", date.from).lte("created_at", date.to);
-    }
-    
+    .select(columns?.join(",") ?? "*", count);
+
+  if (date) {
+    query = query.gte("created_at", date.from).lte("created_at", date.to);
+  }
 
   if (filter) {
     query = query.filter(filter.column, filter.operator || "eq", filter.value);
   }
 
   if (search) {
-    query = query.ilike(search.column, `%${search.value}%`);
+    query = query.or(
+      search.columns.map((column) => `${column}.ilike.%${search.value}%`).join(",")
+    );
   }
 
   if (status) {
-    query.eq("status", status);
+    query = query.eq("status", status);
   }
 
   if (match) {
@@ -95,7 +96,7 @@ export default async function getOrders({
 
   const { data, error, count: items_count } = await query;
   return {
-    data: data as unknown as Tables<"orders">[] | null,  // Ensure it returns an array
+    data: data as unknown as Tables<"orders">[] | null, // Ensure it returns an array
     error,
     count: items_count,
   };

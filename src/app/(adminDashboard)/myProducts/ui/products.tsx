@@ -48,12 +48,13 @@ export default function Products({ searchQuery }: { searchQuery: string }) {
   }
 
   return (
-    <div className="m-auto flex w-full max-w-7xl flex-col gap-5">
-      <div className="mx-auto grid w-full grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10">
+    <div className="m-auto flex justify-center w-full max-w-7xl flex-col gap-5">
+      <div className="mx-auto grid w-full grid-cols-1 items-center justify-center  md:grid-cols-2 xl:grid-cols-4 lg:grid-cols-3 gap-x-6 gap-y-10 justify-items-center">
         {products?.data?.map((product, key) => (
           <Product key={key} {...product} />
         ))}
       </div>
+
       <Pagination
         className="flex w-full justify-center"
         count={products?.meta?.total_pages}

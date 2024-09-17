@@ -15,7 +15,8 @@ import { Tables } from "@/types/database.types";
 import { StepProvider, useStep } from "./context/useStep";
 import UserInfo from "./userInfo";
 import Navbar from "./navbar";
-import OrderContent from "./orderContent";
+import { OrderProvider } from "./context/useOrder";
+import OrderContent from "./(order_content)/orderContent";
 
 
 function AddOrderContent() {
@@ -75,7 +76,9 @@ function AddOrderContent() {
 export default function AddOrder() {
  return (
   <StepProvider>
-    <AddOrderContent />
+    <OrderProvider>
+      <AddOrderContent />
+    </OrderProvider>
   </StepProvider>
  )
 }

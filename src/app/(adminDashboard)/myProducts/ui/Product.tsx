@@ -24,7 +24,7 @@ export default function Product({
   return (
     <Link
       href={`/products/${id}`}
-      className="relative flex h-[22rem] sm:h-[25rem] w-[13rem] sm:w-[15rem] flex-col items-center justify-center gap-4 overflow-hidden"
+      className=" relative flex h-[22rem] sm:h-[25rem] w-[13rem] sm:w-[15rem] flex-col items-center justify-center gap-4 overflow-hidden"
     >
       <div className="group h-full w-full overflow-hidden rounded-md border transition-all ease-linear hover:backdrop-brightness-75">
         {!!discount && (

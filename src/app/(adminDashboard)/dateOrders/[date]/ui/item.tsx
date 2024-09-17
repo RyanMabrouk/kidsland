@@ -38,10 +38,11 @@ export default function Item({ item }: { item: Tables<"order_products"> }) {
         <div className="grid grid-cols-8 gap-2 text-sm text-gray-600 items-center">
           <div className='col-span-2'>{title}</div>
           <div className='text-center'>{item.quantity}</div>
-          <div className='text-center'>{price/item.quantity}</div>
-          <div className='text-center col-span-2'>{item.wholesale_price/item.quantity}</div>
-          <div className='text-center'>{price}</div>
-          <div className='text-center'>{price - item.wholesale_price}</div>
+          <div className='text-center'>{(price/item.quantity).toFixed(2)}</div>
+          <div className='text-center col-span-2'>{(item.wholesale_price / item.quantity).toFixed(2)}</div>
+          <div className='text-center'>{price.toFixed(2)}</div>
+          <div className='text-center'>{(price - item.wholesale_price).toFixed(2)}</div>
+
         </div>
       )}
     </>

@@ -30,9 +30,9 @@ export default function Day({ date, groupedOrders }: { groupedOrders: any; date:
 
   let statusIcon;
   if (hasCancelledOrder) {
-    statusIcon = <div className="text-3xl font-bold text-red-600 ">!!</div>;
+    statusIcon = <div className="text-3xl font-bold text-red-600 mr-3 ">!!</div>;
   } else if (hasPendingOrder) {
-    statusIcon = <div className="text-3xl font-bold text-yellow-500 mr-5 ">!</div>;
+    statusIcon = <div className="text-3xl font-bold text-yellow-500 mr-4 ">!</div>;
   } else {
     statusIcon = <FaCheck className="text-green-600 text-xl text-center mr-3" />;
   }
