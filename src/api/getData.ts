@@ -4,7 +4,10 @@ import { cookies } from "next/headers";
 import { Database, Tables } from "@/types/database.types";
 import { dbTableType } from "@/types/database.tables.types";
 import getSession from "./getSession";
-export default async function getData<ITableName extends dbTableType>({
+export default async function getData<
+  ITableName extends dbTableType,
+  IReturnType = Tables<ITableName>[],
+>({
   tableName,
   user,
   match,
@@ -72,7 +75,7 @@ export default async function getData<ITableName extends dbTableType>({
 
   const { data, error, count: items_count } = await query;
   return {
-    data: data as Tables<ITableName>[] | null,
+    data: data as IReturnType | null,
     error,
     count: items_count,
   };

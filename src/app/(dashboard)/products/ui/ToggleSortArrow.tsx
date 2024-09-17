@@ -12,7 +12,7 @@ export function ToggleSortArrow({
   }, [toggleDirection, onClick]);
   return (
     <FaLongArrowAltDown
-      className={`size-7 cursor-pointer rounded-full border p-1 shadow-sm transition-all ease-linear hover:shadow-md ${
+      className={`size-8 cursor-pointer rounded-full border p-1.5 shadow-sm transition-all ease-linear hover:shadow-md ${
         toggleDirection ? "rotate-180" : ""
       }`}
       onClick={(e) => {

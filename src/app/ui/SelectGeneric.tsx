@@ -1,11 +1,9 @@
 import React, { ReactNode } from "react";
-import { MenuItem, Select } from "@mui/material";
-import { getTailwindColor } from "../../helpers/getTailwindColor";
+import { FormControl, MenuItem, Select } from "@mui/material";
 import { VscTriangleDown } from "react-icons/vsc";
 import { Label } from "./LabelGeneric";
 import { cn } from "@/lib/utils";
-const color = getTailwindColor("color-primary-10");
-export type Option = {
+export type SelectGenericOption = {
   group_name?: string; // add only the group name to create a group
   label: string | ReactNode;
   value: string | number;
@@ -24,13 +22,14 @@ export function SelectGeneric({
   onChange,
   inputLabel,
   cursor = "black",
+  variant = "regular",
 }: {
   className?: string;
   label?: string;
   name?: string;
   error?: boolean;
-  defaultValue?: Option;
-  options: Option[] | undefined | null;
+  defaultValue?: SelectGenericOption;
+  options: SelectGenericOption[] | undefined | null;
   group?: boolean;
   required?: boolean;
   capitalize?: boolean;
@@ -38,6 +37,7 @@ export function SelectGeneric({
   inputLabel?: string | ReactNode;
   cursor?: "white" | "black" | string;
   disabled?: boolean;
+  variant?: "regular" | "oversized";
 }) {
   const [open, setOpen] = React.useState(false);
   const cursor_type =
@@ -46,7 +46,7 @@ export function SelectGeneric({
       : "text-gray-600 rounded-br-sm !min-w-8 rounded-tr-sm px-2.5 h-full ";
   if (!options) return;
   return (
-    <div className="group flex w-fit flex-col gap-1">
+    <FormControl className="group flex w-fit flex-col gap-3">
       <Label name={name} required={required} error={error}>
         {label}
       </Label>
@@ -55,7 +55,9 @@ export function SelectGeneric({
           variant="outlined"
           data-placeholder-trigger="keydown"
           className={cn(
-            `group peer h-9 w-[12.5rem] border transition-all ease-linear first-letter:capitalize [&_.Mui-selected]:!bg-color1 [&_.MuiOutlinedInput-notchedOutline]:border-none ${open ? "rounded-b-none rounded-t-sm shadow-md" : "rounded-sm shadow-sm hover:shadow-md"}`,
+            `group peer border transition-all ease-linear first-letter:capitalize [&_.Mui-selected]:!bg-color1 [&_.MuiOutlinedInput-notchedOutline]:border-none ${open ? "rounded-b-none rounded-t-sm shadow-md" : "rounded-sm shadow-sm hover:shadow-md"} ${
+              variant === "regular" ? "h-9 w-[12.5rem]" : "h-12 w-[11.5rem] border-gray-400 border-2"
+            }`,
             className,
           )}
           label={label}
@@ -82,7 +84,7 @@ export function SelectGeneric({
                 borderTopRightRadius: "0px",
                 maxHeight: "20rem",
                 overflowY: "auto",
-                boxShadow: `0px 1px 4px 2px ${color}`,
+                boxShadow: `0px 1px 4px 2px rgba(0, 0, 0, 0.1)`,
               },
             },
           }}
@@ -96,33 +98,35 @@ export function SelectGeneric({
           }}
         >
           {group
-            ? options?.map((option: Option, i: number): JSX.Element => {
-                return option?.group_name ? (
-                  <>
-                    <hr className="m-0 h-[unset] !w-full shrink-0 border-solid border-[rgba(0,0,0,0.12)]" />
+            ? options?.map(
+                (option: SelectGenericOption, i: number): JSX.Element => {
+                  return option?.group_name ? (
+                    <>
+                      <hr className="m-0 h-[unset] !w-full shrink-0 border-solid border-[rgba(0,0,0,0.12)]" />
+                      <MenuItem
+                        key={option?.group_name}
+                        className="group peer !max-h-7 !w-full !border-y !border-black !px-2 !py-1 !text-center !text-[0.875rem] !opacity-100 first-letter:capitalize"
+                        disabled
+                        aria-readonly
+                        value="none"
+                      >
+                        {option?.group_name}
+                      </MenuItem>
+                    </>
+                  ) : (
                     <MenuItem
-                      key={option?.group_name}
-                      className="group peer !max-h-7 !w-full !border-y !border-black !px-2 !py-1 !text-center !text-[0.875rem] !opacity-100 first-letter:capitalize"
-                      disabled
-                      aria-readonly
-                      value="none"
+                      value={option?.value}
+                      className={`peer !max-h-10 !px-2 !py-2 text-[0.95rem] capitalize transition-all ease-linear hover:!bg-color1 hover:text-white ${
+                        option?.disabled ? "opacity-50" : "opacity-90"
+                      } ${capitalize ? "capitalize" : ""}`}
+                      key={Number(option?.value) + i}
+                      disabled={option?.disabled}
                     >
-                      {option?.group_name}
+                      {option?.label}
                     </MenuItem>
-                  </>
-                ) : (
-                  <MenuItem
-                    value={option?.value}
-                    className={`peer !max-h-10 !px-2 !py-2 text-[0.95rem] capitalize transition-all ease-linear hover:!bg-color1 hover:text-white ${
-                      option?.disabled ? "opacity-50" : "opacity-90"
-                    } ${capitalize ? "capitalize" : ""}`}
-                    key={Number(option?.value) + i}
-                    disabled={option?.disabled}
-                  >
-                    {option?.label}
-                  </MenuItem>
-                );
-              })
+                  );
+                },
+              )
             : options?.map((option, i) => {
                 return (
                   <MenuItem
@@ -150,6 +154,6 @@ export function SelectGeneric({
           </span>
         )}
       </div>
-    </div>
+    </FormControl>
   );
 }

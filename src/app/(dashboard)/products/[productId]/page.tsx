@@ -7,7 +7,7 @@ import BreadCrumbs from "./ui/BreadCrumbs";
 
 export default function Page() {
   return (
-    <div className="flex flex-col">
+    <div className="mb-20 flex flex-col">
       <Image
         src={"/product/opsti-uslovi_header.jpg"}
         alt="logo"

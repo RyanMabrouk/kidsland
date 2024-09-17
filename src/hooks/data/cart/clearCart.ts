@@ -26,7 +26,7 @@ export function useClearCart() {
         },
       });
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toast.error(error.message);
     },
     onSuccess: () => {

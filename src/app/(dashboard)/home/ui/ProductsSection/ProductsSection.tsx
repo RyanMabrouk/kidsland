@@ -7,8 +7,6 @@ import { Pagination } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
 import { productsQuery } from "@/hooks/data/products/productsQuery";
 import { useMemo } from "react";
-import CustomSwiper from "@/app/ui/Swiper";
-import { ProductSwiper } from "@/app/(dashboard)/products/[productId]/ui/ProductSwiper";
 
 export function ProductsSection() {
   const [page, setPage] = useState(1);
@@ -35,7 +33,7 @@ export function ProductsSection() {
     }
   }, [page, products?.meta?.has_next_page, sort, queryClient]);
   return (
-    <div className="mt-20 flex min-h-screen flex-col gap-12">
+    <div className="my-20 flex min-h-screen flex-col gap-12">
       <div className="flex flex-row items-center justify-center gap-3">
         <Image
           src="/home/icons/flower_yellow.png"

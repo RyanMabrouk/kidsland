@@ -83,3 +83,20 @@
     --ring: 0 0% 83.1%;
   }
 }
+
+@keyframes onAutoFillStart {
+  from {
+  }
+  to {
+  }
+}
+
+input:-webkit-autofill {
+  animation-name: onAutoFillStart;
+  animation-duration: 0.01s;
+  animation-fill-mode: both;
+}
+
+body {
+  color: #153963;
+}

@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
+    "@hookform/resolvers": "^3.9.0",
     "@lottiefiles/react-lottie-player": "^3.5.3",
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
@@ -19,7 +20,7 @@
     "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/ssr": "^0.5.1",
     "@supabase/supabase-js": "^2.39.7",
-    "@tanstack/react-query": "^5.17.19",
+    "@tanstack/react-query": "^5.56.1",
     "@tanstack/react-query-devtools": "^5.14.2",
     "@tanstack/react-table": "^8.20.5",
     "antd": "^5.12.4",
@@ -35,6 +36,7 @@
     "react": "^18.2.0",
     "react-charts": "^3.0.0-beta.57",
     "react-dom": "^18",
+    "react-hook-form": "^7.53.0",
     "react-icons": "^5.3.0",
     "react-select": "^5.8.0",
     "recharts": "^2.12.7",
@@ -42,7 +44,8 @@
     "swiper": "^11.0.5",
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.22.4"
+    "tsup": "^8.2.4",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.12.1",
@@ -59,7 +62,7 @@
     "husky": "^9.0.10",
     "prettier": "^3.1.1",
     "prettier-plugin-tailwindcss": "^0.6.5",
-    "supabase": "^1.145.4",
+    "supabase": "^1.192.5",
     "tailwindcss": "^3.4.10",
     "typescript": "^5"
   }
