@@ -1,30 +1,29 @@
 import React from "react";
 import CartItem from "./CartItem";
 import useCartPopulated from "@/hooks/data/cart/useCartPopulated";
+import { useFilters } from "../context/FiltersProvider";
 
-export default function Items({ filter, up }: { filter: string; up: boolean }) {
-  const {
-    data: { data: cart },
-    isLoading,
-  } = useCartPopulated();
+export default function Items() {
+  const { filter, up } = useFilters();
+  const { data, isLoading } = useCartPopulated();
+  const { cart: cart, numberOfItems, totalPrice } = data ?? {};
   const cart2 = cart?.sort((a, b) => {
     if (filter === "By price") {
       return (
-        (a.product?.price_after_discount ?? 0) -
-        (b.product?.price_after_discount ?? 0)
+        (a.products?.price_after_discount ?? 0) -
+        (b.products?.price_after_discount ?? 0)
       );
     }
     if (filter === "By Discount") {
-      return (b.product?.discount ?? 0) - (a.product?.discount ?? 0);
+      return (b.products?.discount ?? 0) - (a.products?.discount ?? 0);
     }
     return 0;
   });
   const finalCart = up ? [...(cart2 ?? [])].reverse() : cart2;
-  const numberOfItems = cart?.reduce((acc, item) => acc + item.quantity, 0);
   if (isLoading) return <div>Loading Cart Items ...</div>;
   return (
-    <div className="w-full rounded-md bg-white shadow-md">
-      <div className="ml-5 py-4 text-xl text-rose-500">
+    <div className="w-full rounded-md bg-gray-100 shadow-md">
+      <div className="ml-5 py-4 text-xl font-semibold text-rose-500">
         you have ({numberOfItems}) products in your cart
       </div>
 
@@ -32,7 +31,7 @@ export default function Items({ filter, up }: { filter: string; up: boolean }) {
         {finalCart?.map((item) => (
           <CartItem
             key={[item?.product_id, item?.user_id].join("-")}
-            product={item.product}
+            product={item.products}
             quantity={item.quantity}
           />
         ))}

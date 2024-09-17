@@ -2,10 +2,8 @@ import useCartPopulated from "@/hooks/data/cart/useCartPopulated";
 import Link from "next/link";
 
 export default function OrderButton({ total }: { total: number }) {
-  const {
-    data: { data: cart },
-  } = useCartPopulated();
-  const quantity = cart?.reduce((acc, item) => acc + item.quantity, 0);
+  const { data, isLoading } = useCartPopulated();
+  const { cart, numberOfItems: quantity } = data ?? {};
 
   if (cart?.length === 0) {
     return (

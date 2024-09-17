@@ -1,14 +1,16 @@
 import useCreateOrder from "@/hooks/data/Order/createOrder";
 import useCartPopulated from "@/hooks/data/cart/useCartPopulated";
 import React from "react";
+import { number } from "zod";
 
 export default function OrderResume() {
-  const { data: cart } = useCartPopulated();
-  const total_articles = cart?.data?.reduce((a, b) => a + b.quantity, 0);
-  const total_price = cart?.data?.reduce(
-    (a, b) => a + b.quantity * (b.product?.price_after_discount ?? 0),
-    0,
-  );
+  const { data, isLoading } = useCartPopulated();
+  const {
+    cart,
+    numberOfItems: total_articles,
+    totalPrice: total_price,
+  } = data ?? {};
+
   const { mutate } = useCreateOrder();
   return (
     <form

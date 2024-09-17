@@ -2,7 +2,7 @@ import { IProduct } from "@/types/database.tables.types";
 import { Tables } from "@/types/database.types";
 
 export function formatProduct(
-  product: Tables<"products"> | undefined,
+  product: Tables<"products"> | null,
   {
     cart,
     wishlist,
@@ -11,7 +11,13 @@ export function formatProduct(
     wishlist: string[] | undefined;
   },
 ): IProduct | null {
-  if (!product) return null;
+  /*   console.log("product", product);*/
+  /*console.log("cart", cart);
+  console.log("wishlist", wishlist); */
+  if (!product) {
+    console.error("Product is null");
+    return null;
+  }
   return {
     ...product,
     available: product.stock > 0,
@@ -21,5 +27,5 @@ export function formatProduct(
       product.discount_type === "fixed"
         ? product.price - product.discount
         : product.price - (product.price * product.discount) / 100,
-  };
+  } as IProduct | null;
 }

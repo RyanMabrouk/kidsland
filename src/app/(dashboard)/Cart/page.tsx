@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Content from "./ui/Content";
 
 export default async function page() {
