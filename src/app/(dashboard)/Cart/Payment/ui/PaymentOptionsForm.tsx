@@ -1,16 +1,24 @@
 import getLocalValues from "@/helpers/getLocalValues";
 import postLocalValues from "@/helpers/postLocalValues";
-import React, { useState } from "react";
+import { useToast } from "@/hooks/useToast";
+import { PaymentMethodEnum } from "@/types/database.tables.types";
+import React, { useEffect, useState } from "react";
 
 export default function PaymentOptionsForm({ close }: { close: () => void }) {
+  const { toast } = useToast();
   const defaultValues = getLocalValues("paymentOptionsForm");
   const [selectedOption, setSelectedOption] = useState<
-    "cash" | "online" | undefined
-  >(defaultValues.paymentOption);
-
-  const cash = selectedOption === "cash";
+    PaymentMethodEnum.CASH | PaymentMethodEnum.ONLINE
+  >(PaymentMethodEnum.CASH);
+  useEffect(() => {
+    if (!defaultValues.paymentOption) return;
+    if (defaultValues.paymentOption in PaymentMethodEnum) {
+      setSelectedOption(defaultValues.paymentOption);
+    }
+  }, [defaultValues]);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     postLocalValues("paymentOptionsForm", event);
+    toast.success("Payment method saved successfully");
     close();
   };
 
@@ -23,8 +31,8 @@ export default function PaymentOptionsForm({ close }: { close: () => void }) {
             name="paymentOption"
             value="cash"
             id="cash"
-            checked={cash}
-            onChange={() => setSelectedOption("cash")}
+            checked={selectedOption === PaymentMethodEnum.CASH}
+            onChange={() => setSelectedOption(PaymentMethodEnum.CASH)}
             className="h-5 w-5 transform rounded-full border-0 transition duration-300 ease-out checked:scale-125"
           />
           <label htmlFor="cash" className="text-lg font-semibold">
@@ -35,7 +43,7 @@ export default function PaymentOptionsForm({ close }: { close: () => void }) {
           Paiement au moment de la livraison ou à nos points de relais une fois
           que votre commande est livrée
         </p>
-        {cash && (
+        {selectedOption === PaymentMethodEnum.CASH && (
           <div className="mt-3 rounded bg-gray-100 p-3">
             <p className="text-sm text-gray-700">
               Payez plus tard en espèces ou par carte bancaire au moment de la
@@ -63,8 +71,8 @@ export default function PaymentOptionsForm({ close }: { close: () => void }) {
             name="paymentOption"
             value="online"
             id="online"
-            checked={!cash}
-            onChange={() => setSelectedOption("online")}
+            checked={selectedOption === PaymentMethodEnum.ONLINE}
+            onChange={() => setSelectedOption(PaymentMethodEnum.ONLINE)}
             className="h-5 w-5 transform rounded-full border-2 border-gray-300 text-orange-500 transition duration-300 ease-out checked:scale-125"
           />
           <label htmlFor="online" className="text-lg font-semibold">
@@ -75,7 +83,7 @@ export default function PaymentOptionsForm({ close }: { close: () => void }) {
           Réglez vos achats à travers JumiaPay, en utilisant votre carte
           Mastercard ou Visa.
         </p>
-        {!cash && (
+        {selectedOption === PaymentMethodEnum.ONLINE && (
           <div className="mt-3 rounded bg-gray-100 p-3">
             <h1 className="mb-3 w-fit rounded-md bg-color1 p-2 text-white">
               Credit balance KidsLand : 0.00TND

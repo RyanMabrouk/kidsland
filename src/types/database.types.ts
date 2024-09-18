@@ -144,7 +144,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["status_type_enum"]
           total_price: number
           user_id?: string | null
-          wholesale_price?: number
+          wholesale_price: number
         }
         Update: {
           additional_info?: string

@@ -20,6 +20,23 @@ export type QueryReturnType<T extends () => UseQueryOptions> = Awaited<
   ReturnType<
     ReturnType<T>["queryFn"] extends (...args: any) => any
       ? ReturnType<T>["queryFn"]
-       : never
+      : never
   >
 >;
+
+export enum DiscountTypeEnum {
+  FIXED = "fixed",
+  PERCENTAGE = "percentage",
+}
+
+export enum PaymentMethodEnum {
+  CASH = "cash",
+  ONLINE = "online",
+}
+
+export enum OrderStatusEnum {
+  PENDING = "pending",
+  CANCELLED = "cancelled",
+  FULFILLED = "fulfilled",
+  APPROVED = "approved",
+}
