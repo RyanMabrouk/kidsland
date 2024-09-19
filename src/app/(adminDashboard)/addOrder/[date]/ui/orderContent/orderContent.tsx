@@ -1,25 +1,16 @@
 "use client";
 import React, { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import useProducts from "@/hooks/data/products/useProducts";
-import { SelectGeneric } from "@/app/ui/SelectGeneric";
 import Image from "next/image";
 import { Enums, Tables } from "@/types/database.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useOrder } from "../context/useOrder";
 import postData from "@/api/postData";
 import updateData from "@/api/updateData"; // The function for updating stock
-import SelectedProducts from "./selectedProducts";
-import { useStep } from "../context/useStep";
 import { useToast } from "@/hooks/useToast";
+import { useOrder } from "../../context/useOrder";
+import { useStep } from "../../context/useStep";
 import EditOrderStatus from "./orderStatus";
+import SelectedProducts from "./selectedProducts";
 
 type SelectedProduct = Tables<"products"> & {
   quantity: number;
@@ -30,21 +21,27 @@ export default function OrderContent() {
   const { setStep } = useStep();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const [selectedStatus, setSelectedStatus] = useState<(Enums<"status_type_enum">)>("pending");
-  const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>([]);
+  const [selectedStatus, setSelectedStatus] =
+    useState<Enums<"status_type_enum">>("pending");
+  const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>(
+    [],
+  );
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [insufficientStockProducts, setInsufficientStockProducts] = useState<string[]>([]);
+  const [insufficientStockProducts, setInsufficientStockProducts] = useState<
+    string[]
+  >([]);
 
   const AddOrderMutation = useMutation({
     mutationFn: async () => {
       if (selectedProducts.length == 0) {
-        console.log("🚀 ~ mutationFn: ~ selectedProducts:", selectedProducts)
         throw new Error("No products selected");
       }
       const outOfStockProducts = selectedProducts.filter(
-        (product) => product.stock < product.quantity
+        (product) => product.stock < product.quantity,
       );
-      const outOfStockProductIds = outOfStockProducts.map((product) => product.id);
+      const outOfStockProductIds = outOfStockProducts.map(
+        (product) => product.id,
+      );
       setInsufficientStockProducts(outOfStockProductIds);
       if (insufficientStockProducts.length > 0) {
         throw new Error(`Not enough stock`);
@@ -84,8 +81,8 @@ export default function OrderContent() {
               },
             ],
             tableName: "order_products",
-          })
-        )
+          }),
+        ),
       );
       await Promise.all(
         selectedProducts.map((product) => {
@@ -95,10 +92,10 @@ export default function OrderContent() {
             payload: { stock: newStock },
             match: { id: product.id },
           });
-        })
+        }),
       );
     },
-    
+
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["orders"] });
       queryClient.invalidateQueries({ queryKey: ["products"] });
@@ -107,11 +104,13 @@ export default function OrderContent() {
       setSelectedProducts([]);
       setStep(1);
     },
-    
+
     onError: (error) => {
-      toast.error("Error", error.message || "An error occurred while adding the order.");
+      toast.error(
+        "Error",
+        error.message || "An error occurred while adding the order.",
+      );
     },
-    
   });
 
   const { data: products, isLoading } = useProducts({
@@ -130,33 +129,36 @@ export default function OrderContent() {
   const filteredProducts: (Tables<"products"> | null)[] =
     products?.data?.filter(
       (product: Tables<"products"> | null) =>
-        !selectedProducts.find((p) => p.id === product?.id)
+        !selectedProducts.find((p) => p.id === product?.id),
     ) || [];
 
   const calculateTotalPrice = (products: SelectedProduct[]) => {
     return products.reduce(
       (total, product) =>
         total + product.quantity * (product.price - (product.discount || 0)),
-      0
+      0,
     );
   };
 
   const calculateTotalWholesalePrice = (products: SelectedProduct[]) => {
     return products.reduce(
       (total, product) => total + product.quantity * product.wholesale_price,
-      0
+      0,
     );
   };
 
   return (
     <form
-      className="flex flex-col gap-5"
+      className="flex w-[40rem] flex-col gap-5"
       onSubmit={(e) => {
         e.preventDefault();
         AddOrderMutation.mutate();
       }}
     >
-      <EditOrderStatus selectedStatus={selectedStatus} setSelectedStatus={setSelectedStatus} />
+      <EditOrderStatus
+        selectedStatus={selectedStatus}
+        setSelectedStatus={setSelectedStatus}
+      />
 
       <div className="flex flex-col">
         <div className="flex max-w-full items-center gap-1 rounded-lg border-2 border-gray-200 px-2">
@@ -179,10 +181,10 @@ export default function OrderContent() {
             filteredProducts?.map((product) => (
               <div
                 key={product?.id}
-                className="cursor-pointer p-2 border-b transition duration-300 ease-in-out transform hover:scale-105 hover:bg-gray-100 hover:shadow-xl"
+                className="transform cursor-pointer border-b p-2 transition duration-300 ease-in-out hover:scale-105 hover:bg-gray-100 hover:shadow-xl"
                 onClick={() => handleSelectProduct(product)}
               >
-                <div className="flex gap-4 items-center">
+                <div className="flex items-center gap-4">
                   <Image
                     src={product?.image_url || "/path/to/default-image.png"}
                     alt={product?.title || "Product"}
@@ -195,7 +197,11 @@ export default function OrderContent() {
               </div>
             ))}
         </div>
-         <SelectedProducts selectedProducts={selectedProducts} setSelectedProducts={setSelectedProducts} insufficientStockProducts={insufficientStockProducts} />
+        <SelectedProducts
+          selectedProducts={selectedProducts}
+          setSelectedProducts={setSelectedProducts}
+          insufficientStockProducts={insufficientStockProducts}
+        />
       </div>
 
       <button
@@ -207,4 +213,3 @@ export default function OrderContent() {
     </form>
   );
 }
-

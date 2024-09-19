@@ -1,3 +1,4 @@
+"use client ";
 import { useParams } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
@@ -81,27 +82,31 @@ export default function Orders({ searchQuery }: { searchQuery: string }) {
               />
             </div>
         ) : (
+          
           orders?.data.map((order: Tables<"orders">) => (
             <Dialog  key={order.id}>
-              <DialogTrigger >
+              <DialogTrigger>
                 <div
-                  className="py-5 px-5 cursor-pointer shadow-lg grid grid-cols-7 gap-5 font-semibold text-slate-700 bg-white rounded-lg transition-all duration-300 transform hover:bg-blue-50 hover:shadow-xl hover:scale-105"
+                  className="relative py-5 px-5 cursor-pointer shadow-lg grid grid-cols-7 gap-5 font-semibold text-slate-700 bg-white rounded-lg transition-all duration-300 transform hover:bg-blue-50 hover:shadow-xl hover:scale-105"
                 >
-                  <h2 className='text-center col-span-2'>{order.first_name} {order.last_name}</h2>
-                  <h2 className='text-center col-span-2'>{order.total_price} dt</h2>
+                  <h2 className="text-center col-span-2">{order.first_name} {order.last_name}</h2>
+                  <h2 className="text-center col-span-2">{order.total_price} dt</h2>
+
+                  {/* Disable parent hover effect when hovering over this child */}
                   <div
-                      className='flex justify-center col-span-2'
-                      onClick={(e) => e.stopPropagation()} 
-                    >
+                    className="flex z-[100] justify-center col-span-2 hover:!bg-none hover:!shadow-none hover:!scale-100 pointer-events-auto"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     <EditOrderStatus status={order.status} id={order.id} />
                   </div>
-                  
-                    <div
-                      className='flex justify-center'
-                      onClick={(e) => e.stopPropagation()} 
-                    >
-                      <DeleteOrder id={order.id} />
-                    </div>
+
+                  {/* Disable parent hover effect when hovering over this child */}
+                  <div
+                    className="flex justify-center hover:!bg-none hover:!shadow-none hover:!scale-100 pointer-events-auto"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <DeleteOrder id={order.id} />
+                  </div>
                 </div>
               </DialogTrigger>
 

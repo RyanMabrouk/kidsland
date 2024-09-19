@@ -19,15 +19,16 @@ export default function SelectedProducts({selectedProducts,setSelectedProducts,i
       };
   return (
     <div>
-           {selectedProducts.length > 0 && (
+    {selectedProducts.length > 0 && (
         <div className="flex flex-col gap-2">
-        <h4 className="text-sm font-semibold text-gray-900">Selected Products:</h4>
+        <h4 className="text-lg mt-5 font-semibold text-gray-900">Selected Products:</h4>
         <div
-        className={`space-y-2 w-[70%] ${
+        className={` ${
         selectedProducts.length > 3 ? "h-[13rem] overflow-y-auto w-full" : ""
         }`}
         >
-        {selectedProducts.map((product) => (
+          <div className='space-y-2 w-[70%]'>
+          {selectedProducts.map((product) => (
           <div key={product.id} className='flex flex-col gap-2'>
                   <div  className="grid grid-cols-4 items-center">
                 <Image
@@ -63,6 +64,9 @@ export default function SelectedProducts({selectedProducts,setSelectedProducts,i
           </div>
 
             ))}
+
+          </div>
+      
             </div>
         </div>
         )}

@@ -7,7 +7,7 @@ import {
   useOrdersPagination,
 } from "./context/useOrdersPagination";
 import Orders from "./ui/orders";
-import AddOrder from "./ui/(addorder)/addOrder";
+import Link from "next/link";
 
 function ProductListPage() {
   const { date } = useParams();
@@ -54,8 +54,13 @@ function ProductListPage() {
             className="w-full p-2 focus:outline-none sm:w-96"
           />
         </div>
-        <AddOrder/>
-      </div>
+        <Link href={`/addOrder/${date}`}>
+          <button className="w-[7rem] rounded border border-slate-700 bg-slate-100 p-2 px-4 font-bold text-slate-700 duration-300 ease-in-out hover:bg-slate-600 hover:text-slate-200">
+            Add Order
+          </button>    
+        </Link>
+         
+        </div>
 
 
       <Orders searchQuery={searchQuery} />

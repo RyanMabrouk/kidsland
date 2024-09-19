@@ -31,13 +31,13 @@ export default function Products({ searchQuery }: { searchQuery: string }) {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center">
+      <div className="mt-[10rem] flex justify-center items-center">
         <Player
           className="m-auto"
           autoplay
           loop
           src="/AnimationLoading.json"
-          style={{ height: "12rem", width: "12rem" }}
+          style={{ height: "10rem", width: "10rem" }}
         />
       </div>
     );

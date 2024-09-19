@@ -18,6 +18,6 @@ export default async function postData<ITableName extends dbTableType>({
   const { data, error } = await supabase
     .from(tableName)
     .insert(payload)
-    .select("id");
+    .select("*");
   return { data: data, error: error };
 }
