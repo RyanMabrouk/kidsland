@@ -25,7 +25,7 @@ export default function DiscountFilter({
     setValue(discount ? discount_options[0].value : null);
   }, [discount, discount_options]);
   return (
-    <div className="flex flex-col items-start justify-center">
+    <div className="flex flex-col items-start justify-center bg-white">
       <span className="mb-1 text-sm font-medium uppercase">Discount (%)</span>
       {discount_options.map((e) => (
         <Checkbox
