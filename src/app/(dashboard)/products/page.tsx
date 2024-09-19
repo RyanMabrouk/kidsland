@@ -6,16 +6,12 @@ import useProducts from "@/hooks/data/products/useProducts";
 import { useQueryClient } from "@tanstack/react-query";
 import { productsQuery } from "@/hooks/data/products/productsQuery";
 import Product from "../home/ui/ProductsSection/Product";
-import { Divider, Pagination } from "@mui/material";
+import { Pagination } from "@mui/material";
 import { SelectGeneric } from "@/app/ui/SelectGeneric";
 import { Tables } from "@/types/database.types";
 import { ToggleSortArrow } from "./ui/ToggleSortArrow";
-import PriceRangeFilter from "./ui/PriceRangeFilter";
-import DiscountFilter from "./ui/DiscountFilter";
-import CategoriesFilter from "./ui/CategoriesFilter";
 import { AiOutlineMenuUnfold } from "react-icons/ai";
-import useScreenWidth from "@/hooks/useScreenWidth";
-import { IoMdClose } from "react-icons/io";
+import { Filters } from "./ui/Filters";
 
 const sortOptions: { label: string; value: keyof Tables<"products"> }[] = [
   {
@@ -35,7 +31,7 @@ const sortOptions: { label: string; value: keyof Tables<"products"> }[] = [
     value: "title",
   },
 ];
-type ProductsFilterType = {
+export type ProductsFilterType = {
   minDiscount: number;
   priceRange: number[];
   category_id: number | null;
@@ -152,63 +148,3 @@ function Page() {
 }
 
 export default Page;
-
-export function Filters({
-  setFilters,
-  isVisible,
-  setIsVisible,
-}: {
-  setFilters: React.Dispatch<React.SetStateAction<ProductsFilterType>>;
-  isVisible: boolean;
-  setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
-  const screenWidth = useScreenWidth();
-  return (
-    <div
-      className={`relative top-10 z-50 flex h-full w-[15rem] flex-col gap-3 border-r border-gray-200 !bg-white px-5 py-10 transition-all duration-300 ease-linear max-[830px]:sticky ${
-        screenWidth < 830
-          ? isVisible
-            ? "h-screen translate-x-[0%]"
-            : "translate-x-[-200%]"
-          : ""
-      }`}
-    >
-      <IoMdClose
-        className="absolute right-2 top-2 hidden size-6 cursor-pointer max-[830px]:block"
-        onClick={() => {
-          setIsVisible(false);
-        }}
-      />
-      <span className="w-full min-w-full bg-white text-center text-xl font-bold text-color8">
-        Choose a filter
-      </span>
-      <Divider className="!my-4 !bg-white" />
-      <PriceRangeFilter
-        onChange={(value) => {
-          setFilters((prev) => ({
-            ...prev,
-            priceRange: value,
-          }));
-        }}
-      />
-      <Divider className="!my-4 !bg-white" />
-      <DiscountFilter
-        onChange={(value) => {
-          setFilters((prev) => ({
-            ...prev,
-            minDiscount: value,
-          }));
-        }}
-      />
-      <Divider className="!my-4 !bg-white" />
-      <CategoriesFilter
-        onChange={(value) =>
-          setFilters((prev) => ({
-            ...prev,
-            category_id: value,
-          }))
-        }
-      />
-    </div>
-  );
-}
