@@ -1,14 +1,30 @@
 import useCreateOrder from "@/hooks/data/orders/createOrder";
 import useCartPopulated from "@/hooks/data/cart/useCartPopulated";
 import React from "react";
+import { Spinner } from "@/app/ui/Spinner";
+import getLocalValues from "@/helpers/getLocalValues";
+import { redirect } from "next/navigation";
 
 export default function OrderResume() {
   const { data: cart } = useCartPopulated();
   const total_articles = cart?.data?.reduce((a, b) => a + b.quantity, 0);
-  const { mutate } = useCreateOrder();
+  const clientAdressForm = getLocalValues("clientAddressForm");
+  const paymentOptionsForm = getLocalValues("paymentOptionsForm");
+  const orderDetails = {
+    first_name: clientAdressForm.firstName,
+    last_name: clientAdressForm.lastName,
+    address: clientAdressForm.adress,
+    region: clientAdressForm.state,
+    city: clientAdressForm.city,
+    phone_number: clientAdressForm.telephone,
+    additional_info: clientAdressForm.addInfo,
+    payment_method: paymentOptionsForm.paymentOption,
+  };
+  const { mutate, isPending } = useCreateOrder();
+  if (total_articles === 0) redirect("/Cart");
   return (
     <form
-      action={() => mutate()}
+      action={() => mutate(orderDetails)}
       className="fixed left-[70rem] flex w-[18rem] flex-col gap-2 rounded-xl bg-white p-4 shadow-2xl transition-all duration-300"
     >
       <h1 className="p-2 text-center">Order Resume</h1>
@@ -37,9 +53,9 @@ export default function OrderResume() {
       <hr />
       <button
         type="submit"
-        className="rounded-lg bg-color1 p-3 text-center text-xl font-semibold text-white transition-all duration-300 hover:bg-red-400"
+        className="flex items-center justify-center rounded-lg bg-color1 p-3 text-center text-xl font-semibold text-white transition-all duration-300 hover:bg-red-400"
       >
-        Confirm the Order
+        {isPending ? <Spinner /> : "Confirm the Order"}
       </button>
       <h1 className="p-2">(complete the steps to continue)</h1>
     </form>

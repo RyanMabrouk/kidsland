@@ -10,11 +10,7 @@ function NotFound() {
       <div className="mt-[2rem] flex h-full w-11/12 flex-col items-center justify-start gap-[5rem]">
         <div className="flex w-full items-center justify-start gap-[1.2rem] border-b border-gray-500 pb-4">
           <div className="flex items-end justify-center gap-[1.2rem]">
-            <Image
-              className="h-[3.5rem] w-[3.5rem]"
-              alt="not found"
-              src={NotFoundPage}
-            />
+          
             <p className="text-4xl font-bold text-slate-700">Page Not Found</p>
             <p className="font-base text-lg text-gray-700">(404 Error)</p>
           </div>

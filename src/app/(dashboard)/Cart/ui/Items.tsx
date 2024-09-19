@@ -13,7 +13,6 @@ export default function Items({
 }) {
   const {
     data: { data: cart },
-    isLoading,
   } = useCartPopulated();
   const sortedCart = cart?.sort((a, b) => {
     if (filter === "price") {
