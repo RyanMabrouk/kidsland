@@ -1,15 +1,12 @@
 import React, { Dispatch, SetStateAction } from "react";
 import PaymentOptionsForm from "./PaymentOptionsForm";
 import getLocalValues from "@/helpers/getLocalValues";
+import { OpenPaymentFormType } from "./Content";
+import { useOpen } from "../context/OpenProvider";
 
-export default function PaymentOptions({
-  open: o,
-  setOpen,
-}: {
-  open: "clientAdress" | "paymentOptions" | "none";
-  setOpen: Dispatch<SetStateAction<"clientAdress" | "paymentOptions" | "none">>;
-}) {
-  const isOpen = o === "paymentOptions";
+export default function PaymentOptions() {
+  const { open: VisiblePaymentForm, setOpen } = useOpen();
+  const isOpen = VisiblePaymentForm === "paymentOptions";
   const open = () => setOpen("paymentOptions");
   const close = () => setOpen("none");
   const paymentOption = getLocalValues("paymentOptionsForm").paymentOption;

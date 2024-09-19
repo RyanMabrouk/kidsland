@@ -1,14 +1,11 @@
 "use server";
 
-import { cookies } from "next/headers";
-import { Tables } from "@/types/database.types";
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import getData from "../../api/getData";
 
-export async function getOrderProducts(id: number) {
+export async function getOrderProducts({ order_id }: { order_id: number }) {
   return await getData({
     tableName: "order_products",
-    match: { order_id: id },
+    match: { order_id },
   });
 }
 

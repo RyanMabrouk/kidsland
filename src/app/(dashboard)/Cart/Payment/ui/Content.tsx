@@ -1,23 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import ClientAdress from "./ClientAdress";
+import ClientAddress from "./ClientAddress";
 import PaymentOptions from "./PaymentOptions";
 import OrderResume from "./OrderResume";
+import { OpenProvider } from "../context/OpenProvider";
+
+export type OpenPaymentFormType = "clientAddress" | "paymentOptions" | "none";
 
 export default function Content() {
-  const [open, setOpen] = useState<"clientAdress" | "paymentOptions" | "none">(
-    "clientAdress",
-  );
   return (
-    <div className="flex w-full justify-center gap-7 p-8">
-      <div className="mr-52 flex w-7/12 flex-col items-center gap-5 bg-white">
-        <ClientAdress open={open} setOpen={setOpen} />
-        <PaymentOptions open={open} setOpen={setOpen} />
+    <OpenProvider>
+      <div className="flex w-full justify-center gap-24 p-8 transition-all duration-500">
+        <div className="flex w-7/12 flex-col items-center gap-5 bg-white">
+          <ClientAddress />
+          <PaymentOptions />
+        </div>
+        <OrderResume />
       </div>
-      <OrderResume />
-    </div>
+    </OpenProvider>
   );
 }
-
-// TODO: Remove the button

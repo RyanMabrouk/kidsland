@@ -1,10 +1,6 @@
-import getOrderProducts from "@/actions/Order products/getOrderProducts";
-import { Tables } from "@/types/database.types";
-import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { orderProductsQuery } from "./orderProductsQuery";
 
-export const useOrderProducts = (id: number) => {
-  return useQuery({
-    queryKey: ["orderProducts"],
-    queryFn: async () => getOrderProducts(id),
-  });
+export const useOrderProducts = (order_id: number) => {
+  return useQuery(orderProductsQuery({ order_id }));
 };

@@ -69,7 +69,7 @@ function Page() {
     }
   }, [page, products?.meta?.has_next_page, sort, filters, queryClient]);
   return (
-    <div className="flex flex-col">
+    <div className="mb-20 flex flex-col">
       <Image
         src={"/product/igracke_header.jpg"}
         alt="logo"

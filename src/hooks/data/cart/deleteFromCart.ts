@@ -3,7 +3,7 @@ import { useToast } from "@/hooks/useToast";
 import { IProduct } from "@/types/database.tables.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export default function useDeleteCartItem(product: IProduct | null) {
+export default function useDeleteFromCart(product: IProduct | null) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   return useMutation({

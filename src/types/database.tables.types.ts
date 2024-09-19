@@ -1,3 +1,4 @@
+import { UseQueryOptions } from "@tanstack/react-query";
 import { Database, Tables } from "./database.types";
 
 // Tables names
@@ -14,3 +15,11 @@ export interface IProduct extends Tables<"products"> {
   isInCart: boolean;
   isInWishlist: boolean;
 }
+
+export type QueryReturnType<T extends () => UseQueryOptions> = Awaited<
+  ReturnType<
+    ReturnType<T>["queryFn"] extends (...args: any) => any
+      ? ReturnType<T>["queryFn"]
+       : never
+  >
+>;

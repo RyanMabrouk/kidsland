@@ -5,7 +5,7 @@ import { IProduct } from "@/types/database.tables.types";
 export interface ICartResponse extends Tables<"cart"> {
   products: Tables<"products">;
 }
-const cartPopulatedQuery = () => ({
+const cartPopulatedQuery = (limit: number, page: number) => ({
   queryKey: [
     "cart",
     {
@@ -15,10 +15,11 @@ const cartPopulatedQuery = () => ({
   ],
   queryFn: async () => {
     console.log("cartPopulatedQuery");
-    const { data, error } = await getData<"cart", ICartResponse[]>({
+    const { data } = await getData<"cart", ICartResponse[]>({
       tableName: "cart",
       column: "*,products(*)",
       user: true,
+      pagination: { limit: limit, page: page },
     });
     const newData = (data || []).map((e) => {
       const price_after_discount =
@@ -51,8 +52,12 @@ const cartPopulatedQuery = () => ({
     return {
       cart: newData,
       numberOfItems: newData?.reduce((acc, item) => acc + item.quantity, 0),
-      totalPrice: newData?.reduce(
+      total_after_discount: newData?.reduce(
         (a, b) => a + (b.products?.price_after_discount ?? 0) * b.quantity,
+        0,
+      ),
+      total_before_discount: newData?.reduce(
+        (a, b) => a + (b.products?.price ?? 0) * b.quantity,
         0,
       ),
     };

@@ -107,13 +107,13 @@ export default function PaymentOptionsForm({ close }: { close: () => void }) {
           onClick={close}
           className="rounded-md bg-red-400 px-4 py-2 font-semibold text-white transition-all duration-300 hover:bg-red-500 hover:shadow-sm hover:shadow-red-500"
         >
-          Annuler
+          Cancel
         </button>
         <button
           type="submit"
           className="rounded bg-orange-500 px-4 py-2 font-semibold text-white hover:bg-orange-600"
         >
-          CONFIRMER LE MODE DE PAIEMENT
+          CONFIRM PAYMENT METHOD
         </button>
       </div>
     </form>

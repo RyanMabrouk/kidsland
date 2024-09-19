@@ -4,6 +4,8 @@ import "./globals.css";
 import Hydration from "@/provider/hydration";
 import Store from "@/provider/store";
 import { ToastContainer, ToastProvider } from "@/hooks/useToast";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
 
 const lato = Lato({
   weight: ["100", "300", "400", "700", "900"],
@@ -36,6 +38,8 @@ export default async function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body className={lato.className + " min-h-screen"}>
+        <Analytics />
+        <SpeedInsights />
         <Store>
           <Hydration>
             <ToastProvider>

@@ -1,20 +1,17 @@
 "use server";
 
-import { cookies } from "next/headers";
-import { Tables, TablesUpdate } from "@/types/database.types";
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
+import { TablesUpdate } from "@/types/database.types";
+import updateData from "@/api/updateData";
 
 export async function updateOrderProducts(
   payload: TablesUpdate<"order_products">,
-  id: string,
+  id: number,
 ) {
-  const supabase = createServerActionClient({ cookies });
-  const { data, error } = await supabase
-    .from("order_products")
-    .update(payload)
-    .eq("id", id)
-    .select()
-    .single();
+  const { data, error } = await updateData({
+    tableName: "order_products",
+    payload,
+    match: { id },
+  });
   if (error) throw new Error(error.message);
-  return { data } as { data: Tables<"order_products"> };
+  return { data };
 }
