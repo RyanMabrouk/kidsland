@@ -55,8 +55,10 @@ export function SelectGeneric({
           variant="outlined"
           data-placeholder-trigger="keydown"
           className={cn(
-            `group peer border transition-all ease-linear first-letter:capitalize [&_.Mui-selected]:!bg-color1 [&_.MuiOutlinedInput-notchedOutline]:border-none ${open ? "rounded-b-none rounded-t-sm shadow-md" : "rounded-sm shadow-sm hover:shadow-md"} ${
-              variant === "regular" ? "h-9 w-[12.5rem]" : "h-12 w-[11.5rem] border-gray-400 border-2"
+            `group peer border transition-all ease-linear first-letter:capitalize max-[515px]:w-[7.5rem] [&_.Mui-selected]:!bg-color1 [&_.MuiOutlinedInput-notchedOutline]:border-none ${open ? "rounded-b-none rounded-t-sm shadow-md" : "rounded-sm shadow-sm hover:shadow-md"} ${
+              variant === "regular"
+                ? "h-9 w-[12.5rem]"
+                : "h-12 w-[11.5rem] border-2 border-gray-400"
             }`,
             className,
           )}

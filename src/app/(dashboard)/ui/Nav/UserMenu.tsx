@@ -1,10 +1,6 @@
 "use client";
 import { Logout } from "@mui/icons-material";
-import {
-  Divider,
-  IconButton,
-  Menu,
-} from "@mui/material";
+import { Divider, IconButton, Menu } from "@mui/material";
 import React from "react";
 import { FaHeart } from "react-icons/fa";
 import SignOutBtn from "./SignOutBtn";
@@ -22,18 +18,11 @@ export default function UserMenu() {
   };
   const items = [
     {
-      title: "Profile",
+      title: "My Orders",
       icon: (
         <FaUserLarge className="size-[1.85rem] rounded-full bg-gray-500 p-1.5 text-center text-sm text-white group-hover:bg-white group-hover:text-color1" />
       ),
-      href: "/profile",
-    },
-    {
-      title: "My account",
-      icon: (
-        <FaUserLarge className="size-[1.85rem] rounded-full bg-gray-500 p-1.5 text-center text-sm text-white group-hover:bg-white group-hover:text-color1" />
-      ),
-      href: "/account",
+      href: "/orders",
     },
     {
       title: "Wishlist",

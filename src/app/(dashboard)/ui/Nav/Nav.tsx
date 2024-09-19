@@ -12,7 +12,7 @@ import { IoMdClose } from "react-icons/io";
 
 export function Nav() {
   return (
-    <nav className="mx-auto flex h-20 w-full flex-row items-center justify-evenly max-[830px]:justify-between max-[439px]:px-2 min-[440px]:px-8 min-[830px]:max-w-[80rem]">
+    <nav className="mx-auto flex h-20 w-full flex-row items-center justify-evenly px-4 max-[830px]:justify-between max-[439px]:px-2 min-[830px]:max-w-[80rem]">
       <PhoneMenu />
       <Link href={"/home"}>
         <Image
