@@ -55,7 +55,7 @@ export function SelectGeneric({
           variant="outlined"
           data-placeholder-trigger="keydown"
           className={cn(
-            `group peer h-9 w-[12.5rem] border transition-all ease-linear first-letter:capitalize [&_.Mui-selected]:!bg-color1 [&_.MuiOutlinedInput-notchedOutline]:border-none ${open ? "rounded-b-none rounded-t-sm shadow-md" : "rounded-sm shadow-sm hover:shadow-md"}`,
+            `group peer max-[515px]:w-[7.5rem] h-9 w-[12.5rem] border transition-all ease-linear first-letter:capitalize [&_.Mui-selected]:!bg-color1 [&_.MuiOutlinedInput-notchedOutline]:border-none ${open ? "rounded-b-none rounded-t-sm shadow-md" : "rounded-sm shadow-sm hover:shadow-md"}`,
             className,
           )}
           label={label}
