@@ -9,6 +9,7 @@ export type SelectGenericOption = {
   value: string | number;
   disabled?: boolean;
 };
+
 export function SelectGeneric({
   className,
   label,
