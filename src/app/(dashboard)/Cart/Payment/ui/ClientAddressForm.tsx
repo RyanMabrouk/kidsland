@@ -5,6 +5,7 @@ import TextInput from "./TextInput";
 import getLocalValues from "@/helpers/getLocalValues";
 import postLocalValues from "@/helpers/postLocalValues";
 import Textarea from "./Textarea";
+import { useToast } from "@/hooks/useToast";
 
 export default function ClientAddressForm({
   close,
@@ -14,11 +15,13 @@ export default function ClientAddressForm({
   next: () => void;
 }) {
   const defaultFormValues = getLocalValues("clientAddressForm");
+  const { toast } = useToast();
   const [state, setState] = useState<State | undefined>(
     states.find((e) => e.state === defaultFormValues.state),
   );
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     postLocalValues("clientAddressForm", event);
+    toast.success("Credentials saved successfully");
     next();
   };
 
