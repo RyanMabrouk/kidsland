@@ -24,7 +24,7 @@ export default function PriceRangeFilter({
   }, value);
 
   return (
-    <div className="flex flex-col items-start justify-center">
+    <div className="flex flex-col items-start justify-center bg-white">
       <span className="mb-1 text-sm font-medium uppercase">Price (TND)</span>
       <Slider
         className="!mx-1 !text-color8"

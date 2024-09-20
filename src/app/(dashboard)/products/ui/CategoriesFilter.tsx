@@ -15,7 +15,7 @@ export default function CategoriesFilter({
     setValue(categories?.data?.find((e) => e.name == category)?.name ?? null);
   }, [category, categories?.data?.length]);
   return (
-    <div className="flex flex-col items-start justify-center">
+    <div className="flex flex-col items-start justify-center bg-white">
       <span className="mb-1 text-sm font-medium uppercase">Category</span>
       {categories?.data?.map((e) => (
         <Checkbox
