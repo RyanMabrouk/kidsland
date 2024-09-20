@@ -20,7 +20,7 @@ export default function PrimaryButton({
     >
       <div
         className={cn("flex items-center justify-center", {
-          invisible: loading, // Hide children when loading
+          invisible: loading,
           visible: !loading,
         })}
       >
