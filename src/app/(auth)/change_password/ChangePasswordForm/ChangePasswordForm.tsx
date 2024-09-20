@@ -6,7 +6,6 @@ import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { z } from "zod";
 
-// Zod schema for password validation
 const changePasswordSchema = z
   .object({
     newPassword: z
@@ -16,11 +15,10 @@ const changePasswordSchema = z
   })
   .refine((data) => data.newPassword === data.confirmPassword, {
     message: "Passwords don't match",
-    path: ["confirmPassword"], // path to show error for confirmPassword
+    path: ["confirmPassword"],
   });
 
 export default function ChangePasswordForm() {
-  // State for storing field-specific errors
   const [fieldErrors, setFieldErrors] = React.useState({
     newPassword: "",
     confirmPassword: "",
@@ -34,10 +32,9 @@ export default function ChangePasswordForm() {
         confirmPassword: string;
       };
 
-      // Validate form data using Zod schema
       try {
         changePasswordSchema.parse(formObject);
-        // Clear errors if validation passes
+        
         setFieldErrors({
           newPassword: "",
           confirmPassword: "",
@@ -49,7 +46,6 @@ export default function ChangePasswordForm() {
             confirmPassword: "",
           };
 
-          // Map Zod errors to the respective fields
           err.errors.forEach((e) => {
             errors[e.path[0] as keyof typeof errors] = e.message;
           });
@@ -60,10 +56,9 @@ export default function ChangePasswordForm() {
             confirmPassword: "An unexpected error occurred",
           });
         }
-        throw err; // Stop further processing
+        throw err;
       }
 
-      // Update password logic here
       const { error } = await updatePassword({
         newPassword: formObject.newPassword,
       });
@@ -76,7 +71,6 @@ export default function ChangePasswordForm() {
         throw new Error(error.message);
       }
 
-      // Set success message
       setSuccessMessage("Your password has been successfully changed.");
     },
   });
@@ -93,7 +87,7 @@ export default function ChangePasswordForm() {
           type="password"
           required
           name="newPassword"
-          error={fieldErrors.newPassword} // Pass error to the Input component
+          error={fieldErrors.newPassword} 
         />
         <Input
           label="Confirm New Password"
@@ -101,7 +95,7 @@ export default function ChangePasswordForm() {
           type="password"
           required
           name="confirmPassword"
-          error={fieldErrors.confirmPassword} // Pass error to the Input component
+          error={fieldErrors.confirmPassword} 
         />
 
         {successMessage && (

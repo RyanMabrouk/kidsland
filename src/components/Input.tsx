@@ -7,7 +7,7 @@ interface InputProps {
   name: string;
   placeholder?: string;
   required?: boolean;
-  error?: string; // Added for error handling
+  error?: string;
 }
 
 export default function Input({
@@ -16,7 +16,7 @@ export default function Input({
   name,
   placeholder,
   required,
-  error, // Accept error as a prop
+  error,
 }: InputProps) {
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -54,8 +54,6 @@ export default function Input({
         </div>
         {error && <p className="mt-1 text-sm text-red-500">{error}</p>}{" "}
       </div>
-
-      {/* Display error */}
     </div>
   );
 }
