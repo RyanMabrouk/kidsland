@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Pagination, Navigation, Virtual, Autoplay } from "swiper/modules";
 import { Swiper, SwiperProps, SwiperSlide } from "swiper/react";
@@ -15,7 +16,6 @@ export default function CustomSwiper(
       className="w-full"
       {...props}
       modules={[Virtual, Pagination, Navigation, Autoplay]}
-      spaceBetween={props.spaceBetween ?? 25}
       slidesPerGroupSkip={props.slidesPerGroupSkip ?? 3}
       pagination={props.pagination ? { clickable: true } : false}
       onSwiper={(swiper) => {
@@ -23,7 +23,7 @@ export default function CustomSwiper(
         swiper.update();
       }}
       onRealIndexChange={(element) =>
-        props.setActiveIndex ? props.setActiveIndex(element.activeIndex) : null
+        props.setActiveIndex?.(element.activeIndex)
       }
     >
       {props.slides?.map((slide: any, index: number) => (

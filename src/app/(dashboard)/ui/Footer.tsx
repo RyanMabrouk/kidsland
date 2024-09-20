@@ -3,6 +3,7 @@ import { FaFacebook, FaInstagram } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { menuItems } from "../home/constants/menuItems";
 import Link from "next/link";
+import { EMAIL, FB_LINK, IG_LINK } from "@/constants/Admin";
 
 export default function Footer() {
   const kidsLandLinks = ["About Us", "Contact Us", "Privacy Policy"];
@@ -54,23 +55,21 @@ export default function Footer() {
             <Link
               className="w-max cursor-pointer"
               target="window.location=another.html"
-              href={"mailto:kids.land93@outlook.com"}
+              href={`mailto:${EMAIL}`}
             >
               <MdEmail className="size-[1.5rem] cursor-pointer" />
             </Link>
             <Link
               className="w-max cursor-pointer"
               target="_blank"
-              href={
-                "https://www.instagram.com/imrah.taalam?igsh=bTdxNWIyOHR2eDVh"
-              }
+              href={IG_LINK}
             >
               <FaInstagram className="size-[1.5rem] cursor-pointer" />
             </Link>
             <Link
               className="w-max cursor-pointer"
               target="_blank"
-              href={"https://www.facebook.com/kidslandjouets"}
+              href={FB_LINK}
             >
               <FaFacebook className="size-[1.5rem] cursor-pointer" />
             </Link>

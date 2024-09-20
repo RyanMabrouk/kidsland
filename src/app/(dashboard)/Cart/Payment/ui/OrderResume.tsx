@@ -24,7 +24,10 @@ export default function OrderResume() {
   if (total_articles === 0) redirect("/Cart");
   return (
     <form
-      action={() => mutate(orderDetails)}
+      action={() => {
+        mutate(orderDetails);
+        redirect("/Cart");
+      }}
       className="fixed left-[70rem] flex w-[18rem] flex-col gap-2 rounded-xl bg-white p-4 shadow-2xl transition-all duration-300"
     >
       <h1 className="p-2 text-center">Order Resume</h1>

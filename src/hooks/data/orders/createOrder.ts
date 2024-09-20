@@ -83,7 +83,6 @@ export default function useCreateOrder() {
       await queryClient.invalidateQueries({
         queryKey: ["cart"],
       });
-      redirect("/Cart");
     },
     onError: (error) => {
       if (!error.message.includes("{")) {

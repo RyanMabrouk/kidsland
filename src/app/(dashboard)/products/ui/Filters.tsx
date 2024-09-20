@@ -1,8 +1,5 @@
-import { Divider, Pagination } from "@mui/material";
-import { SelectGeneric } from "@/app/ui/SelectGeneric";
-import { Tables } from "@/types/database.types";
-
-import { AiOutlineMenuUnfold } from "react-icons/ai";
+"use client";
+import { Divider } from "@mui/material";
 import useScreenWidth from "@/hooks/useScreenWidth";
 import { IoMdClose } from "react-icons/io";
 import { ProductsFilterType } from "../page";
