@@ -14,7 +14,7 @@ export default function OrderResume() {
   return (
     <form
       action={() => mutate()}
-      className="sticky top-20 flex h-fit w-[18rem] flex-col gap-2 rounded-xl bg-white p-4 shadow-2xl transition-all duration-300"
+      className="sticky flex h-fit w-[18rem] flex-col gap-2 rounded-xl bg-white p-4 shadow-2xl transition-all duration-300"
     >
       <h1 className="p-2 text-center">Order Resume</h1>
       <hr />

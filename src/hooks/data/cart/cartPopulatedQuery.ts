@@ -14,13 +14,13 @@ const cartPopulatedQuery = (limit: number, page: number) => ({
     },
   ],
   queryFn: async () => {
-    console.log("cartPopulatedQuery");
     const { data } = await getData<"cart", ICartResponse[]>({
       tableName: "cart",
       column: "*,products(*)",
       user: true,
       pagination: { limit: limit, page: page },
     });
+    console.log(data);
     const newData = (data || []).map((e) => {
       const price_after_discount =
         e.products.discount_type === "fixed"

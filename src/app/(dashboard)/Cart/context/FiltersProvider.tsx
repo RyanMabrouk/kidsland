@@ -1,11 +1,17 @@
-import { createContext, useContext, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useContext,
+  useState,
+} from "react";
 import { cartSortFiltersValues } from "../constants/CartFilters";
 
 type FiltersType = Partial<{
   isReversed: boolean;
   filter: cartSortFiltersValues;
-  setIsReversed: (a: boolean) => void;
-  setFilter: (a: cartSortFiltersValues) => void;
+  setIsReversed: Dispatch<SetStateAction<boolean>>;
+  setFilter: Dispatch<SetStateAction<cartSortFiltersValues>>;
 }>;
 
 const FiltersContext = createContext<FiltersType>({});
@@ -13,6 +19,7 @@ const FiltersContext = createContext<FiltersType>({});
 export function FiltersProvider({ children }: { children: React.ReactNode }) {
   const [isReversed, setIsReversed] = useState<boolean>(false);
   const [filter, setFilter] = useState<cartSortFiltersValues>("title");
+
   return (
     <FiltersContext.Provider
       value={{ isReversed, setIsReversed, filter, setFilter }}

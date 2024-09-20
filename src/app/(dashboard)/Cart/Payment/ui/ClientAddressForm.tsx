@@ -41,8 +41,10 @@ export default function ClientAddressForm({
             label="Last Name"
           />
         </div>
-        <div className="col-span-1 mt-3 text-gray-500">Prefix +216</div>
-        <div className="col-span-12 sm:col-span-5">
+        <div className="col-span-1 mt-3 hidden text-gray-500 xl:block">
+          Prefix +216
+        </div>
+        <div className="col-span-12 xl:col-span-5">
           <TextInput
             defaultValue={defaultFormValues.telephone}
             name="telephone"
@@ -50,7 +52,7 @@ export default function ClientAddressForm({
             label="Phone number"
           />
         </div>
-        <div className="col-span-12 flex flex-row items-end justify-between sm:col-span-6">
+        <div className="col-span-6 flex items-end justify-center xl:col-span-3">
           <SelectGeneric
             variant="oversized"
             defaultValue={
@@ -66,6 +68,8 @@ export default function ClientAddressForm({
               value: e.state,
             }))}
           />
+        </div>
+        <div className="col-span-6 flex items-end justify-center xl:col-span-3">
           <SelectGeneric
             variant="oversized"
             defaultValue={
