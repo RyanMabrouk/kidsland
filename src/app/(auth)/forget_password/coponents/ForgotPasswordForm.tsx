@@ -5,11 +5,9 @@ import PrimaryButton from "@/components/PrimaryButton";
 import SecondaryButton from "@/components/SecondaryButton";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React from "react";
 import { z } from "zod";
 
-// Define Zod schema for email validation
 const forgotPasswordSchema = z.object({
   email: z.string().email("Invalid email address"),
 });
