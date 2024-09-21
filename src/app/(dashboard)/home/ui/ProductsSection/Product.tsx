@@ -26,7 +26,7 @@ export default function Product({
   isInWishlist,
 }: Partial<ProductProps>) {
   return (
-    <div className="relative flex h-[25rem] w-[15rem] flex-col items-center justify-center gap-4 overflow-hidden max-[540px]:h-[17.5rem] max-[540px]:w-[10rem]">
+    <div className="relative flex h-[25rem] w-[15rem] flex-col items-center justify-center gap-4 overflow-hidden max-[640px]:h-[17.5rem] max-[640px]:w-[10rem]">
       <div className="group h-full w-full overflow-hidden rounded-md border transition-all ease-linear hover:backdrop-brightness-75">
         {!!discount && (
           <Image

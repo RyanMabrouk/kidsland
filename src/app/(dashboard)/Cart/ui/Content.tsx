@@ -5,7 +5,6 @@ import Resume from "./Resume";
 import { cartSortFilters } from "../constants/CartFilters";
 import { Filters } from "./Filters";
 import { FiltersProvider } from "../context/FiltersProvider";
-import { useState } from "react";
 
 export default function Content() {
   return (

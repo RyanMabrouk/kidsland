@@ -16,7 +16,7 @@ export default function AddToCartBtn({
 }) {
   const { mutate: addToCart, isPending } = useAddToCart();
   return (
-    <form>
+    <form className="flex justify-start items-start">
       {isInCart ? (
         <div
           className={cn(
