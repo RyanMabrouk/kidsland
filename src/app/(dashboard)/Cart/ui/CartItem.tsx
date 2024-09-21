@@ -53,7 +53,7 @@ export default function CartItem({
             </div>
             <div className="flex flex-col gap-2 p-3">
               <div className="text-right">
-                {Math.round((product?.price_after_discount ?? 0) * 100) / 100}{" "}
+                {product?.price_after_discount.toFixed(2)}
                 TND
               </div>
               {product?.discount && product.discount > 0 && (

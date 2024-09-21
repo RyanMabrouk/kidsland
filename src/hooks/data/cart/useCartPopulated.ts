@@ -3,11 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { cartPopulatedQuery } from "./cartPopulatedQuery";
 import useWishlist from "../wishlist/useWishlist";
 
-export default function useCartPopulated(
-  limit: number = Infinity,
-  page: number = 1,
-) {
-  const query = useQuery(cartPopulatedQuery(limit, page));
+export default function useCartPopulated() {
+  const query = useQuery(cartPopulatedQuery());
   const total_after_discount = query.data?.total_after_discount ?? 0;
   const total_before_discount = query.data?.total_before_discount ?? 0;
   const isFreeDelivery = total_after_discount >= 100;

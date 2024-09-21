@@ -4,7 +4,7 @@ import { get } from "http";
 import getLocalValues from "@/helpers/getLocalValues";
 import { OpenPaymentFormType } from "./Content";
 import ClientAddressForm from "./ClientAddressForm";
-import { useOpen } from "../context/OpenProvider";
+import { useOpen } from "../context/OpenFormProvider";
 
 export default function ClientAddress() {
   const { open: VisiblePaymentForm, setOpen } = useOpen();

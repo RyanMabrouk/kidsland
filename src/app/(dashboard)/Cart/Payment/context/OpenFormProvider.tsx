@@ -8,10 +8,10 @@ type OpenType = Partial<{
 
 const OpenContext = createContext<OpenType>({});
 
-export function OpenProvider({ children }: { children: React.ReactNode }) {
-  const [open, setOpen] = useState<OpenPaymentFormType>("clientAddress");
+export function OpenFormProvider({ children }: { children: React.ReactNode }) {
+  const [openForm, setOpen] = useState<OpenPaymentFormType>("clientAddress");
   return (
-    <OpenContext.Provider value={{ open, setOpen }}>
+    <OpenContext.Provider value={{ open: openForm, setOpen }}>
       {children}
     </OpenContext.Provider>
   );

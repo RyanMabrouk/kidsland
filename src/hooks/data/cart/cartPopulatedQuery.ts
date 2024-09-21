@@ -2,10 +2,12 @@
 import getData from "@/api/getData";
 import { Tables } from "@/types/database.types";
 import { IProduct } from "@/types/database.tables.types";
+import { formatProduct } from "../products/formatProducts";
+import useWishlist from "../wishlist/useWishlist";
 export interface ICartResponse extends Tables<"cart"> {
   products: Tables<"products">;
 }
-const cartPopulatedQuery = (limit: number, page: number) => ({
+const cartPopulatedQuery = () => ({
   queryKey: [
     "cart",
     {
@@ -14,36 +16,24 @@ const cartPopulatedQuery = (limit: number, page: number) => ({
     },
   ],
   queryFn: async () => {
-    const { data } = await getData<"cart", ICartResponse[]>({
+    const cartQuery = getData<"cart", ICartResponse[]>({
       tableName: "cart",
       column: "*,products(*)",
       user: true,
-      pagination: { limit: limit, page: page },
     });
-    console.log(data);
+    const wishlistQuery = getData<"wishlist">({
+      tableName: "wishlist",
+      column: "*",
+      user: true,
+    });
+    const [{ data }, { data: wishlistInitial }] = await Promise.all([
+      cartQuery,
+      wishlistQuery,
+    ]);
+    const cart = data?.map((e) => e.product_id) ?? [];
+    const wishlist = wishlistInitial?.map((e) => e.product_id) ?? [];
     const newData = (data || []).map((e) => {
-      const price_after_discount =
-        e.products.discount_type === "fixed"
-          ? e.products.price - e.products.discount
-          : e.products.price - (e.products.price * e.products.discount) / 100;
-      const product = {
-        id: e.product_id,
-        created_at: e.products.created_at,
-        available: e.products.stock > 0,
-        category_id: e.products.category_id,
-        description: e.products.description,
-        discount: e.products.discount,
-        discount_type: e.products.discount_type,
-        image_url: e.products.image_url,
-        isInCart: true,
-        price: e.products.price,
-        price_after_discount,
-        stock: e.products.stock,
-        title: e.products.title,
-        subtitle: e.products.subtitle,
-        wholesale_price: e.products.wholesale_price,
-        isInWishlist: false,
-      } as IProduct;
+      const product = formatProduct(e.products, { cart, wishlist });
       return {
         ...e,
         products: product,
