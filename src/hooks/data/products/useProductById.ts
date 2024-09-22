@@ -13,7 +13,7 @@ export default function useProductById(id: string) {
     ...query,
     data: {
       ...query.data,
-      data: formatProduct(query.data?.data?.[0], {
+      data: formatProduct(query.data?.data?.[0] ?? null, {
         cart: cart?.data,
         wishlist: wishlist?.data,
       }),

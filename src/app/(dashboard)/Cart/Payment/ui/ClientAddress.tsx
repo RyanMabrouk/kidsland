@@ -1,15 +1,10 @@
-import React, { Dispatch, SetStateAction } from "react";
-import ClientAddressForm from "./ClientAddressForm";
+import React from "react";
 import getLocalValues from "@/helpers/getLocalValues";
-import { OpenPaymentFormType } from "./Content";
+import ClientAddressForm from "./ClientAddressForm";
+import { useOpen } from "../context/OpenFormProvider";
 
-export default function ClientAddress({
-  open: VisiblePaymentForm,
-  setOpen,
-}: {
-  open: OpenPaymentFormType;
-  setOpen: Dispatch<SetStateAction<OpenPaymentFormType>>;
-}) {
+export default function ClientAddress() {
+  const { open: VisiblePaymentForm, setOpen } = useOpen();
   const defaultFormValues = getLocalValues("clientAddressForm");
   const isOpen = VisiblePaymentForm === "clientAddress";
   const open = () => setOpen("clientAddress");

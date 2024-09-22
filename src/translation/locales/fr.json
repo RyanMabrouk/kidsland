@@ -1,4 +1,16 @@
 {
   "greeting": "Bonjour",
-  "farewell": "Au revoir"
+  "farewell": "Au revoir",
+  "price": "Prix",
+  "Newest": "Le plus récent",
+  "Products on sale": "Produits en vente",
+  "Name": "Nom",
+  "Description": "Description",
+  "Category": "Catégorie",
+  "Discount": "Remise",
+  "Choose a filter": "Choisissez un filtre",
+  "home": "Accueil",
+  "toys": "Jouets",
+  "FREE SHIPPING": "LIVRAISON GRATUITE",
+  "SHIPPING POLICY": "Vous payez la livraison au transporteur lorsque vous récupérez le colis. Livraison à domicile gratuite pour les commandes de plus de 100 TND."
 }

@@ -1,4 +1,16 @@
 {
   "greeting": "Hello",
-  "farewell": "Goodbye"
+  "farewell": "Goodbye",
+  "price": "Price",
+  "Newest": "Newest",
+  "Products on sale": "Products on sale",
+  "Name": "Name",
+  "Description": "Description",
+  "Category": "Category",
+  "Discount": "Discount",
+  "Choose a filter": "Choose a filter",
+  "home": "Home",
+  "toys": "Toys",
+  "FREE SHIPPING": "FREE SHIPPING",
+  "SHIPPING POLICY": "You pay the delivery to the courier when you pick up the package. Free home delivery for orders over 100 TND."
 }

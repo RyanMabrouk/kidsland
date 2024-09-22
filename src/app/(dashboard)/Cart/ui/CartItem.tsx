@@ -4,7 +4,6 @@ import useDeleteFromCart from "@/hooks/data/cart/deleteFromCart";
 import { IProduct } from "@/types/database.tables.types";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import React from "react";
 
 export default function CartItem({
@@ -18,44 +17,49 @@ export default function CartItem({
   const { mutate: remove } = useDeleteFromCart(product);
 
   return (
-    <div className="color w-[95%] border-2 border-solid transition-all duration-200 hover:w-[97%] hover:shadow-md">
+    <div className="w-[95%] border-2 border-solid transition-all duration-200 hover:w-[97%] hover:shadow-md max-[480px]:w-full">
       <Link
         className="flex cursor-pointer items-center justify-between"
         href={`/products/${product?.id}`}
       >
-        <div className="flex gap-2">
+        <div className="flex w-full gap-2 max-[390px]:gap-1 sm:flex-row md:flex-col md:items-center lg:flex-row">
           <Image
             src={product?.image_url ?? ""}
             alt="item_img"
-            className="h-[7rem] w-[7rem] p-3"
+            className="h-[7rem] w-[7rem] p-3 max-[390px]:p-0 md:h-[14rem] md:w-[14rem] lg:h-[7rem] lg:w-[7rem]"
             width={500}
             height={500}
           />
-          <div className="pt-7">
-            <div className={`${product?.available ?? "text-red-600"}`}>
-              {product?.title}
+          <div className="flex flex-1 justify-between md:w-full md:px-5 lg:px-0">
+            <div className="max-[390px]:max pt-7">
+              <div
+                className={`line-clamp-1 ${product?.available ?? "text-red-600"}`}
+              >
+                {product?.title}
+              </div>
+              <div
+                className={`${product?.available ? "text-green-500" : "text-color1"}`}
+              >
+                {product?.available ? "" : "Not"} Available
+              </div>
             </div>
-            {product?.available ? (
-              <div>Available</div>
-            ) : (
-              <div className="text-gray-500">Not Available</div>
-            )}
+            <div className="flex flex-col items-center justify-center gap-2 p-3 max-[520px]:text-sm">
+              <div className="text-right">
+                {product?.price_after_discount.toFixed(2)}
+                TND
+              </div>
+              {!!product?.discount && product.discount > 0 && (
+                <div className="flex items-center gap-2">
+                  <div className="min-w-max text-gray-600 line-through">
+                    {product.price} TND
+                  </div>
+                  <div className="min-w-max bg-red-100 p-1 text-red-600">
+                    {product.discount} %
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-        <div className="flex flex-col gap-2 p-3">
-          <div className="text-right">{product?.price_after_discount} TND</div>
-          {product?.discount && product.discount > 0 && (
-            <div className="flex items-center gap-2">
-              <div className="text-gray-600 line-through">
-                {product.price} TND
-              </div>
-              <div className="text-oran bg-red-100 p-1 text-color1">
-                {product.discount_type === "percentage"
-                  ? `${product.discount} %`
-                  : `- ${product.discount}`}
-              </div>
-            </div>
-          )}
         </div>
       </Link>
       <hr />

@@ -1,11 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import { Slider } from "@mui/material";
 import debounce from "lodash.debounce";
+import useTranslation from "@/translation/useTranslation";
 
 export default function PriceRangeFilter({
+  defaultValue,
   onChange,
 }: {
   onChange: (value: number[]) => void;
+  defaultValue?: number[];
 }) {
   const [value, setValue] = useState<number[]>([5, 999]);
 
@@ -22,10 +25,20 @@ export default function PriceRangeFilter({
       debouncedOnChange.cancel();
     };
   }, value);
-
+  useEffect(() => {
+    if (
+      defaultValue &&
+      (defaultValue[0] !== value[0] || defaultValue[1] !== value[1])
+    ) {
+      setValue(defaultValue);
+    }
+  }, [defaultValue]);
+  const { data: translation } = useTranslation();
   return (
     <div className="flex flex-col items-start justify-center bg-white">
-      <span className="mb-1 text-sm font-medium uppercase">Price (TND)</span>
+      <span className="mb-1 text-sm font-medium uppercase">
+        {translation?.lang["price"]} (TND)
+      </span>
       <Slider
         className="!mx-1 !text-color8"
         onChange={(e, newValue) => {
@@ -35,7 +48,6 @@ export default function PriceRangeFilter({
         defaultValue={[5, 999]}
         max={999}
         min={5}
-        aria-label="Price range"
         valueLabelDisplay="auto"
         getAriaValueText={(value) => String(value)}
       />

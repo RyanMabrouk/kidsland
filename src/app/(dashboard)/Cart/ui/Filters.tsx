@@ -1,20 +1,14 @@
 "use client";
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 import {
   cartSortFiltersValues,
   CartSortFilterType,
 } from "../constants/CartFilters";
 import { SelectGeneric } from "@/app/ui/SelectGeneric";
 import { ToggleSortArrow } from "../../products/ui/ToggleSortArrow";
-export function Filters({
-  filters,
-  setFilter,
-  setIsReversed,
-}: {
-  filters: CartSortFilterType[];
-  setFilter: Dispatch<SetStateAction<cartSortFiltersValues>>;
-  setIsReversed: Dispatch<SetStateAction<boolean>>;
-}) {
+import { useFilters } from "../context/FiltersProvider";
+export function Filters({ filters }: { filters: CartSortFilterType[] }) {
+  const { setFilter, setIsReversed } = useFilters();
   return (
     <div className="mb-3 flex items-center gap-4">
       {filters.map((filter) => (

@@ -74,7 +74,8 @@ export default function ProductDetails() {
                 <AddToCartBtn
                   product_id={product?.id ?? ""}
                   isInCart={product?.isInCart}
-                  className="relative bottom-0 -ml-3 left-0 flex h-[2.5rem] w-[10rem] items-center justify-center opacity-100"
+                  available={product?.available}
+                  className="relative bottom-0 left-0 -ml-3 flex h-[2.5rem] w-[10rem] items-center justify-center opacity-100"
                 />
               )}
             </div>
