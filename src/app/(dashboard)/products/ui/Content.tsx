@@ -1,3 +1,4 @@
+"use client";
 import useProducts from "@/hooks/data/products/useProducts";
 import { useQueryClient } from "@tanstack/react-query";
 import { productsQuery } from "@/hooks/data/products/productsQuery";
