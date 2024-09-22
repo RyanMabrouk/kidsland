@@ -17,11 +17,11 @@ export default function DiscountFilter({
     () => [
       {
         value: 10,
-        label: "10% and more",
+        label: ">10%",
       },
       {
         value: 30,
-        label: "30% and more",
+        label: ">30%",
       },
     ],
     [],
