@@ -6,13 +6,7 @@ import getLocalValues from "@/helpers/getLocalValues";
 import { redirect } from "next/navigation";
 
 export default function OrderResume() {
-  const { data } = useCartPopulated();
-  const {
-    numberOfItems: total_articles,
-    total_after_discount,
-    delivery_cost,
-    delivery_cost_before_discount,
-  } = data ?? {};
+  const { data: cart } = useCartPopulated();
   const clientAdressForm = getLocalValues("clientAddressForm");
   const paymentOptionsForm = getLocalValues("paymentOptionsForm");
   const orderDetails = {
@@ -26,7 +20,7 @@ export default function OrderResume() {
     payment_method: paymentOptionsForm.paymentOption,
   };
   const { mutate, isPending } = useCreateOrder();
-  if (total_articles === 0) redirect("/Cart");
+  if (cart.total_products_quantity === 0) redirect("/Cart");
   return (
     <form
       action={() => {
@@ -38,17 +32,17 @@ export default function OrderResume() {
       <h1 className="p-2 text-center">Order Resume</h1>
       <hr />
       <div className="flex justify-between p-2">
-        <h1>Total Articles : ({total_articles})</h1>
-        <h1>{total_after_discount} TND</h1>
+        <h1>Total Articles : ({cart.total_products_quantity})</h1>
+        <h1>{cart.total_after_discount} TND</h1>
       </div>
       <hr />
       <div className="flex flex-row justify-between p-2">
         <h1>Delivery Costs :</h1>
         <div className="flex flex-row items-center gap-2">
-          <span>{delivery_cost} TND</span>
-          {delivery_cost == 0 && (
+          <span>{cart.delivery_cost} TND</span>
+          {cart.isFreeDelivery && (
             <del className="text-color8">
-              {delivery_cost_before_discount} TND
+              {cart.delivery_cost_before_discount} TND
             </del>
           )}
         </div>
@@ -56,7 +50,7 @@ export default function OrderResume() {
       <hr />
       <div className="flex justify-between p-2">
         <h1>Total :</h1>
-        <h1 className="text-xl">{total_after_discount} TND</h1>
+        <h1 className="text-xl">{cart.total_with_delivery} TND</h1>
       </div>
       <hr />
       <button
@@ -69,6 +63,3 @@ export default function OrderResume() {
     </form>
   );
 }
-
-/* alternative classame for the form */
-/* fixed left-[70rem] flex w-[18rem] flex-col gap-2 rounded-xl bg-white p-4 shadow-2xl transition-all duration-300 */

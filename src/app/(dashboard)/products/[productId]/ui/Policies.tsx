@@ -1,17 +1,18 @@
+"use client";
 import { RiCarLine } from "react-icons/ri";
 import { MdOutlineSupportAgent } from "react-icons/md";
 import { FaClockRotateLeft } from "react-icons/fa6";
 import { MdOutlineVpnLock } from "react-icons/md";
 import { EMAIL, PHONE_NUMBER } from "@/constants/Admin";
-import CustomSwiper from "@/app/ui/Swiper";
+import useTranslation from "@/translation/useTranslation";
 export default function Policies() {
+  const { data: translation } = useTranslation();
   const className =
     "mt-1 size-[1.75rem] text-color8 max-[1170px]:size-[1.5rem]";
   const policies = [
     {
-      title: "FREE SHIPPING",
-      description:
-        "You pay the delivery to the courier when you pick up the package. Free home delivery for orders over 100 TND.",
+      title: translation?.lang["FREE SHIPPING"],
+      description: translation?.lang["SHIPPING POLICY"],
       icon: <RiCarLine className={className} />,
     },
     {
@@ -47,8 +48,8 @@ export default function Policies() {
 }
 
 function Policy(policy: {
-  title: string;
-  description: string;
+  title: string | undefined;
+  description: string | undefined;
   icon: JSX.Element;
 }) {
   return (

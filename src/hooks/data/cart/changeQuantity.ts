@@ -13,6 +13,9 @@ export default function useChangeQuantity(product: IProduct | null) {
       if (!product) {
         throw new Error("Product not found");
       }
+      if (quantity < 1) {
+        throw new Error("Quantity must be at least 1");
+      }
       return await handleProductQuantity(product.id, quantity);
     },
     onMutate: async (quantity) => {

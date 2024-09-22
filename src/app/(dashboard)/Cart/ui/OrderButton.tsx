@@ -2,9 +2,8 @@ import useCartPopulated from "@/hooks/data/cart/useCartPopulated";
 import Link from "next/link";
 
 export default function OrderButton() {
-  const { data, isLoading } = useCartPopulated();
-  const { cart, numberOfItems: quantity, total_after_discount } = data ?? {};
-  if (cart?.length === 0) {
+  const { data: cart, isLoading } = useCartPopulated();
+  if (cart.data?.length === 0) {
     return (
       <Link
         href="products"
@@ -14,7 +13,7 @@ export default function OrderButton() {
       </Link>
     );
   }
-  if (quantity === 0) {
+  if (cart.total_products_quantity === 0) {
     return (
       <div className="w-full rounded-lg bg-gray-600 p-3 text-center text-xl font-semibold text-white transition-all duration-300 hover:bg-gray-800">
         Select a quantity
@@ -27,7 +26,7 @@ export default function OrderButton() {
       href="/Cart/Payment"
       className="w-full rounded-lg bg-color1 p-3 text-center text-xl font-semibold text-white transition-all duration-300 hover:bg-red-400"
     >
-      Order ({total_after_discount} TND)
+      Order ({cart.total_after_discount} TND)
     </Link>
   );
 }

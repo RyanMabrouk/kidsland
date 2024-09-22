@@ -1,8 +1,5 @@
-import React, { Dispatch, SetStateAction } from "react";
-import { get } from "http";
-
+import React from "react";
 import getLocalValues from "@/helpers/getLocalValues";
-import { OpenPaymentFormType } from "./Content";
 import ClientAddressForm from "./ClientAddressForm";
 import { useOpen } from "../context/OpenFormProvider";
 

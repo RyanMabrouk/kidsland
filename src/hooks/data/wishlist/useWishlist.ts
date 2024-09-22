@@ -4,5 +4,5 @@ import { wishlistQuery } from "./wishlistQuery";
 
 export default function useWishlist() {
   const query = useQuery(wishlistQuery());
-  return { ...query, data: query.data?.data };
+  return query;
 }

@@ -1,34 +1,31 @@
 import React from "react";
 import CartItem from "./CartItem";
 import useCartPopulated from "@/hooks/data/cart/useCartPopulated";
-
-import { cartSortFiltersValues } from "../constants/CartFilters";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { useFilters } from "../context/FiltersProvider";
 
 export default function Items() {
   const { filter, isReversed } = useFilters();
-  const { data, isLoading } = useCartPopulated(6, 1);
-  const { numberOfItems, cart } = data ?? {};
-  const sortedCart = data?.cart?.sort((a, b) => {
+  const { data: cart } = useCartPopulated();
+  const sortedCart = cart?.data?.sort((a, b) => {
     if (filter === "price") {
       return (
-        (a.products?.price_after_discount ?? 0) -
-        (b.products?.price_after_discount ?? 0)
+        (a.product?.price_after_discount ?? 0) -
+        (b.product?.price_after_discount ?? 0)
       );
     }
 
     if (filter === "discount") {
-      return (b.products?.discount ?? 0) - (a.products?.discount ?? 0);
+      return (b.product?.discount ?? 0) - (a.product?.discount ?? 0);
     }
     if (filter === "title") {
-      return a.products?.title.localeCompare(b.products?.title ?? "") ?? 0;
+      return a.product?.title.localeCompare(b.product?.title ?? "") ?? 0;
     }
     return 0;
   });
 
   const finalCart = isReversed ? [...(sortedCart ?? [])].reverse() : sortedCart;
-  if (cart?.length === 0)
+  if (cart.data?.length === 0)
     return (
       <div className="flex h-full w-full items-center justify-center rounded-md bg-color1 bg-white shadow-md">
         <Player
@@ -42,16 +39,16 @@ export default function Items() {
       </div>
     );
   return (
-    <div className="w-full rounded-md bg-white shadow-md">
+    <div className="w-full max-w-[40rem] rounded-md bg-white shadow-md">
       <div className="ml-5 py-4 text-xl text-color1">
-        you have ({numberOfItems}) products in your cart
+        you have ({cart.data?.length}) products in your cart
       </div>
 
       <div className="flex w-full flex-col items-center gap-5 pb-4">
         {finalCart?.map((item) => (
           <CartItem
             key={item?.product_id}
-            product={item.products}
+            product={item.product}
             quantity={item.quantity}
           />
         ))}

@@ -9,12 +9,14 @@ import { FiltersProvider } from "../context/FiltersProvider";
 export default function Content() {
   return (
     <FiltersProvider>
-      <div className="flex h-full flex-col justify-between p-10 py-20 transition-all duration-500 sm:w-full sm:items-center sm:gap-10 md:w-10/12 md:flex-row md:items-start md:gap-10 lg:w-10/12 lg:gap-24 xl:gap-36">
-        <div className="mb-20 w-full sm:w-8/12 sm:items-center md:items-start">
+      <div className="flex h-full w-screen flex-col items-center p-10 max-[480px]:p-4 transition-all duration-500">
+        <div className="flex w-full max-w-[63rem] items-center justify-start">
           <Filters filters={cartSortFilters} />
-          <Items />
         </div>
-        <Resume />
+        <div className="relative mb-20 flex w-full flex-row justify-center gap-6 max-md:flex-col sm:items-center md:items-start">
+          <Items />
+          <Resume />
+        </div>
       </div>
     </FiltersProvider>
   );
