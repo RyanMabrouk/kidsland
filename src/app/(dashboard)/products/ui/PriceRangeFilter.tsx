@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, use } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Slider } from "@mui/material";
 import debounce from "lodash.debounce";
 import useTranslation from "@/translation/useTranslation";

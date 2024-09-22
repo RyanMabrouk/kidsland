@@ -2,7 +2,7 @@ import Checkbox from "@/app/ui/Checkbox";
 import useCategories from "@/hooks/data/categories/useCategories";
 import useTranslation from "@/translation/useTranslation";
 import { useSearchParams } from "next/navigation";
-import { use, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 
 export default function CategoriesFilter({
   defaultValue,
