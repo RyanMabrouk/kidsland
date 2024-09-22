@@ -7,7 +7,8 @@ import { orderSortFilters } from "../constants/filters";
 import { OrderFilterProvider } from "../context/FilterProvider";
 
 export default function Content() {
-  const { data: orders } = useOrders();
+  const { data: orders, isLoading } = useOrders();
+  if (isLoading || !orders) return null;
   return (
     <OrderFilterProvider>
       <div className="flex flex-col justify-start gap-4 bg-white p-6">
