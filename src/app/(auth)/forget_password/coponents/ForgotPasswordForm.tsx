@@ -3,21 +3,28 @@ import resetPassword from "@/actions/auth/resetPassword";
 import Input from "@/components/Input";
 import PrimaryButton from "@/components/PrimaryButton";
 import SecondaryButton from "@/components/SecondaryButton";
+import useTranslation from "@/translation/useTranslation";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React from "react";
 import { z } from "zod";
 
-// Define Zod schema for email validation
-const forgotPasswordSchema = z.object({
-  email: z.string().email("Invalid email address"),
-});
-
 export default function ForgotPasswordForm() {
+  const { data: translation } = useTranslation();
   const [errors, setErrors] = React.useState<string[]>([]);
   const [successMessage, setSuccessMessage] = React.useState<string>("");
-
+  const forgotPasswordSchema = z.object({
+    email: z
+      .string({
+        message: translation?.lang["${ELEMENT} must be a string"].replace(
+          "{ELEMENT}",
+          "Email",
+        ),
+      })
+      .email(
+        translation?.lang["Invalid email address"] ?? "Invalid email address",
+      ),
+  });
   const { mutate, isPending } = useMutation({
     mutationFn: async (formData: FormData) => {
       const email = formData.get("email") as string;
@@ -30,7 +37,10 @@ export default function ForgotPasswordForm() {
         if (err instanceof z.ZodError) {
           setErrors(err.errors.map((e) => e.message));
         } else {
-          setErrors(["An unexpected error occurred"]);
+          setErrors([
+            translation?.lang["An unexpected error occurred"] ??
+              "An unexpected error occurred",
+          ]);
         }
         throw err;
       }
@@ -42,7 +52,11 @@ export default function ForgotPasswordForm() {
       }
     },
     onSuccess: () => {
-      setSuccessMessage("A password reset link has been sent to your email.");
+      setSuccessMessage(
+        translation?.lang[
+          "A password reset link has been sent to your email."
+        ] ?? "",
+      );
     },
   });
 
@@ -52,16 +66,18 @@ export default function ForgotPasswordForm() {
         <div className="flex-1">
           <form action={mutate} className="space-y-6">
             <h2 className="text-2xl font-semibold text-gray-800">
-              Forgot your password?
+              {translation?.lang["Forgot your password?"]}
             </h2>
             <p className="text-gray-600">
-              Enter your email address and we'll send you a link to reset your
-              password.
+              {
+                translation?.lang[
+                  "Enter your email address and we'll send you a link to reset your password."
+                ]
+              }
             </p>
             <div className="space-y-2">
               <Input
-                label="Email Address"
-                placeholder="Enter your email"
+                label={translation?.lang["email"] ?? ""}
                 type="email"
                 required
                 name="email"
@@ -83,18 +99,22 @@ export default function ForgotPasswordForm() {
             </div>
 
             <PrimaryButton loading={isPending} className="w-full">
-              Send Reset Link
+              {translation?.lang["Send Reset Link"]}
             </PrimaryButton>
           </form>
 
           <div className="mt-6 flex w-full flex-col items-center justify-center gap-6">
             <div className="mx-auto flex w-full items-center justify-center space-x-3">
               <hr className="w-36 border-gray-300 max-sm:flex-1" />
-              <span className="text-sm text-gray-500">or</span>
+              <span className="text-sm text-gray-500">
+                {translation?.lang["or"]}
+              </span>
               <hr className="w-36 border-gray-300 max-sm:flex-1" />
             </div>
             <Link href="/login">
-              <SecondaryButton className="">Return to Login</SecondaryButton>
+              <SecondaryButton className="">
+                {translation?.lang["Return to Login"]}
+              </SecondaryButton>
             </Link>
           </div>
         </div>

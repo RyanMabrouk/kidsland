@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { FaShoppingCart } from "react-icons/fa";
 import { FaCheckCircle } from "react-icons/fa";
 import { Spinner } from "../../../../ui/Spinner";
+import useTranslation from "@/translation/useTranslation";
 
 export default function AddToCartBtn({
   product_id,
@@ -16,6 +17,7 @@ export default function AddToCartBtn({
   className?: string;
   available: boolean | undefined;
 }) {
+  const { data: translation } = useTranslation();
   const { mutate: addToCart, isPending } = useAddToCart();
   return (
     <form className="flex items-start justify-start">
@@ -40,19 +42,19 @@ export default function AddToCartBtn({
         {available ? (
           isInCart ? (
             <>
-              <span>added</span>
+              <span>{translation?.lang["added"]}</span>
               <FaCheckCircle className="size-[1rem]" />{" "}
             </>
           ) : isPending ? (
             <Spinner />
           ) : (
             <>
-              <span>add to cart</span>
+              <span>{translation?.lang["add to cart"]}</span>
               <FaShoppingCart className="size-[1rem]" />
             </>
           )
         ) : (
-          <span>Out of stock</span>
+          <span>{translation?.lang["Out of stock"]}</span>
         )}
       </button>
     </form>

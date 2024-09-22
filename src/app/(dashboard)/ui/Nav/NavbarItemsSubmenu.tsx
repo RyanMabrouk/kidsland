@@ -1,8 +1,15 @@
 "use client";
 import Link from "next/link";
 import React from "react";
-import { MenuItemsType } from "../../home/constants/menuItems";
-export function NavbarItemsSubmenu(item: MenuItemsType[number]) {
+export function NavbarItemsSubmenu(item: {
+  title: string;
+  href: string;
+  subItems?: {
+    title: string;
+    filter: string;
+    icon: React.ElementType;
+  }[];
+}) {
   const [isHovering, setIsHovering] = React.useState(false);
   return (
     <div className="relative h-full">

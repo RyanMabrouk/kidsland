@@ -6,6 +6,7 @@ import { FaHeart } from "react-icons/fa";
 import SignOutBtn from "./SignOutBtn";
 import TooltipGeneric from "@/app/ui/InsightGeneric";
 import { FaUserLarge } from "react-icons/fa6";
+import useTranslation from "@/translation/useTranslation";
 
 export default function UserMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -16,16 +17,17 @@ export default function UserMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const { data: translation } = useTranslation();
   const items = [
     {
-      title: "My Orders",
+      title: translation?.lang["My Orders"],
       icon: (
         <FaUserLarge className="size-[1.85rem] rounded-full bg-gray-500 p-1.5 text-center text-sm text-white group-hover:bg-white group-hover:text-color1" />
       ),
       href: "/orders",
     },
     {
-      title: "Wishlist",
+      title: translation?.lang["Wishlist"],
       icon: (
         <FaHeart className="ml-1 size-6 text-gray-500 group-hover:text-white" />
       ),
@@ -97,7 +99,7 @@ export default function UserMenu() {
         >
           <SignOutBtn>
             <Logout className="ml-1 size-7 text-gray-500 group-hover:text-white" />
-            <span className="">Logout</span>
+            <span className="">{translation?.lang["Logout"]}</span>
           </SignOutBtn>
         </div>
       </Menu>

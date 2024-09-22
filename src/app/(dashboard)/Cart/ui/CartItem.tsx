@@ -1,6 +1,7 @@
 "use client";
 import useChangeQuantity from "@/hooks/data/cart/changeQuantity";
 import useDeleteFromCart from "@/hooks/data/cart/deleteFromCart";
+import useTranslation from "@/translation/useTranslation";
 import { IProduct } from "@/types/database.tables.types";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,7 +16,7 @@ export default function CartItem({
 }) {
   const { mutate: change } = useChangeQuantity(product);
   const { mutate: remove } = useDeleteFromCart(product);
-
+  const { data: translation } = useTranslation();
   return (
     <div className="w-[95%] border-2 border-solid transition-all duration-200 hover:w-[97%] hover:shadow-md max-[480px]:w-full">
       <Link
@@ -40,7 +41,9 @@ export default function CartItem({
               <div
                 className={`${product?.available ? "text-green-500" : "text-color1"}`}
               >
-                {product?.available ? "" : "Not"} Available
+                {product?.available
+                  ? translation?.lang["In Stock"]
+                  : translation?.lang["Out of Stock"]}
               </div>
             </div>
             <div className="flex flex-col items-center justify-center gap-2 p-3 max-[520px]:text-sm">
@@ -68,7 +71,7 @@ export default function CartItem({
           onClick={() => remove()}
           className="min-w-[6rem] rounded-xl border-2 bg-color1 p-2 text-white transition-all duration-300 hover:border-color1 hover:bg-white hover:text-color1"
         >
-          Delete
+          {translation?.lang["Delete"]}
         </button>
         <div className="flex gap-7">
           <button

@@ -6,5 +6,4 @@ export default async function clearCart(id: string) {
     match: { user_id: id },
   });
   if (error) throw new Error(error.message);
-  return;
 }

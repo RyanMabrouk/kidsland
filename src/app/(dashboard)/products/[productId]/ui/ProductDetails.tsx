@@ -4,9 +4,11 @@ import useProductById from "@/hooks/data/products/useProductById";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { WishlistHart } from "@/app/(dashboard)/home/ui/ProductsSection/WishListHart";
+import useTranslation from "@/translation/useTranslation";
 
 export default function ProductDetails() {
   const { productId } = useParams();
+  const { data: translation } = useTranslation();
   const { data } = useProductById(String(productId));
   const product = data?.data;
   return (
@@ -41,7 +43,7 @@ export default function ProductDetails() {
             <div className="mb-4 flex flex-col items-start gap-2">
               <div className="mr-4 flex flex-row items-center gap-2">
                 <span className="font-bold text-gray-700 dark:text-gray-300">
-                  Price:
+                  {translation?.lang["price"]}:
                 </span>
                 <div className="flex flex-row items-center justify-start gap-4">
                   {!!product?.discount && (
@@ -58,7 +60,7 @@ export default function ProductDetails() {
               </div>
               <div className="flex flex-row items-center gap-2">
                 <span className="font-bold text-gray-700 dark:text-gray-300">
-                  Availability:
+                  {translation?.lang["Availability"]}:
                 </span>
                 <span
                   className={`text-gray-600 dark:text-gray-300 ${
@@ -81,7 +83,7 @@ export default function ProductDetails() {
             </div>
             <div>
               <span className="text-lg font-bold text-gray-700 dark:text-gray-300">
-                Product Description:
+                {["Product Description"]}:
               </span>
               <p className="mt-2 text-gray-600 dark:text-gray-300">
                 {product?.description}

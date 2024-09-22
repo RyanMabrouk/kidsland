@@ -3,10 +3,12 @@ import CartItem from "./CartItem";
 import useCartPopulated from "@/hooks/data/cart/useCartPopulated";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { useFilters } from "../context/FiltersProvider";
+import useTranslation from "@/translation/useTranslation";
 
 export default function Items() {
   const { filter, isReversed } = useFilters();
   const { data: cart } = useCartPopulated();
+  const { data: translation } = useTranslation();
   const sortedCart = cart?.data?.sort((a, b) => {
     if (filter === "price") {
       return (
@@ -41,7 +43,9 @@ export default function Items() {
   return (
     <div className="w-full max-w-[40rem] rounded-md bg-white shadow-md">
       <div className="ml-5 py-4 text-xl text-color1">
-        you have ({cart.data?.length}) products in your cart
+        {translation?.lang[
+          "you have ${QUANTITY} products in your cart"
+        ].replace("${QUANTITY}", String(cart?.data?.length) ?? 0)}
       </div>
 
       <div className="flex w-full flex-col items-center gap-5 pb-4">

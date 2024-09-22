@@ -2,31 +2,41 @@
 import updatePassword from "@/actions/auth/updatePassword";
 import Input from "@/components/Input";
 import PrimaryButton from "@/components/PrimaryButton";
+import useTranslation from "@/translation/useTranslation";
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { z } from "zod";
 
 // Zod schema for password validation
-const changePasswordSchema = z
-  .object({
-    newPassword: z
-      .string()
-      .min(6, "New password must be at least 6 characters"),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"], // path to show error for confirmPassword
-  });
 
 export default function ChangePasswordForm() {
-  // State for storing field-specific errors
+  const { data: translation } = useTranslation();
   const [fieldErrors, setFieldErrors] = React.useState({
     newPassword: "",
     confirmPassword: "",
   });
   const [successMessage, setSuccessMessage] = React.useState<string>("");
-
+  const changePasswordSchema = z
+    .object({
+      newPassword: z
+        .string({
+          message: translation?.lang["${ELEMENT} must be a string"].replace(
+            "{ELEMENT}",
+            "New password",
+          ),
+        })
+        .min(6, translation?.lang["Password must be at least 6 characters"]),
+      confirmPassword: z.string({
+        message: translation?.lang["${ELEMENT} must be a string"].replace(
+          "{ELEMENT}",
+          "Confirm password",
+        ),
+      }),
+    })
+    .refine((data) => data.newPassword === data.confirmPassword, {
+      message: translation?.lang["Passwords must match"],
+      path: ["confirmPassword"], // path to show error for confirmPassword
+    });
   const { mutate, isPending } = useMutation({
     mutationFn: async (formData: FormData) => {
       const formObject = Object.fromEntries(formData) as {
@@ -49,7 +59,6 @@ export default function ChangePasswordForm() {
             confirmPassword: "",
           };
 
-          // Map Zod errors to the respective fields
           err.errors.forEach((e) => {
             errors[e.path[0] as keyof typeof errors] = e.message;
           });
@@ -57,7 +66,8 @@ export default function ChangePasswordForm() {
         } else {
           setFieldErrors({
             newPassword: "",
-            confirmPassword: "An unexpected error occurred",
+            confirmPassword:
+              translation?.lang["An unexpected error occurred"] ?? "",
           });
         }
         throw err; // Stop further processing
@@ -77,27 +87,27 @@ export default function ChangePasswordForm() {
       }
 
       // Set success message
-      setSuccessMessage("Your password has been successfully changed.");
+      setSuccessMessage(
+        translation?.lang["Your password has been successfully changed."] ?? "",
+      );
     },
   });
 
   return (
     <div className="mx-auto w-full max-w-md rounded-lg border bg-white p-8 shadow-lg">
       <h2 className="mb-6 text-2xl font-semibold text-gray-800">
-        Change Password
+        {translation?.lang["Change Password"]}
       </h2>
       <form action={mutate} className="space-y-6">
         <Input
-          label="New Password"
-          placeholder="Enter new password"
+          label={translation?.lang["New Password"] ?? "New Password"}
           type="password"
           required
           name="newPassword"
           error={fieldErrors.newPassword} // Pass error to the Input component
         />
         <Input
-          label="Confirm New Password"
-          placeholder="Confirm new password"
+          label={translation?.lang["Confirm Password"] ?? "Confirm Password"}
           type="password"
           required
           name="confirmPassword"
@@ -109,7 +119,7 @@ export default function ChangePasswordForm() {
         )}
 
         <PrimaryButton loading={isPending} className="w-full">
-          Change Password
+          {translation?.lang["Change Password"]}
         </PrimaryButton>
       </form>
     </div>

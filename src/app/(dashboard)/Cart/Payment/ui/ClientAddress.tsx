@@ -2,9 +2,11 @@ import React from "react";
 import getLocalValues from "@/helpers/getLocalValues";
 import ClientAddressForm from "./ClientAddressForm";
 import { useOpen } from "../context/OpenFormProvider";
+import useTranslation from "@/translation/useTranslation";
 
 export default function ClientAddress() {
   const { open: VisiblePaymentForm, setOpen } = useOpen();
+  const { data: translation } = useTranslation();
   const defaultFormValues = getLocalValues("clientAddressForm");
   const isOpen = VisiblePaymentForm === "clientAddress";
   const open = () => setOpen("clientAddress");
@@ -13,13 +15,13 @@ export default function ClientAddress() {
   return (
     <div className="w-full shadow-lg">
       <div className="flex justify-between">
-        <h1 className="px-4 py-2"> 1. ADRESSE CLIENT</h1>
+        <h1 className="px-4 py-2"> 1. {translation?.lang["Client Address"]}</h1>
         {!isOpen && (
           <button
             onClick={open}
             className="px-4 transition-all duration-300 hover:text-blue-900 hover:underline"
           >
-            modifier
+            {translation?.lang["modify"]}
           </button>
         )}
       </div>
