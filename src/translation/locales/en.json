@@ -154,5 +154,6 @@
   "Cart is empty": "Cart is empty",
   "Not enough stock for ${PRODUCT_NAME}": "Not enough stock for ${PRODUCT_NAME}",
   "Failed to submit order": "Failed to submit order",
-  "Something went wrong while ordering": "Something went wrong while ordering"
+  "Something went wrong while ordering": "Something went wrong while ordering",
+  "Language changed": "Language changed successfully"
 }

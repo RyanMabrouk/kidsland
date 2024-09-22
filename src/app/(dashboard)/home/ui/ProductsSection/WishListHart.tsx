@@ -34,7 +34,7 @@ export function WishlistHart({
             ? translation?.lang["Remove from wishlist"]
             : translation?.lang["Add to wishlist"]
         }
-        className={`peer tooltip tooltip-top z-50 h-6 w-6 cursor-pointer bg-clip-text text-color8 opacity-100 transition-all ease-linear hover:scale-110 ${isInWishlist || isPending ? "opacity-0" : "hover:opacity-0"} ${
+        className={`tooltip tooltip-top z-50 h-6 w-6 cursor-pointer bg-clip-text text-color8 opacity-100 transition-all ease-linear hover:scale-110 ${isInWishlist || isPending ? "opacity-0" : "hover:scale-110"} ${
           variant === "absolute" ? "absolute bottom-9 right-3" : "mt-2"
         }`}
       />

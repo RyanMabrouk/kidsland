@@ -9,6 +9,7 @@ import { menuItems } from "../../home/constants/menuItems";
 import Link from "next/link";
 import useTranslation from "@/translation/useTranslation";
 import PhoneSheet from "./PhoneSheet";
+import LanguageSwitcher from "./LanguageSwitch";
 
 export function Nav() {
   const { data: translation } = useTranslation();
@@ -45,6 +46,7 @@ export function Nav() {
       <div className="flex flex-row items-center justify-evenly gap-12 max-[530px]:gap-2">
         <SearchBar />
         <span className="flex flex-row items-center justify-center gap-2">
+          <LanguageSwitcher />
           <UserMenu />
           <Link href="/Cart">
             <CartButton />

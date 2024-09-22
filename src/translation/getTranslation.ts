@@ -16,5 +16,5 @@ export default async function getTranslation() {
     match: { user_id: session?.user.id },
   }).then((res) => res.data?.[0]?.default_language);
   const lang = await dictionaries?.[default_language ?? "fr"]?.();
-  return { lang };
+  return { lang, default_language };
 }
