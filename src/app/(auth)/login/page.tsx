@@ -1,6 +1,5 @@
 import getSession from "@/api/getSession";
 import LoginForm from "@/app/(auth)/login/components/LoginForm";
-import { createClient } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
 import React from "react";
 
