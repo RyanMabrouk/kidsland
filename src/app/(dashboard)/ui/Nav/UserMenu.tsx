@@ -7,6 +7,7 @@ import SignOutBtn from "./SignOutBtn";
 import TooltipGeneric from "@/app/ui/InsightGeneric";
 import { FaUserLarge } from "react-icons/fa6";
 import useTranslation from "@/translation/useTranslation";
+import Link from "next/link";
 
 export default function UserMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -88,11 +89,16 @@ export default function UserMenu() {
         {items.map((item) => (
           <div
             key={item.title}
-            className="group flex cursor-pointer flex-row items-center gap-4 px-3 py-2 transition-all ease-linear hover:bg-color1 hover:text-white"
             onClick={handleClose}
           >
-            {item.icon}
-            {item.title}
+            <Link href={item.href}
+            className="group flex cursor-pointer flex-row items-center gap-4 px-3 py-2 transition-all ease-linear hover:bg-color1 hover:text-white"
+            >
+              {item.icon}
+              {item.title}
+            </Link>
+
+
           </div>
         ))}
         <Divider />

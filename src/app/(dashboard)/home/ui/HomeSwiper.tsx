@@ -5,7 +5,6 @@ import Image from "next/image";
 export default function HomeSwiper() {
   return (
     <div className="[&_.swiper-pagination-bullet-active]:bg-color1">
-      {/* PC Swiper for larger screens */}
       <div className="hidden max-[600px]:hidden md:block">
         <CustomSwiper
           slides={Array.from({ length: 4 }).map((_, i) => (
@@ -30,8 +29,6 @@ export default function HomeSwiper() {
           }}
         />
       </div>
-
-      {/* Phone Swiper for screens <= 1150px */}
       <div className="block max-[600px]:block md:hidden">
         <CustomSwiper
           slides={Array.from({ length: 4 }).map((_, i) => (
