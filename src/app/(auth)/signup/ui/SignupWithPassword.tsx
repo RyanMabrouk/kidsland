@@ -136,7 +136,6 @@ export default function SignupWithPassword() {
         label="Email"
         type="email"
         required
-        placeholder="Enter Your Email"
         error={fieldErrors.email} // Pass email error
       />
       <Input
