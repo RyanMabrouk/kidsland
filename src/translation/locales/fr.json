@@ -155,5 +155,9 @@
   "Not enough stock for ${PRODUCT_NAME}": "Pas assez de stock pour ${PRODUCT_NAME}",
   "Failed to submit order": "Échec de la soumission de la commande",
   "Something went wrong while ordering": "Quelque chose s'est mal passé lors de la commande",
-  "Language changed": "Langue changée avec succès"
+  "Language changed": "Langue changée avec succès",
+  "Sort": "Trier",
+  "Products": "Produits",
+  "Account": "Compte",
+  "Cart": "Panier"
 }

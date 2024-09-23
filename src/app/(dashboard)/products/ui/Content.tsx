@@ -73,7 +73,7 @@ export default function Content() {
           <FiltersPhone />
           <SelectGeneric
             options={sortOptions as unknown as SelectGenericOption[]}
-            inputLabel="Sort"
+            inputLabel={translation?.lang["Sort"]}
             onChange={(value) => {
               if (value !== sort.column) {
                 setSort((prev) => ({
@@ -94,7 +94,7 @@ export default function Content() {
             }}
           />
           <span className="text-xl font-bold text-color8 max-[515px]:text-sm">
-            {products?.meta?.total_count} products
+            {products?.meta?.total_count} {translation?.lang["Products"]}
           </span>
         </div>
         <div className="mx-auto grid min-h-screen w-[50rem] grid-cols-3 gap-x-10 gap-y-10 max-[1150px]:w-max max-[1150px]:grid-cols-2 max-[830px]:grid-cols-2">

@@ -36,7 +36,10 @@ export default function UserMenu() {
   ];
   return (
     <>
-      <TooltipGeneric tip="Account" position="bottom">
+      <TooltipGeneric
+        tip={translation?.lang["Account"] ?? "Account"}
+        position="bottom"
+      >
         <IconButton
           onClick={handleClick}
           size="small"
