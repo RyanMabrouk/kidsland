@@ -1,20 +1,21 @@
+"use client";
+import useTranslation from "@/translation/useTranslation";
 import { Offer, OfferProps } from "./Offer";
 
 export function OffersContainer() {
+  const { data: translation } = useTranslation();
   const offers: OfferProps[] = [
     {
-      name: "Baby's first purchase",
+      name: translation?.lang["OFFER1"],
       image_url: "/home/offers/offer-1.jpg",
       variant: "slate",
-      description:
-        "While you enjoy waiting for your baby, we take care of everything you need after her arrival in the world.",
+      description: translation?.lang["OFFER1 DESCRIPTION"],
     },
     {
-      name: "Loyalty program",
+      name: translation?.lang["OFFER2"],
       image_url: "/home/offers/offer-2.jpg",
       variant: "white",
-      description:
-        "Become part of the Kidsland family and take advantage of the benefits we have for all our members.",
+      description: translation?.lang["OFFER2 DESCRIPTION"],
     },
   ];
   return (

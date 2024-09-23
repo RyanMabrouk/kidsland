@@ -1,10 +1,12 @@
-import useOrders from "@/hooks/data/Orders/useOrders";
+import useUserOrders from "@/hooks/data/orders/useUserOrders";
 import OrderItem from "./OrderItem";
 import { useOrderFilters } from "../context/FilterProvider";
+import { OrderStatusEnum } from "@/types/database.tables.types";
 
 export default function OrdersHistory() {
   const { sortBy, isReversed, filters } = useOrderFilters();
-  const { data: orders } = useOrders();
+  const { data: orders } = useUserOrders();
+  const statuses = ["pending", "approved", "cancelled", "fulfilled"] as const;
   const sortedOrders = orders?.sort((a, b) => {
     if (sortBy === "created_at") {
       return isReversed
@@ -12,10 +14,8 @@ export default function OrdersHistory() {
         : new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
     } else if (sortBy === "status") {
       return isReversed
-        ? ["approved", "pending", "fulfilled", "cancelled"].indexOf(b.status) -
-            ["approved", "pending", "fulfilled", "cancelled"].indexOf(a.status)
-        : ["approved", "pending", "fulfilled", "cancelled"].indexOf(a.status) -
-            ["approved", "pending", "fulfilled", "cancelled"].indexOf(b.status);
+        ? statuses.indexOf(b.status) - statuses.indexOf(a.status)
+        : statuses.indexOf(a.status) - statuses.indexOf(b.status);
     } else if (sortBy === "total_price") {
       return isReversed
         ? b.total_price - a.total_price
@@ -24,10 +24,26 @@ export default function OrdersHistory() {
     return 0;
   });
   const finalOrders = sortedOrders?.filter((order) => {
-    if (filters.cancelled && order.status === "cancelled") return order;
-    if (filters.pending && order.status === "pending") return order;
-    if (filters.approved && order.status === "approved") return order;
-    if (filters.fulfilled && order.status === "fulfilled") return order;
+    if (
+      filters[OrderStatusEnum.CANCELLED] &&
+      order.status === OrderStatusEnum.CANCELLED
+    )
+      return order;
+    if (
+      filters[OrderStatusEnum.PENDING] &&
+      order.status === OrderStatusEnum.PENDING
+    )
+      return order;
+    if (
+      filters[OrderStatusEnum.APPROVED] &&
+      order.status === OrderStatusEnum.APPROVED
+    )
+      return order;
+    if (
+      filters[OrderStatusEnum.FULFILLED] &&
+      order.status === OrderStatusEnum.FULFILLED
+    )
+      return order;
     return null;
   });
   return (

@@ -1,41 +1,42 @@
+"use client";
 import { RiCarLine } from "react-icons/ri";
 import { MdOutlineSupportAgent } from "react-icons/md";
 import { FaClockRotateLeft } from "react-icons/fa6";
 import { MdOutlineVpnLock } from "react-icons/md";
 import { EMAIL, PHONE_NUMBER } from "@/constants/Admin";
-import CustomSwiper from "@/app/ui/Swiper";
+import useTranslation from "@/translation/useTranslation";
 export default function Policies() {
+  const { data: translation } = useTranslation();
   const className =
     "mt-1 size-[1.75rem] text-color8 max-[1170px]:size-[1.5rem]";
   const policies = [
     {
-      title: "FREE SHIPPING",
-      description:
-        "You pay the delivery to the courier when you pick up the package. Free home delivery for orders over 100 TND.",
+      title: translation?.lang["FREE SHIPPING"],
+      description: translation?.lang["SHIPPING POLICY"],
       icon: <RiCarLine className={className} />,
     },
     {
-      title: "24/7 SUPPORT",
-      description: `Our team is at your disposal every working day from 8 a.m. to 4 p.m. Phone: ${PHONE_NUMBER} or email: ${EMAIL}.`,
+      title: translation?.lang["SUPPORT"],
+      description: translation?.lang["SUPPORT POLICY"]
+        .replace("{EMAIL}", EMAIL)
+        .replace("{PHONE_NUMBER}", PHONE_NUMBER),
       icon: <MdOutlineSupportAgent className={className} />,
     },
     {
-      title: "14 DAY REFUND",
-      description:
-        "For all orders, you have a legal period of 14 days in which you can return the goods, respecting the conditions of purchase and the right of the buyer to unilaterally terminate the contract.",
+      title: translation?.lang["REFUND"],
+      description: translation?.lang["REFUND POLICY"],
       icon: <FaClockRotateLeft className={className} />,
     },
     {
-      title: "100% SECURE PAYMENT",
-      description:
-        "No matter which payment method you choose, your transaction will go through safely. In our business, we use the same security standards used by eBay, Amazon and other large web stores.",
+      title: translation?.lang["PAYMENT"],
+      description: translation?.lang["PAYMENT POLICY"],
       icon: <MdOutlineVpnLock className={className} />,
     },
   ];
   return (
     <div className="flex flex-col items-center justify-center gap-8">
       <div className="text-2xl font-extrabold uppercase text-slate-700 max-[420px]:text-lg">
-        DELIVERY AND RETURN OF GOODS
+        {translation?.lang["DELIVERY AND RETURN OF GOODS"]}
       </div>
       <div className="mx-auto flex w-fit max-w-[75rem] flex-row items-start justify-between gap-2 px-2 max-[800px]:grid max-[800px]:grid-cols-2 max-[800px]:grid-rows-2 max-[420px]:gap-0">
         {policies.map((policy, index) => (
@@ -47,8 +48,8 @@ export default function Policies() {
 }
 
 function Policy(policy: {
-  title: string;
-  description: string;
+  title: string | undefined;
+  description: string | undefined;
   icon: JSX.Element;
 }) {
   return (

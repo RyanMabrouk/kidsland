@@ -4,10 +4,12 @@ import getSession from "@/api/getSession";
 import { useToast } from "@/hooks/useToast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { wishlistQuery } from "./wishlistQuery";
+import useTranslation from "@/translation/useTranslation";
 
 export function useRemoveFromWishlist() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { data: translation } = useTranslation();
   return useMutation({
     onMutate(variables) {
       const previousValue = queryClient.getQueryData(
@@ -26,7 +28,7 @@ export function useRemoveFromWishlist() {
     mutationFn: async ({ product_id }: { product_id: string }) => {
       const { session } = await getSession();
       if (!session) {
-        throw new Error("User is not authenticated");
+        throw new Error(translation?.lang["User is not authenticated"]);
       }
       await deleteData<"wishlist">({
         tableName: "wishlist",
@@ -39,7 +41,6 @@ export function useRemoveFromWishlist() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["wishlist"] });
-      toast.success("Item removed from wishlist");
     },
   });
 }

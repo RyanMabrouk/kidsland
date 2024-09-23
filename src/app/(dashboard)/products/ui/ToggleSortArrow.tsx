@@ -1,22 +1,23 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaLongArrowAltDown } from "react-icons/fa";
 
 export function ToggleSortArrow({
-  onClick,
+  onClick = (a: boolean) => {},
 }: {
   onClick: (value: boolean) => void;
 }) {
   const [toggleDirection, setToggleDirection] = useState(false);
-  useEffect(() => {
+  const handleClick = () => {
+    setToggleDirection((prev) => !prev);
     onClick(toggleDirection);
-  }, [toggleDirection, onClick]);
+  };
   return (
     <FaLongArrowAltDown
       className={`size-8 cursor-pointer rounded-full border p-1.5 shadow-sm transition-all ease-linear hover:shadow-md ${
         toggleDirection ? "rotate-180" : ""
       }`}
       onClick={(e) => {
-        setToggleDirection((prev) => !prev);
+        handleClick();
       }}
     />
   );

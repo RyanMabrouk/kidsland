@@ -9,11 +9,11 @@ export default function HomeSwiper() {
         slides={Array.from({ length: 4 }).map((_, i) => (
           <Image
             key={i}
-            src={`/home/banners/banner-${i + 1}.jpg`}
+            src={`/home/banners/banner-${i + 1}.webp`}
             alt=""
             width={1920}
             height={1000}
-            className="w-full object-cover h-[50vh]"
+            className="h-[50vh] w-full object-cover"
           />
         ))}
         initialSlide={0}

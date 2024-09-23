@@ -6,29 +6,11 @@ import {
   useState,
 } from "react";
 import { orderSortFiltersValues } from "../constants/filters";
-import { Enums } from "@/types/database.types";
+import { Tables } from "@/types/database.types";
 
 type FilterContextType = {
   sortBy?: orderSortFiltersValues;
-  setSortBy?: Dispatch<
-    SetStateAction<
-      | "additional_info"
-      | "address"
-      | "cancel_reason"
-      | "city"
-      | "created_at"
-      | "first_name"
-      | "id"
-      | "last_name"
-      | "payment_method"
-      | "phone_number"
-      | "region"
-      | "status"
-      | "total_price"
-      | "user_id"
-      | "wholesale_price"
-    >
-  >;
+  setSortBy?: Dispatch<SetStateAction<keyof Tables<"orders">>>;
   isReversed?: boolean;
   setIsReversed?: Dispatch<SetStateAction<boolean>>;
   filters?: {

@@ -2,24 +2,23 @@ import { MdToys } from "react-icons/md";
 import { GiBrain } from "react-icons/gi";
 import { MdConstruction } from "react-icons/md";
 import { RiDiscountPercentFill } from "react-icons/ri";
+import { AiOutlineMenuUnfold } from "react-icons/ai";
 
-export type MenuItemsType = {
-  title: string;
-  href: string;
-  subItems?: {
-    title: string;
-    filter: string;
-    icon: ({ className }: { className: string }) => React.JSX.Element;
-  }[];
-}[];
-const menuItems: MenuItemsType = [
+const menuItems = [
   {
     title: "Kidsland moments",
     href: "/products",
+    icon: ({ className }: { className: string }) => (
+      <AiOutlineMenuUnfold className={className} />
+    ),
+    subItems: [],
   },
   {
     title: "Toys",
     href: "/products",
+    icon: ({ className }: { className: string }) => (
+      <MdToys className={className} />
+    ),
     subItems: [
       {
         title: "Concentration",
@@ -48,6 +47,9 @@ const menuItems: MenuItemsType = [
   {
     title: "Deals",
     href: "/products",
+    icon: ({ className }: { className: string }) => (
+      <RiDiscountPercentFill className={className} />
+    ),
     subItems: [
       {
         title: "Discounts",
@@ -58,5 +60,5 @@ const menuItems: MenuItemsType = [
       },
     ],
   },
-];
+] as const;
 export { menuItems };

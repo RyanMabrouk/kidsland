@@ -180,6 +180,7 @@ export type Database = {
           description: string
           discount: number
           discount_type: Database["public"]["Enums"]["discount_type_enum"]
+          extra_images_url: string[] | null
           id: string
           image_url: string | null
           price: number
@@ -194,6 +195,7 @@ export type Database = {
           description?: string
           discount?: number
           discount_type?: Database["public"]["Enums"]["discount_type_enum"]
+          extra_images_url?: string[] | null
           id?: string
           image_url?: string | null
           price?: number
@@ -208,6 +210,7 @@ export type Database = {
           description?: string
           discount?: number
           discount_type?: Database["public"]["Enums"]["discount_type_enum"]
+          extra_images_url?: string[] | null
           id?: string
           image_url?: string | null
           price?: number
@@ -228,16 +231,19 @@ export type Database = {
       }
       profiles: {
         Row: {
+          default_language: Database["public"]["Enums"]["languages_enum"]
           email: string
           is_admin: boolean
           user_id: string
         }
         Insert: {
+          default_language?: Database["public"]["Enums"]["languages_enum"]
           email: string
           is_admin?: boolean
           user_id: string
         }
         Update: {
+          default_language?: Database["public"]["Enums"]["languages_enum"]
           email?: string
           is_admin?: boolean
           user_id?: string
@@ -294,6 +300,7 @@ export type Database = {
     }
     Enums: {
       discount_type_enum: "percentage" | "fixed"
+      languages_enum: "en" | "fr"
       payment_method_enum: "cash" | "online"
       status_type_enum: "pending" | "cancelled" | "fulfilled" | "approved"
     }

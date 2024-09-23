@@ -1,6 +1,5 @@
-import { OrderProduct } from "@/hooks/data/Orders/OrderByIdQuery";
+import { OrderProduct } from "@/hooks/data/orders/OrderByIdQuery";
 import { formatProduct } from "@/hooks/data/products/formatProducts";
-import { Tables } from "@/types/database.types";
 import Image from "next/image";
 import React from "react";
 

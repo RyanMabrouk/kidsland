@@ -2,21 +2,34 @@
 import login from "@/actions/auth/login";
 import Input from "@/components/Input";
 import PrimaryButton from "@/components/PrimaryButton";
+import useTranslation from "@/translation/useTranslation";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import React from "react";
 import { z } from "zod";
 
-// Define Zod schema for login validation
-const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
-
 export default function LoginWithPassword() {
   const [errors, setErrors] = React.useState<Record<string, string>>({});
   const [successMessage, setSuccessMessage] = React.useState<string>("");
-
+  const { data: translation } = useTranslation();
+  const loginSchema = z.object({
+    email: z
+      .string({
+        message: translation?.lang["${ELEMENT} must be a string"].replace(
+          "{ELEMENT}",
+          "Email",
+        ),
+      })
+      .email(translation?.lang["Invalid email address"]),
+    password: z
+      .string({
+        message: translation?.lang["${ELEMENT} must be a string"].replace(
+          "{ELEMENT}",
+          "Password",
+        ),
+      })
+      .min(6, translation?.lang["Password must be at least 6 characters"]),
+  });
   const { mutate, isPending } = useMutation({
     mutationFn: async (formObject: FormData) => {
       const data = Object.fromEntries(formObject) as {
@@ -38,50 +51,52 @@ export default function LoginWithPassword() {
           });
           setErrors(errorObj);
         } else {
-          setErrors({ general: "An unexpected error occurred" });
+          setErrors({
+            general: translation?.lang["An unexpected error occurred"] ?? "",
+          });
         }
-        console.error("Validation error:", err);
         throw err;
       }
 
       const email = formObject.get("email") as string;
       const password = formObject.get("password") as string;
       const { error } = await login({ email, password });
-      console.log("Login API response:", { error });
 
       if (error) {
         setErrors({ general: error.message });
         throw error;
       }
-
-      setSuccessMessage("Login successful");
     },
     onSuccess: () => {
-      console.log("Login successful, handling success...");
+      setSuccessMessage(translation?.lang["Login successful"] ?? "");
     },
   });
 
   return (
     <form className="w-full flex-1 space-y-6" action={mutate}>
-      <h2 className="text-2xl font-bold text-gray-800">Login</h2>
+      <h2 className="text-2xl font-bold text-gray-800">
+        {translation?.lang["Login"]}
+      </h2>
       <p className="text-gray-600">
-        If you have an account, log in with your email address.
+        {
+          translation?.lang[
+            "If you have an account, log in with your email address."
+          ]
+        }
       </p>
 
       <Input
         name="email"
-        label="Your email"
+        label={translation?.lang["email"] ?? ""}
         type="email"
         required
-        placeholder="Enter Your Email"
         error={errors.email}
       />
       <Input
         name="password"
-        label="Password"
+        label={translation?.lang["Password"] ?? ""}
         type="password"
         required
-        placeholder="Enter Your Password"
         error={errors.password}
       />
 
@@ -95,13 +110,13 @@ export default function LoginWithPassword() {
 
       <div className="flex items-center justify-between gap-4 max-sm:flex-col">
         <PrimaryButton className="max-sm:w-full" loading={isPending}>
-          Sign In
+          {translation?.lang["Sign In"]}
         </PrimaryButton>
         <Link
           href="/forget_password"
           className="text-sm text-blue-500 hover:underline"
         >
-          Forgot your password?
+          {translation?.lang["Forgot your password?"]}
         </Link>
       </div>
     </form>

@@ -1,13 +1,12 @@
 "use client";
-
-import useOrders from "@/hooks/data/Orders/useOrders";
 import OrdersHistory from "./OrdersHistory";
 import { SortOrders } from "./SortOrders";
 import { orderSortFilters } from "../constants/filters";
 import { OrderFilterProvider } from "../context/FilterProvider";
+import useUserOrders from "@/hooks/data/orders/useUserOrders";
 
 export default function Content() {
-  const { data: orders, isLoading } = useOrders();
+  const { data: orders, isLoading } = useUserOrders();
   if (isLoading || !orders) return null;
   return (
     <OrderFilterProvider>
