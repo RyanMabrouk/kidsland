@@ -6,10 +6,11 @@ import {
   useState,
 } from "react";
 import { orderSortFiltersValues } from "../constants/filters";
+import { Enums } from "@/types/database.types";
 
 type FilterContextType = {
-  filters?: orderSortFiltersValues;
-  setFilters?: Dispatch<
+  sortBy?: orderSortFiltersValues;
+  setSortBy?: Dispatch<
     SetStateAction<
       | "additional_info"
       | "address"
@@ -30,6 +31,20 @@ type FilterContextType = {
   >;
   isReversed?: boolean;
   setIsReversed?: Dispatch<SetStateAction<boolean>>;
+  filters?: {
+    cancelled: boolean;
+    pending: boolean;
+    approved: boolean;
+    fulfilled: boolean;
+  };
+  setFilters?: Dispatch<
+    SetStateAction<{
+      cancelled: boolean;
+      pending: boolean;
+      approved: boolean;
+      fulfilled: boolean;
+    }>
+  >;
 };
 
 const FilterContext = createContext<FilterContextType>({});
@@ -39,11 +54,24 @@ export function OrderFilterProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [filters, setFilters] = useState<orderSortFiltersValues>("created_at");
+  const [sortBy, setSortBy] = useState<orderSortFiltersValues>("created_at");
   const [isReversed, setIsReversed] = useState(false);
+  const [filters, setFilters] = useState<{
+    cancelled: boolean;
+    pending: boolean;
+    approved: boolean;
+    fulfilled: boolean;
+  }>({ cancelled: true, pending: true, approved: true, fulfilled: true });
   return (
     <FilterContext.Provider
-      value={{ filters, setFilters, isReversed, setIsReversed }}
+      value={{
+        sortBy,
+        setSortBy,
+        isReversed,
+        setIsReversed,
+        filters,
+        setFilters,
+      }}
     >
       {children}
     </FilterContext.Provider>
@@ -58,9 +86,11 @@ export function useOrderFilters() {
     );
   }
   return {
-    filters: context.filters!,
-    setFilters: context.setFilters!,
+    sortBy: context.sortBy!,
+    setSortBy: context.setSortBy!,
     isReversed: context.isReversed!,
     setIsReversed: context.setIsReversed!,
+    filters: context.filters!,
+    setFilters: context.setFilters!,
   };
 }

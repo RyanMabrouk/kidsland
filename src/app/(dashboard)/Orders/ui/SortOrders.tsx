@@ -8,10 +8,11 @@ import {
   orderSortFiltersValues,
 } from "../constants/filters";
 import { useOrderFilters } from "../context/FilterProvider";
-export function OrderFilters({ filters }: { filters: OrderSortFilterType[] }) {
-  const { setFilters: setFilter, setIsReversed } = useOrderFilters();
+import FilterOrders from "./FilterOrders";
+export function SortOrders({ filters }: { filters: OrderSortFilterType[] }) {
+  const { setSortBy: setFilter, setIsReversed } = useOrderFilters();
   return (
-    <div className="mb-3 flex items-center gap-4">
+    <div className="mb-3 flex items-center gap-4 max-sm:w-full max-sm:flex-col">
       {filters.map((filter) => (
         <div className="bg-white" key={filter.title}>
           <SelectGeneric
@@ -25,6 +26,7 @@ export function OrderFilters({ filters }: { filters: OrderSortFilterType[] }) {
           />
         </div>
       ))}
+      <FilterOrders />
       <div className="rounded-full bg-white">
         <ToggleSortArrow onClick={setIsReversed} />
       </div>

@@ -1,25 +1,17 @@
-import CartItem from "@/app/(dashboard)/Cart/ui/CartItem";
-import useCartPopulated from "@/hooks/data/cart/useCartPopulated";
-import { formatProduct } from "@/hooks/data/products/formatProducts";
-import { Tables } from "@/types/database.types";
 import OrderItem from "./OrderItem";
+import { OrderProduct } from "@/hooks/data/Orders/OrderByIdQuery";
 
 export default function OrderProducts({
   products,
 }: {
-  products: Tables<"order_products">[] | null;
+  products: OrderProduct[];
 }) {
   if (!products) return null;
   console.log(products);
   return (
-    <div className="flex flex-col gap-2">
-      {products.length} ***
+    <div className="flex flex-col gap-3 bg-gray-100 p-5">
       {products.map((item) => {
-        return (
-          <div className="">
-            <OrderItem item={item} />
-          </div>
-        );
+        return <OrderItem item={item} />;
       })}
     </div>
   );
