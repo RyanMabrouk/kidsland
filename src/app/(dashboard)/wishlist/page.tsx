@@ -1,11 +1,9 @@
 "use client";
 import Image from "next/image";
-import useProducts from "@/hooks/data/products/useProducts";
 import { useEffect, useState } from "react";
 import { Pagination } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
 import { productsQuery } from "@/hooks/data/products/productsQuery";
-import { useMemo } from "react";
 import useTranslation from "@/translation/useTranslation";
 import Product from "../home/ui/ProductsSection/Product";
 import useUserWishlist from "@/hooks/data/wishlist/useUserWishlist";
@@ -13,7 +11,7 @@ import useUserWishlist from "@/hooks/data/wishlist/useUserWishlist";
 export default function Page() {
   const [page, setPage] = useState(1);
   const limit = 8;
- 
+
   const { data: wishlist } = useUserWishlist({ page, limit });
   const queryClient = useQueryClient();
   useEffect(() => {
@@ -53,7 +51,7 @@ export default function Page() {
       </div>
       <Pagination
         className="flex w-full justify-center"
-        count={2}
+        count={wishlist.meta?.total_pages}
         page={page}
         boundaryCount={1}
         onChange={(e, value) => setPage(value)}
