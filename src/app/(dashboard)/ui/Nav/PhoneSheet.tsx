@@ -21,7 +21,7 @@ export default function PhoneSheet() {
         <IoMenu className="hidden size-[2.5rem] cursor-pointer text-3xl max-[830px]:block" />
       </SheetTrigger>
       <SheetContent
-        className="z-[100] w-[20rem] p-0 max-[400px]:w-full"
+        className="z-[100] w-[75%] xs:w-[15rem] p-0 sm:w-[18rem] "
         side={"left"}
       >
         <SheetHeader>
@@ -44,7 +44,7 @@ export default function PhoneSheet() {
                   <Link
                     key={item.title}
                     href={item.href}
-                    className="flex w-full min-w-max border-collapse cursor-pointer flex-row items-center gap-2 px-3 py-6 text-left text-2xl font-bold text-black hover:bg-color1 hover:font-semibold hover:text-white"
+                    className="flex w-full min-w-max border-collapse cursor-pointer flex-row items-center gap-2 px-3 py-6 text-left text-base xs:text-lg sm:text-xl font-bold text-black hover:bg-color1 hover:font-semibold hover:text-white"
                   >
                     <Icon className="size-8" />
                     <span>{translation?.lang[item.title]}</span>
