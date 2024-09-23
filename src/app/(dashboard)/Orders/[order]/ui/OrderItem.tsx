@@ -35,9 +35,11 @@ export default function OrderItem({ item }: { item: OrderProduct }) {
         <h1 className="text-sm text-gray-600">
           Total price : {formattedProduct?.description}
         </h1>
-        <h1 className="w-fit rounded-lg bg-pink-100 p-2 text-sm font-semibold text-color1">
-          {formattedProduct?.subtitle}
-        </h1>
+        {formattedProduct && (
+          <h1 className="w-fit rounded-lg bg-pink-100 p-2 text-sm font-semibold text-color1">
+            {formattedProduct?.subtitle}
+          </h1>
+        )}
       </div>
     </div>
   );
