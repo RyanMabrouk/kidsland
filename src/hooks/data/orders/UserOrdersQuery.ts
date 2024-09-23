@@ -1,7 +1,6 @@
 import getData from "@/api/getData";
-import { DefinedInitialDataOptions } from "@tanstack/react-query";
 
-export default function OrdersQuery() {
+export default function UserOrdersQuery() {
   return {
     queryKey: ["orders", { user: true }],
     queryFn: async () => {

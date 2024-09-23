@@ -1,16 +1,17 @@
 import React from "react";
 import { useOrderFilters } from "../context/FilterProvider";
+import { OrderStatusEnum } from "@/types/database.tables.types";
 
 type FilterOption = {
-  name: "cancelled" | "approved" | "fulfilled" | "pending";
+  name: OrderStatusEnum;
   color: string;
 };
 
 const filterOptions: FilterOption[] = [
-  { name: "cancelled", color: "red-500" },
-  { name: "fulfilled", color: "green-500" },
-  { name: "pending", color: "yellow-400" },
-  { name: "approved", color: "blue-500" },
+  { name: OrderStatusEnum.CANCELLED, color: "red-500" },
+  { name: OrderStatusEnum.FULFILLED, color: "green-500" },
+  { name: OrderStatusEnum.PENDING, color: "yellow-400" },
+  { name: OrderStatusEnum.APPROVED, color: "blue-500" },
 ];
 
 export default function FilterOrders() {
@@ -35,7 +36,7 @@ function FilterElement({
   color,
   checked,
 }: {
-  name: "cancelled" | "approved" | "fulfilled" | "pending";
+  name: OrderStatusEnum;
   color: string;
   checked: boolean;
 }) {

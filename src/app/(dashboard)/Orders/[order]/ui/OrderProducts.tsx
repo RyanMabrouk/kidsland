@@ -1,5 +1,5 @@
+import { OrderProduct } from "@/hooks/data/orders/OrderByIdQuery";
 import OrderItem from "./OrderItem";
-import { OrderProduct } from "@/hooks/data/Orders/OrderByIdQuery";
 
 export default function OrderProducts({
   products,
@@ -11,7 +11,7 @@ export default function OrderProducts({
   return (
     <div className="flex flex-col gap-3 bg-gray-100 p-5">
       {products.map((item) => {
-        return <OrderItem item={item} />;
+        return <OrderItem key={item.id} item={item} />;
       })}
     </div>
   );
