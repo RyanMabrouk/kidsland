@@ -1,12 +1,14 @@
 "use client";
 import signInWithOAuth from "@/actions/auth/signInWithOAuth";
 import FcGoogle from "@/components/icons/FcGoogle";
+import useTranslation from "@/translation/useTranslation";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React from "react";
 
 export default function SignupWithGoogle() {
   const router = useRouter();
+  const { data: translation } = useTranslation();
   const { mutate } = useMutation({
     mutationFn: async () => {
       const { data, error } = await signInWithOAuth({ provider: "google" });
@@ -31,7 +33,9 @@ export default function SignupWithGoogle() {
       }}
     >
       <FcGoogle size={20} />
-      <span className="text-sm">Sign Up with Google</span>
+      <span className="text-sm">
+        {translation?.lang["Sign Up with Google"]}
+      </span>
     </button>
   );
 }

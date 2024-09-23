@@ -1,12 +1,16 @@
 "use client";
 import signInWithOAuth from "@/actions/auth/signInWithOAuth";
 import FcGoogle from "@/components/icons/FcGoogle";
+import { useToast } from "@/hooks/useToast";
+import useTranslation from "@/translation/useTranslation";
 import { useMutation } from "@tanstack/react-query";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 export default function LoginWithGoogle() {
   const router = useRouter();
+  const { data: translation } = useTranslation();
+  const { toast } = useToast();
   const { mutate } = useMutation({
     mutationFn: async () => {
       const { data, error } = await signInWithOAuth({ provider: "google" });
@@ -18,6 +22,9 @@ export default function LoginWithGoogle() {
       if (data?.url) {
         router.push(data.url);
       }
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
   return (
@@ -31,7 +38,7 @@ export default function LoginWithGoogle() {
       }}
     >
       <FcGoogle size={20} />
-      <span className="text-sm">Login with Google</span>
+      <span className="text-sm">{translation?.lang["Login with Google"]}</span>
     </button>
   );
 }

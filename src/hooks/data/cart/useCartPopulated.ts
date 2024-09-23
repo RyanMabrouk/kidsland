@@ -20,7 +20,20 @@ export default function useCartPopulated() {
   });
   const total_after_discount =
     formattedData?.reduce(
-      (a, b) => a + (b.product?.price_after_discount ?? 0) * b.quantity,
+      (a, cartItem) =>
+        a +
+        (cartItem.product?.available
+          ? (cartItem.product?.price_after_discount ?? 0) * cartItem.quantity
+          : 0),
+      0,
+    ) ?? 0;
+  const total_before_discount =
+    formattedData?.reduce(
+      (a, cartItem) =>
+        a +
+        (cartItem.product?.available
+          ? (cartItem.product?.price ?? 0) * cartItem.quantity
+          : 0),
       0,
     ) ?? 0;
   const isFreeDelivery = total_after_discount >= 100;
@@ -31,14 +44,14 @@ export default function useCartPopulated() {
     data: {
       ...query,
       data: formattedData,
-      total_before_discount:
-        formattedData?.reduce(
-          (a, b) => a + (b.product?.price ?? 0) * b.quantity,
-          0,
-        ) ?? 0,
+      total_before_discount,
       total_after_discount,
-      isFreeDelivery,
       total_with_delivery: total_after_discount + delivery_cost,
+      total_products_quantity: formattedData?.reduce(
+        (acc, cartItem) => acc + cartItem.quantity,
+        0,
+      ),
+      isFreeDelivery,
       delivery_cost,
       delivery_cost_before_discount,
     },

@@ -3,28 +3,51 @@ import signUp from "@/actions/auth/signup";
 import Input from "@/components/Input";
 import PrimaryButton from "@/components/PrimaryButton";
 import SecondaryLink from "@/components/SecondaryLink";
+import useTranslation from "@/translation/useTranslation";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import React from "react";
 import { z } from "zod";
 
-// Zod schema for validation
-const schema = z
-  .object({
-    email: z.string().email("Invalid email address"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
-    confirm: z.string(),
-    policies: z.boolean().refine((val) => val, {
-      message: "You must agree to the terms and policies",
-    }),
-  })
-  .refine((data) => data.password === data.confirm, {
-    message: "Passwords must match",
-    path: ["confirm"],
-  });
-
 export default function SignupWithPassword() {
-  const router = useRouter();
+  const { data: translation } = useTranslation();
+  const schema = z
+    .object({
+      email: z
+        .string({
+          message: translation?.lang["${ELEMENT} must be a string"].replace(
+            "${ELEMENT}",
+            "Email",
+          ),
+        })
+        .email(translation?.lang["Invalid email address"]),
+      password: z
+        .string({
+          message: translation?.lang["${ELEMENT} must be a string"].replace(
+            "${ELEMENT}",
+            "Password",
+          ),
+        })
+        .min(6, translation?.lang["Password must be at least 6 characters"]),
+      confirm: z.string({
+        message: translation?.lang["${ELEMENT} must be a string"].replace(
+          "${ELEMENT}",
+          "Confirm Password",
+        ),
+      }),
+      policies: z
+        .boolean({
+          message:
+            translation?.lang["You must agree to the terms and policies"],
+        })
+        .refine((val) => val, {
+          message:
+            translation?.lang["You must agree to the terms and policies"],
+        }),
+    })
+    .refine((data) => data.password === data.confirm, {
+      message: translation?.lang["Passwords must match"],
+      path: ["confirm"],
+    });
   const [fieldErrors, setFieldErrors] = React.useState({
     email: "",
     password: "",
@@ -96,14 +119,17 @@ export default function SignupWithPassword() {
         });
         throw error;
       }
-
-      setSuccessMessage("An email has been sent to confirm your account...");
+    },
+    onSuccess: () => {
+      setSuccessMessage(translation?.lang["Successfully signed up"] ?? "");
     },
   });
 
   return (
     <form className="flex-1 space-y-6" action={mutate}>
-      <h2 className="text-2xl font-bold text-gray-800">Create Account</h2>
+      <h2 className="text-2xl font-bold text-gray-800">
+        {translation?.lang["Create Account"]}
+      </h2>
 
       <Input
         name="email"
@@ -115,33 +141,31 @@ export default function SignupWithPassword() {
       />
       <Input
         name="password"
-        label="Password"
+        label={translation?.lang["Password"] ?? "Password"}
         type="password"
         required
-        placeholder="Enter Password"
         error={fieldErrors.password} // Pass password error
       />
       <Input
         name="confirm"
-        label="Confirm Password"
+        label={translation?.lang["Confirm Password"] ?? "Confirm Password"}
         type="password"
         required
-        placeholder="Confirm Password"
         error={fieldErrors.confirm} // Pass confirm password error
       />
 
       <div className="flex items-center space-x-4">
         <input name="policies" type="checkbox" id="terms" required />
         <label htmlFor="terms" className="text-sm text-gray-600">
-          By marking this field, you agree with the{" "}
+          {translation?.lang["By marking this field, you agree with the"]}{" "}
           <a href="/terms" className="text-blue-500 hover:underline">
-            terms of use
+            {translation?.lang["terms of use"]}
           </a>{" "}
-          and{" "}
+          {translation?.lang["and"]}{" "}
           <a href="/privacy-policy" className="text-blue-500 hover:underline">
-            Privacy Policy
+            {translation?.lang["Privacy Policy"]}
           </a>{" "}
-          of this online store.
+          {translation?.lang["of this online store"]}.
         </label>
       </div>
       {fieldErrors.policies && (
@@ -154,10 +178,10 @@ export default function SignupWithPassword() {
 
       <div className="flex justify-between gap-4 max-sm:flex-col">
         <PrimaryButton className="max-sm:w-full" loading={isPending}>
-          Sign Up
+          {translation?.lang["Sign Up"]}
         </PrimaryButton>
         <SecondaryLink href={"/login"} className="max-sm:w-full">
-          You have an account
+          {translation?.lang["You have an account?"]}
         </SecondaryLink>
       </div>
     </form>

@@ -5,12 +5,7 @@ interface CartFilterOption extends SelectGenericOption {
   value: keyof Tables<"products">;
 }
 
-export type CartSortFilterType = {
-  title: string;
-  items: CartFilterOption[];
-};
-
-export const cartSortFilters: CartSortFilterType[] = [
+export const cartSortFilters = [
   {
     title: "Sort",
     items: [
@@ -19,7 +14,7 @@ export const cartSortFilters: CartSortFilterType[] = [
       { label: "By Discount", value: "discount" },
     ],
   },
-];
+] as const;
 
 export type cartSortFiltersValues =
   (typeof cartSortFilters)[number]["items"][number]["value"];

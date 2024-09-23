@@ -2,9 +2,6 @@ import getUser from "../../api/getUser";
 import updateData from "@/api/updateData";
 
 async function handleProductQuantity(id: string, quantity: number) {
-  if (quantity <= 0) {
-    throw new Error("Quantity must be positive");
-  }
   const {
     data: { user },
   } = await getUser();
