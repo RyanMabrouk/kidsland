@@ -1,5 +1,5 @@
 import { Sign } from "crypto";
-import SignupForm from "./components/SignupForm";
+import SignupForm from "./ui/SignupForm";
 import getSession from "@/api/getSession";
 import { redirect } from "next/navigation";
 
