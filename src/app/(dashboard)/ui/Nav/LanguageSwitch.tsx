@@ -52,8 +52,9 @@ export default function LanguageSwitcher() {
     <DropdownMenu>
       <DropdownMenuTrigger className="focus:outline-none">
         <Button
+          role="div"
           variant="outline"
-          className="w-[4rem] justify-between gap-1 p-1 text-sm"
+          className="w-[4rem] justify-between gap-0.5 p-1 text-sm"
         >
           {language?.flag} {language?.name}
           <ChevronDown className="h-5 w-5" />

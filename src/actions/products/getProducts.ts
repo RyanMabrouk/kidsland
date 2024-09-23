@@ -3,7 +3,6 @@ import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { Database, Tables } from "@/types/database.types";
 import { paginateQuery } from "@/helpers/paginateQuery";
-import { match } from "assert";
 export default async function getProducts({
   tableName,
   count = {},
