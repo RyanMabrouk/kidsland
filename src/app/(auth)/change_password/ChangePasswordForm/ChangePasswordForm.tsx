@@ -7,8 +7,6 @@ import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { z } from "zod";
 
-// Zod schema for password validation
-
 export default function ChangePasswordForm() {
   const { data: translation } = useTranslation();
   const [fieldErrors, setFieldErrors] = React.useState({

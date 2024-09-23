@@ -1,5 +1,5 @@
 import getSession from "@/api/getSession";
-import LoginForm from "@/app/(auth)/login/components/LoginForm";
+import LoginForm from "@/app/(auth)/login/ui/LoginForm";
 import { redirect } from "next/navigation";
 import React from "react";
 
