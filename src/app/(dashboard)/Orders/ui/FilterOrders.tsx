@@ -18,7 +18,7 @@ export default function FilterOrders() {
   const { filters } = useOrderFilters();
 
   return (
-    <div className="grid w-[32rem] grid-cols-4 gap-2 max-md:w-[16rem] max-md:grid-cols-2 max-sm:w-[8rem] max-sm:grid-cols-1">
+    <div className="grid w-[32rem] grid-cols-4 gap-2 max-md:w-[16rem] max-md:grid-cols-2 max-sm:w-[14rem]">
       {filterOptions.map((option) => (
         <FilterElement
           key={option.name}

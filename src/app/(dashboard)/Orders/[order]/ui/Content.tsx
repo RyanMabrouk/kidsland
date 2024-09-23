@@ -1,9 +1,11 @@
 "use client";
-import useOrderById from "@/hooks/data/orders/useOrderById";
+import useOrderById from "@/hooks/data/Orders/useOrderById";
 import OrderItem from "../../ui/OrderItem";
 import OrderProducts from "./OrderProducts";
+import useTranslation from "@/translation/useTranslation";
 
 export default function Content({ id }: { id: string }) {
+  const {data: translation} = useTranslation();
   const { data } = useOrderById(Number(id));
   const { order, orderProducts } = data ?? {};
   return (
@@ -12,7 +14,7 @@ export default function Content({ id }: { id: string }) {
         <OrderItem key={order?.id} order={order ?? null} />
       </div>
       <h1 className="p-6 text-2xl font-semibold">
-        Order Products ({orderProducts?.length}) :{" "}
+        {translation?.lang['Order Products']} ({orderProducts?.length}) :{" "}
       </h1>
       <OrderProducts products={orderProducts ?? []} />
     </div>

@@ -159,5 +159,13 @@
   "Sort": "Trier",
   "Products": "Produits",
   "Account": "Compte",
-  "Cart": "Panier"
+  "Cart": "Panier",
+  "Orders history": "Orders History",
+  "Full name": "Nom complet",
+  "phone number": "numero de telephone",
+  "To": "Vers",
+  "additional informations": "informations supplémentaires",
+  "payment method" : "methode de paiment",
+  "Order Products" : "produits du commande",
+  "Total price" : "prix totale"
 }

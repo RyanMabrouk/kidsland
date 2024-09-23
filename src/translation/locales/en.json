@@ -159,5 +159,13 @@
   "Sort": "Sort",
   "Products": "Products",
   "Account": "Account",
-  "Cart": "Cart"
+  "Cart": "Cart",
+  "Orders history": "Orders History",
+  "Full name": "Full name",
+  "phone number": "phone number",
+  "To": "To",
+  "additional informations": "additional informations",
+  "payment method": "payment method",
+  "Order Products": "Order Products",
+  "Total price": "Total price"
 }

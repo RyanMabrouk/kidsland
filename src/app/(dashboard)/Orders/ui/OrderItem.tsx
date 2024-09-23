@@ -1,3 +1,4 @@
+import useTranslation from "@/translation/useTranslation";
 import { Tables } from "@/types/database.types";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,20 +9,24 @@ export default function OrderItem({
 }: {
   order: Tables<"orders"> | null;
 }) {
+  const {data: translation} = useTranslation();
   if (!order) return null;
   return (
     <Link href={`/Orders/${order.id}`}>
       <div className="flex w-full items-center gap-2 rounded-md bg-gray-100 p-3 transition-all duration-200 hover:shadow-md">
-        <div className="w-3/12 p-3">
+        <div className="flex w-3/12 flex-col gap-2 max-sm:w-[9rem]">
           {order.status === "cancelled" && (
             <div className="flex flex-col items-center">
               <Image
                 src="/Orders/orderCancelled.png"
                 alt="order"
                 width={100}
+                className="max-sm:w-[5rem]"
                 height={100}
               />{" "}
-              <h1 className="font-semibold text-color1">{order.status} ❌</h1>
+              <h1 className="px-2 font-semibold text-color1">
+                {order.status} ❌
+              </h1>
             </div>
           )}
           {order.status === "pending" && (
@@ -61,37 +66,48 @@ export default function OrderItem({
           )}
         </div>
         <div className="grid w-9/12 grid-cols-2 gap-2 rounded-md border border-gray-300 bg-gray-50 p-3">
-          <div className="max-sm:col-span-2">
-            Date : {order.created_at.substring(0, 10)}
+          <div className="flex gap-2 max-sm:col-span-2">
+            <h1 className="font-semibold">Date :</h1>{" "}
+            <h1>{order.created_at.substring(0, 10)}</h1>
           </div>
           <div className="text-right font-semibold max-sm:col-span-2 max-sm:text-left">
             Total : {order.total_price} TND
           </div>
-          <div className="flex gap-2 max-md:col-span-2">
-            <h1>Full name :</h1>
-            <div className="">{order.first_name}</div>
-            <div className="">{order.last_name}</div>
+          <div className="col-span-2 flex gap-2">
+            <h1 className="text-nowrap font-semibold">{translation?.lang['Full name']} :</h1>
+            <div className="text-nowrap max-sm:overflow-scroll">
+              {order.first_name + " " + order.last_name}
+            </div>
           </div>
-          <div className="flex gap-2 max-md:col-span-2">
-            <h1>email</h1>
-            <div className="max-sm:overflow-scroll">{order.address}</div>
+          <div className="col-span-2 flex flex-wrap gap-2">
+            <h1 className="font-semibold max-sm:col-span-2">email :</h1>
+            <div className="max-sm:col-span-2 max-sm:overflow-scroll">
+              {order.address}
+            </div>
           </div>
-          <div className="flex gap-2 max-md:col-span-2">
-            <h1>phone number</h1>
-            <div className="">{order.phone_number}</div>
+          <div className="col-span-2 flex flex-wrap gap-2">
+            <h1 className="text-nowrap font-semibold max-sm:col-span-2">
+              {translation?.lang["phone number"]} :
+            </h1>
+            <div className="max-sm:col-span-2">{order.phone_number}</div>
           </div>
-          <div className="flex gap-2 max-md:col-span-2">
-            <h1>To : </h1>
-            <div className="">{order.city} - </div>
-            <div className="">{order.region}</div>
+          <div className="flex gap-2 max-sm:col-span-2">
+            <h1 className="font-semibold">{translation?.lang['To']} : </h1>
+            <div className="text-nowrap max-sm:overflow-scroll">
+              {order.city} - {order.region}
+            </div>
           </div>
           <div className="col-span-2">
-            <h1>additional informations :</h1>
-            <div className="">{order.additional_info}</div>
+            <h1 className="text-nowrap font-semibold">
+              {translation?.lang['additional informations']} :
+            </h1>
+            <div className="overflow-scroll text-nowrap">
+              {order.additional_info}
+            </div>
           </div>
           <div className="flex items-center justify-between">
             <div className="col-span-2 flex gap-2">
-              <h1 className="text-nowrap">payment method : </h1>
+              <h1 className="text-nowrap font-semibold">{translation?.lang['payment method']} : </h1>
               <div className="">{order.payment_method}</div>
             </div>
           </div>
