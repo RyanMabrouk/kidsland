@@ -40,6 +40,8 @@ export function SelectGeneric({
   disabled?: boolean;
   variant?: "regular" | "oversized";
 }) {
+  console.log(defaultValue)
+  console.log(options)
   const [open, setOpen] = React.useState(false);
   const cursor_type =
     cursor === "white"
@@ -151,6 +153,7 @@ export function SelectGeneric({
             </MenuItem>
           )}
         </Select>
+        
         {error && (
           <span className="absolute -bottom-[1.375rem] left-0 w-max text-sm text-red-600">
             {error}

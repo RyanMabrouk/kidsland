@@ -16,6 +16,7 @@ export default async function updateData<ITableName extends dbTableType>({
   data: Tables<ITableName>[] | null;
   error: PostgrestError | null;
 }> {
+  console.log(match)
   const supabase = createServerActionClient({ cookies });
   const { data, error } = await supabase
     .from(tableName)

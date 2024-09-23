@@ -11,9 +11,12 @@ export async function uploadFile({
   title: string;
 }) {
   const file = formData.get(name) as File;
-  if (!file) {
-    throw new Error("File not found in form data");
+
+  if (!file || file.size === 0 || file.name === 'undefined') {
+    throw new Error("No file selected or invalid file.");
   }
+  
+  
   const { data, error } = await UploadToBucket({
     file,
     fileName: title,
