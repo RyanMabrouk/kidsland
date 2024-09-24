@@ -18,7 +18,7 @@ export default function FilterOrders() {
   const { filters } = useOrderFilters();
 
   return (
-    <div className="grid w-[32rem] grid-cols-4 gap-2 max-md:w-[16rem] max-md:grid-cols-2 max-sm:w-[14rem]">
+    <div className="flex flex-row gap-2 max-[760px]:gap-1  max-[410px]:gap-0">
       {filterOptions.map((option) => (
         <FilterElement
           key={option.name}
@@ -47,7 +47,7 @@ function FilterElement({
   };
 
   return (
-    <div className="flex items-center gap-2 rounded-md p-2 dark:bg-black/10">
+    <div className="flex items-center gap-2 rounded-md p-2 dark:bg-black/10 max-[760px]:items-start max-[760px]:gap-1 max-[410px]:p-0.5">
       <label className="flex cursor-pointer items-center">
         <input
           className="sr-only"
@@ -56,11 +56,11 @@ function FilterElement({
           onChange={handleChange}
         />
         <div
-          className={`h-5 w-5 rounded-sm border-2 ${checked ? `bg-${color} border-${color}` : "border-gray-400"} flex items-center justify-center transition-all duration-200 ease-in-out`}
+          className={`size-5 rounded-sm border-2 ${checked ? `bg-${color} border-${color}` : "border-gray-400"} flex items-center justify-center transition-all duration-200 ease-in-out`}
         >
           {checked && (
             <svg
-              className="h-3 w-3"
+              className="size-3"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -73,7 +73,9 @@ function FilterElement({
           )}
         </div>
       </label>
-      <span className={`text-${color} text-lg font-semibold capitalize`}>
+      <span
+        className={`text-${color} text-lg font-semibold capitalize max-[760px]:text-sm`}
+      >
         {name}
       </span>
     </div>
