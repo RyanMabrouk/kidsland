@@ -12,14 +12,14 @@ export default async function WishlistHydration({
   children: React.ReactNode;
 }) {
   const queryClient = new QueryClient(QueriesConfig);
-  await Promise.all([
-    queryClient.prefetchQuery(
-      populatedWishlistQuery({
-        page: 1,
-        limit: 8,
-      }),
-    ),
-  ]);
+  // await Promise.all([
+  //   queryClient.prefetchQuery(
+  //     populatedWishlistQuery({
+  //       page: 1,
+  //       limit: 8,
+  //     }),
+  //   ),
+  // ]);
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       {children}
