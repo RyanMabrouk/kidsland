@@ -1,11 +1,10 @@
 import getWishlist from "@/actions/wishlist/getWishlist";
-import getData from "@/api/getData";
 import { infinityPagination } from "@/helpers/infinityPagination";
 export interface UserWishlistQueryType {
   page: number;
   limit: number;
 }
-const userWishlistQuery = (args:UserWishlistQueryType) => ({
+const populatedWishlistQuery = (args: UserWishlistQueryType) => ({
   queryKey: [
     "wishlist",
     {
@@ -48,4 +47,4 @@ const userWishlistQuery = (args:UserWishlistQueryType) => ({
   },
 });
 
-export { userWishlistQuery };
+export { populatedWishlistQuery };

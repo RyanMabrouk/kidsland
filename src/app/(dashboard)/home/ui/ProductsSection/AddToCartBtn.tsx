@@ -49,14 +49,14 @@ export default function AddToCartBtn({
             <Spinner />
           ) : (
             <>
-            <span className="min-w-max block max-[830px]:hidden">
-              {translation?.lang["add to cart"]}
-            </span>
-            <span className="min-w-max hidden max-[830px]:block">
-              + {translation?.lang["Cart"]}
-            </span>
-            <FaShoppingCart className="size-[1rem]" />
-          </>
+              <span className="block min-w-max max-[830px]:hidden">
+                {translation?.lang["add to cart"]}
+              </span>
+              <span className="hidden min-w-max max-[830px]:block">
+                {translation?.lang["Cart"]}
+              </span>
+              <FaShoppingCart className="size-[1rem]" />
+            </>
           )
         ) : (
           <span>{translation?.lang["Out of stock"]}</span>

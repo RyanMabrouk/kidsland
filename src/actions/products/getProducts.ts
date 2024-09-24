@@ -12,6 +12,7 @@ export default async function getProducts({
   pagination,
   search,
   match,
+  minStock,
 }: {
   tableName: "products";
   count?: {
@@ -27,6 +28,7 @@ export default async function getProducts({
     | Partial<{ [k in keyof Tables<"products">]: Tables<"products">[k] }>
     | undefined;
   minDiscount?: number;
+  minStock?: number;
   priceRange?: number[];
   category?: string;
   pagination?: {
@@ -54,6 +56,9 @@ export default async function getProducts({
   }
   if (match) {
     query = query.match(match);
+  }
+  if (minStock) {
+    query = query.gte("stock", minStock);
   }
   const { data, error, count: items_count } = await query;
   return {

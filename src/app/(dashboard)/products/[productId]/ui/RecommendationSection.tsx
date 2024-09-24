@@ -10,12 +10,13 @@ export default function RecommendationSection() {
   const { productId } = useParams();
   const { data } = useProductById(String(productId));
   const product = data?.data;
-  const limit = 12;
-  const page = 1;
   const { data: products } = useProducts({
-    page,
-    limit,
+    page: 1,
+    limit: 12,
     match: { category_id: product?.category_id },
+    filters: {
+      minStock: 1,
+    },
   });
   const { data: translation } = useTranslation();
   return (

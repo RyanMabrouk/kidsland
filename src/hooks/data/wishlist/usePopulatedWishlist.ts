@@ -1,16 +1,20 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import useCart from "../cart/useCart";
-import { userWishlistQuery, UserWishlistQueryType } from "./userWishlistQuery";
+import {
+  populatedWishlistQuery,
+  UserWishlistQueryType,
+} from "./populatedWishlistQuery";
 import { formatProduct } from "../products/formatProducts";
+import useWishlist from "./useWishlist";
 
-export default function useUserWishlist(args: UserWishlistQueryType) {
+export default function usePopulatedWishlist(args: UserWishlistQueryType) {
   const { data: cart } = useCart();
-
+  const { data: wishlist } = useWishlist();
   const query = useQuery(
-    userWishlistQuery({
+    populatedWishlistQuery({
       ...args,
-    })
+    }),
   );
   return {
     ...query,
@@ -19,12 +23,12 @@ export default function useUserWishlist(args: UserWishlistQueryType) {
       data: query.data?.data?.map((e) => {
         const formattedProduct = formatProduct(e?.products ?? null, {
           cart: cart?.data,
-          wishlist: query.data?.data.map((item) => item?.products?.id) ?? [],
+          wishlist: wishlist?.data ?? [],
         });
 
         return {
           ...e,
-          products: formattedProduct, 
+          products: formattedProduct,
         };
       }),
     },

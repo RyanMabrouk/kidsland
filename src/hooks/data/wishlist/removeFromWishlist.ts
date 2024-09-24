@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/useToast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { wishlistQuery } from "./wishlistQuery";
 import useTranslation from "@/translation/useTranslation";
+import { QueryReturnType } from "@/types/database.tables.types";
 
 export function useRemoveFromWishlist() {
   const { toast } = useToast();
@@ -12,17 +13,14 @@ export function useRemoveFromWishlist() {
   const { data: translation } = useTranslation();
   return useMutation({
     onMutate(variables) {
-      const previousValue = queryClient.getQueryData(
-        wishlistQuery()["queryKey"],
-      );
-      queryClient.setQueryData(
-        wishlistQuery()["queryKey"],
-        (old: { data: string[] | undefined }) => {
-          return {
-            data: old?.data?.filter((id) => id !== variables.product_id),
-          };
-        },
-      );
+      const queryKey = wishlistQuery()["queryKey"];
+      type queryReturnType = QueryReturnType<typeof wishlistQuery>;
+      const previousValue = queryClient.getQueryData(queryKey);
+      queryClient.setQueryData(queryKey, (old: queryReturnType) => {
+        return {
+          data: old?.data?.filter((id) => id !== variables.product_id),
+        };
+      });
       return previousValue;
     },
     mutationFn: async ({ product_id }: { product_id: string }) => {
