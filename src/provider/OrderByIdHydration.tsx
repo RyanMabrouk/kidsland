@@ -15,7 +15,7 @@ export default async function OrderByIdHydration({
   id: number;
 }) {
   const queryClient = new QueryClient(QueriesConfig);
-//   await Promise.all([queryClient.prefetchQuery(OrderByIdQuery(id))]);
+  await Promise.all([queryClient.prefetchQuery(OrderByIdQuery(id))]);
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       {children}
