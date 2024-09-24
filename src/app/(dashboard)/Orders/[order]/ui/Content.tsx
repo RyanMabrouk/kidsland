@@ -1,5 +1,5 @@
 "use client";
-import useOrderById from "@/hooks/data/Orders/useOrderById";
+import useOrderById from "@/hooks/data/orders/useOrderById";
 import OrderItem from "../../ui/OrderItem";
 import OrderProducts from "./OrderProducts";
 import useTranslation from "@/translation/useTranslation";

@@ -1,11 +1,11 @@
-import { OrderProduct } from "@/hooks/data/Orders/OrderByIdQuery";
+import { OrderProduct } from "@/hooks/data/orders/OrderByIdQuery";
 import { formatProduct } from "@/hooks/data/products/formatProducts";
 import useTranslation from "@/translation/useTranslation";
 import Image from "next/image";
 import React from "react";
 
 export default function OrderItem({ item }: { item: OrderProduct }) {
-  const {data: translation} = useTranslation();
+  const { data: translation } = useTranslation();
   const formattedProduct = formatProduct(item.products, {
     cart: [],
     wishlist: [],
@@ -20,13 +20,13 @@ export default function OrderItem({ item }: { item: OrderProduct }) {
           className="rounded-md max-sm:w-[5rem]"
           height={150}
         />
-        <h1 className="text-nowrap text-lg">x {item.quantity}</h1>
+        <h1 className="text-nowrap text-center text-lg">x {item.quantity}</h1>
       </div>
       <div className="flex w-full flex-col gap-2 p-4">
         <div className="flex w-full flex-1 justify-between">
           <div className="flex gap-2 font-semibold">
             <h1 className="text-nowrap">
-              {translation?.lang['Total price']} :{"   "}
+              {translation?.lang["Total price"]} :{"   "}
               {(formattedProduct?.price_after_discount ?? 0) * item.quantity}
             </h1>
             <h1 className="text-gray-500 line-through">

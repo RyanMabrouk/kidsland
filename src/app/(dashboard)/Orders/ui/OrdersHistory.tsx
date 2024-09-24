@@ -1,7 +1,7 @@
 import OrderItem from "./OrderItem";
 import { useOrderFilters } from "../context/FilterProvider";
 import { OrderStatusEnum } from "@/types/database.tables.types";
-import useUserOrders from "@/hooks/data/Orders/useUserOrders";
+import useUserOrders from "@/hooks/data/orders/useUserOrders";
 
 export default function OrdersHistory() {
   const { sortBy, isReversed, filters } = useOrderFilters();
