@@ -47,10 +47,12 @@ export function Nav() {
         <SearchBar />
         <span className="flex flex-row items-center justify-center gap-2">
           <LanguageSwitcher />
-          <UserMenu />
-          <Link href="/Cart">
-            <CartButton />
-          </Link>
+          <div className="flex flex-row items-center">
+            <UserMenu />
+            <Link href="/Cart">
+              <CartButton />
+            </Link>
+          </div>
         </span>
       </div>
     </nav>
