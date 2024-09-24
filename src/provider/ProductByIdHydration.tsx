@@ -1,18 +1,26 @@
 import { QueriesConfig } from "@/constants/QueriesConfig";
-import { translationQuery } from "@/translation/translationQuery";
+import { productByIdQuery } from "@/hooks/data/products/productByIdQuery";
 import {
   QueryClient,
   dehydrate,
   HydrationBoundary,
 } from "@tanstack/react-query";
 import React from "react";
-export default async function Hydration({
+export default async function ProductByIdHydration({
   children,
+  id,
 }: {
   children: React.ReactNode;
+  id: string;
 }) {
   const queryClient = new QueryClient(QueriesConfig);
-  await Promise.all([queryClient.prefetchQuery(translationQuery())]);
+  await Promise.all([
+    queryClient.prefetchQuery(
+      productByIdQuery({
+        id,
+      }),
+    ),
+  ]);
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       {children}

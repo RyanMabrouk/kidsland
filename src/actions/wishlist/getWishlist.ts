@@ -3,41 +3,38 @@ import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { Database, Tables } from "@/types/database.types";
 import { paginateQuery } from "@/helpers/paginateQuery";
-export default async function getProducts({
+import getSession from "@/api/getSession";
+
+export default async function getWishlist({
   tableName,
   count = {},
   sort,
-  minDiscount,
-  priceRange,
   pagination,
   search,
-  match,
-  minStock,
+  user,
 }: {
-  tableName: "products";
+  user?: boolean;
+  tableName: "wishlist";
   count?: {
     head?: boolean;
     count?: "exact" | "planned" | "estimated";
   };
-  search?: { column: keyof Tables<"products">; value: string };
+  search?: { column: keyof Tables<"wishlist">; value: string };
   sort?: {
-    column: keyof Tables<"products">;
+    column: keyof Tables<"wishlist">;
     ascending: boolean;
   };
-  match?:
-    | Partial<{ [k in keyof Tables<"products">]: Tables<"products">[k] }>
-    | undefined;
-  minDiscount?: number;
-  minStock?: number;
-  priceRange?: number[];
-  category?: string;
   pagination?: {
     limit: number;
     page: number;
   };
 }) {
   const supabase = createServerActionClient<Database>({ cookies });
-  let query = supabase.from(tableName).select("*", count);
+  let query = supabase.from(tableName).select(
+    `*, 
+    products (*)`, 
+    count
+  );
   if (sort) {
     query = query.order(sort.column as string, { ascending: sort.ascending });
   }
@@ -48,21 +45,26 @@ export default async function getProducts({
     const { start, end } = paginateQuery(pagination);
     query = query.range(start, end);
   }
-  if (minDiscount) {
-    query = query.gte("discount", minDiscount);
-  }
-  if (priceRange) {
-    query = query.gte("price", priceRange[0]).lte("price", priceRange[1]);
-  }
-  if (match) {
-    query = query.match(match);
-  }
-  if (minStock) {
-    query = query.gte("stock", minStock);
+  if (user) {
+    const { session, error: sessionErr } = await getSession();
+    const user_id = session?.user?.id;
+    if (!user_id || sessionErr) {
+      return {
+        data: null,
+        count: null,
+        error: {
+          message: "User not found",
+          details: "User not found",
+          hint: `User ${user_id} not found`,
+          code: "404",
+        },
+      };
+    }
+    query = query.eq("user_id", user_id);
   }
   const { data, error, count: items_count } = await query;
   return {
-    data: data as Tables<"products">[] | null,
+    data: data as (Tables<"wishlist"> & { products: Tables<"products"> })[] | null,
     error,
     count: items_count,
   };

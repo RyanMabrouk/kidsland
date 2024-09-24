@@ -87,15 +87,15 @@ export default function UserMenu() {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         {items.map((item) => (
-          <Link
-            href={item.href}
-            key={item.title}
-            className="group flex cursor-pointer flex-row items-center gap-4 px-3 py-2 transition-all ease-linear hover:bg-color1 hover:text-white"
-            onClick={handleClose}
-          >
-            {item.icon}
-            {item.title}
-          </Link>
+          <div key={item.title} onClick={handleClose}>
+            <Link
+              href={item.href}
+              className="group flex cursor-pointer flex-row items-center gap-4 px-3 py-2 transition-all ease-linear hover:bg-color1 hover:text-white"
+            >
+              {item.icon}
+              {item.title}
+            </Link>
+          </div>
         ))}
         <Divider />
         <div

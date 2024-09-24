@@ -1,7 +1,7 @@
 import getSession from "@/api/getSession";
 import { redirect } from "next/navigation";
 import React from "react";
-import ForgotPasswordForm from "./coponents/ForgotPasswordForm";
+import ForgotPasswordForm from "./ui/ForgotPasswordForm";
 
 export default async function Page() {
   const { session } = await getSession();

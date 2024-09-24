@@ -1,3 +1,5 @@
+"use server"
+
 import getUser from "../../api/getUser";
 import updateData from "@/api/updateData";
 

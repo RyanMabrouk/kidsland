@@ -9,7 +9,7 @@ import { FiltersProvider } from "../context/FiltersProvider";
 export default function Content() {
   return (
     <FiltersProvider>
-      <div className="flex h-full w-screen flex-col items-center p-10 max-[480px]:p-4 transition-all duration-500">
+      <div className="flex h-full w-full flex-col items-center p-10 max-[480px]:p-4 transition-all duration-500">
         <div className="flex w-full max-w-[63rem] items-center justify-start">
           <Filters filters={cartSortFilters} />
         </div>

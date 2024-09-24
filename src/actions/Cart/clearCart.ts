@@ -1,3 +1,4 @@
+"use server"
 import deleteData from "@/api/deleteData";
 
 export default async function clearCart(id: string) {
