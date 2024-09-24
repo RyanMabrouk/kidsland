@@ -25,7 +25,7 @@ export default function UserMenu() {
       icon: (
         <FaUserLarge className="size-[1.85rem] rounded-full bg-gray-500 p-1.5 text-center text-sm text-white group-hover:bg-white group-hover:text-color1" />
       ),
-      href: "/orders",
+      href: "/Orders",
     },
     {
       title: translation?.lang["Wishlist"],
