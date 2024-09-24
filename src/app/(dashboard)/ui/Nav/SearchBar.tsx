@@ -38,8 +38,8 @@ export default function SearchBar() {
   const [value, setValue] = useState(null as string | null);
   const [debouncedValue, setDebouncedValue] = useState(null as string | null);
   const { data: products, isLoading } = useProducts({
-    limit: 1,
-    page: 6,
+    limit: 6,
+    page: 1,
     search: debouncedValue
       ? {
           column: "title",
