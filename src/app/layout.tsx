@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Lato } from "next/font/google";
 import "./globals.css";
-import Hydration from "@/provider/Hydration";
+import Hydration from "@/provider/MainHydration";
 import Store from "@/provider/Store";
 import { ToastContainer, ToastProvider } from "@/hooks/useToast";
 import { SpeedInsights } from "@vercel/speed-insights/next";

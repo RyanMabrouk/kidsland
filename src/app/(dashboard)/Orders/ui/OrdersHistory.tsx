@@ -2,6 +2,7 @@ import OrderItem from "./OrderItem";
 import { useOrderFilters } from "../context/FilterProvider";
 import { OrderStatusEnum } from "@/types/database.tables.types";
 import useUserOrders from "@/hooks/data/orders/useUserOrders";
+import { Player } from "@lottiefiles/react-lottie-player";
 
 export default function OrdersHistory() {
   const { sortBy, isReversed, filters } = useOrderFilters();
@@ -47,10 +48,25 @@ export default function OrdersHistory() {
     return null;
   });
   return (
-    <div className="flex flex-col gap-10">
-      {finalOrders?.map((item) => {
-        return <OrderItem key={item.id} order={item} />;
-      })}
-    </div>
+    <>
+      {finalOrders && finalOrders.length > 0 ? (
+        <div className="flex flex-col gap-10">
+          {finalOrders?.map((item) => {
+            return <OrderItem key={item.id} order={item} />;
+          })}{" "}
+        </div>
+      ) : (
+        <div className="mt-[5rem] flex h-screen w-full items-start justify-center rounded-md shadow-md">
+          <Player
+            src={
+              "https://lottie.host/fb8aeca5-0f35-4b8c-bd0e-853461ff27a0/gcsVrueMx1.json"
+            }
+            className="h-60 w-60"
+            loop
+            autoplay
+          />
+        </div>
+      )}
+    </>
   );
 }

@@ -55,7 +55,7 @@ function Content() {
         <div className="mt-[7rem] flex h-screen w-screen items-start justify-center rounded-md shadow-md">
           <Player
             src={
-              "https://lottie.host/85fb7313-2848-45c2-bdb9-2b729f57afc2/AwfmWMtW8n.json"
+              "https://lottie.host/fb8aeca5-0f35-4b8c-bd0e-853461ff27a0/gcsVrueMx1.json"
             }
             className="h-60 w-60"
             loop
