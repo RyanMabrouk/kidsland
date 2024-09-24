@@ -31,7 +31,7 @@ export default function Page() {
   const { productId } = useParams();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { data: product } = useProductById(String(productId));
+  const { data: product  } = useProductById(String(productId));
   const [preview, setPreview] = useState<string>("/noArticlePic.png");
   const [images, setImages] = useState<File[]>([]);
   const [savedImages, setSavedImages] = useState<string[]>([]);
@@ -292,7 +292,7 @@ export default function Page() {
       defaultValue={Options.find(option => option.value === String(product?.data?.category_id))} 
     />
   </div>
-  <PictureUploader images={images} setImages={setImages} savedImages={product.data?.extra_images_urls as string[]} productId={product.data?.id as string} />
+  <PictureUploader images={images} setImages={setImages} savedImages={savedImages} productId={product.data?.id as string} setSavedImages={setSavedImages} />
   <button
     className="mt-5 w-[10rem] rounded border border-slate-700 bg-slate-100 p-2 px-5 font-bold text-slate-700 duration-300 ease-in-out hover:!bg-slate-600 hover:!text-slate-200"
     type="submit"

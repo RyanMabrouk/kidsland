@@ -40,8 +40,6 @@ export function SelectGeneric({
   disabled?: boolean;
   variant?: "regular" | "oversized";
 }) {
-  console.log(defaultValue)
-  console.log(options)
   const [open, setOpen] = React.useState(false);
   const cursor_type =
     cursor === "white"

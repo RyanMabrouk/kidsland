@@ -12,30 +12,23 @@ export default function PictureUploader({
   savedImages,
   images,
   setImages,
+  setSavedImages,
 }: {
   savedImages: string[]  ;
   productId: string;
   images: File[];
   setImages: React.Dispatch<React.SetStateAction<File[]>>;
+  setSavedImages: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
-  const [updateImages,setUpdatedImages] = useState<string[]>([]);
-  useEffect(() => {
-    if (savedImages) {
-      setUpdatedImages(savedImages);
-    }
-  }, [savedImages]);
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const deleteMutation = useMutation({
     mutationFn: async (url: string) => {
-      await DeleteFromBucket({ url, bucketName: "products_images" });
-      console.log(updateImages, "before")
-       setUpdatedImages(updateImages.filter((img) => img !== url))
-       console.log(updateImages, "after")
+      setSavedImages(savedImages.filter((savedImage) => savedImage !== url));
       const { error } = await updateData({
         tableName: "products",
         payload:{
-        extra_images_urls: updateImages,
+        extra_images_urls: savedImages,
       },
         match:{
           id: productId,
@@ -83,8 +76,7 @@ export default function PictureUploader({
   };
 
   const renderImages = () => {
-    const combinedImages = [...images, ...(updateImages ?? [])];
-
+    const combinedImages = [...images, ...savedImages];
     return combinedImages.map((file, index) => (
       <div
         key={index}
