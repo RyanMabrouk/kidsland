@@ -180,7 +180,7 @@ export type Database = {
           description: string
           discount: number
           discount_type: Database["public"]["Enums"]["discount_type_enum"]
-          extra_images_url: string[] | null
+          extra_images_urls: string[] | null
           id: string
           image_url: string | null
           price: number
@@ -195,7 +195,7 @@ export type Database = {
           description?: string
           discount?: number
           discount_type?: Database["public"]["Enums"]["discount_type_enum"]
-          extra_images_url?: string[] | null
+          extra_images_urls?: string[] | null
           id?: string
           image_url?: string | null
           price?: number
@@ -210,7 +210,7 @@ export type Database = {
           description?: string
           discount?: number
           discount_type?: Database["public"]["Enums"]["discount_type_enum"]
-          extra_images_url?: string[] | null
+          extra_images_urls?: string[] | null
           id?: string
           image_url?: string | null
           price?: number
