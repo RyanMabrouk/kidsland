@@ -51,24 +51,21 @@ export default function LanguageSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="focus:outline-none">
-        <div className="flex w-[3.5rem] flex-row items-center justify-between gap-0.5 rounded-md border border-slate-400 p-1 text-sm">
+        <div className="flex w-[2.5rem] flex-row items-center justify-between gap-0.5 rounded-md border border-slate-400 p-1.5 text-sm">
           <span>{language?.flag} </span>
-          <span className="text-sm">{language?.name}</span>
           <ChevronDown className="h-5 w-5" />
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-[100px] focus:outline-none">
+      <DropdownMenuContent className="w-[4rem] focus:outline-none">
         {languages.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
             onClick={() => {
               mutate(lang.code);
             }}
-            className="w-full min-w-max cursor-pointer justify-between text-sm"
+            className="w-full min-w-max cursor-pointer justify-between p-1 text-sm"
           >
-            <span>
-              {lang.flag} {lang.name}
-            </span>
+            <span className="text-lg">{lang.flag}</span>
             {language?.code === lang.code && <Check className="h-4 w-4" />}
           </DropdownMenuItem>
         ))}
