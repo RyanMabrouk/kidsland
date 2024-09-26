@@ -1,4 +1,5 @@
 "use server";
+import { DiscountTypeEnum } from "./../../types/database.tables.types";
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { Database, Tables } from "@/types/database.types";
@@ -49,7 +50,9 @@ export default async function getProducts({
     query = query.range(start, end);
   }
   if (minDiscount) {
-    query = query.gte("discount", minDiscount);
+    query = query
+      .gte("discount", minDiscount)
+      .eq("discount_type", DiscountTypeEnum.PERCENTAGE);
   }
   if (priceRange) {
     query = query.gte("price", priceRange[0]).lte("price", priceRange[1]);

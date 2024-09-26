@@ -1,31 +1,16 @@
 import Checkbox from "@/app/ui/Checkbox";
+import createNewPathname from "@/helpers/createNewPathname";
 import useCategories from "@/hooks/data/categories/useCategories";
 import useTranslation from "@/translation/useTranslation";
-import { useSearchParams } from "next/navigation";
-import {  useEffect, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-export default function CategoriesFilter({
-  defaultValue,
-  onChange,
-}: {
-  onChange: (value: number | null) => void;
-  defaultValue?: number | null;
-}) {
-  const categoryName = useSearchParams().get("category");
+export default function CategoriesFilter() {
+  const paramsCategoryName = useSearchParams().get("category");
+  const category = paramsCategoryName ?? null;
   const { data: categories } = useCategories();
-  const [categoryId, setCategoryId] = useState<string | null>(null);
-  const currentCategory =
-    categories?.data?.find((e) => e.name == categoryName) ?? null;
-  useEffect(() => {
-    setCategoryId(currentCategory?.name ?? null);
-  }, [categoryName, categories?.data?.length]);
-  useEffect(() => {
-    if (defaultValue && currentCategory?.name !== categoryId) {
-      setCategoryId(
-        categories?.data?.find((e) => e.id == defaultValue)?.name ?? null,
-      );
-    }
-  }, [defaultValue, categories?.data?.length]);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { data: translation } = useTranslation();
   return (
     <div className="flex flex-col items-start justify-center bg-white">
@@ -37,10 +22,23 @@ export default function CategoriesFilter({
           key={e.name}
           name="discount_options"
           label={e.name}
-          checked={categoryId === e.name}
+          checked={category === e.name}
           onChange={() => {
-            setCategoryId(e.name === categoryId ? null : e.name);
-            onChange(e.name === categoryId ? null : e.id);
+            router.push(
+              createNewPathname({
+                currentPathname: pathname,
+                currentSearchParams: searchParams,
+                values: [
+                  {
+                    name: "category",
+                    value: category === e.name ? "" : e.name,
+                  },
+                ],
+              }),
+              {
+                scroll: false,
+              },
+            );
           }}
         />
       ))}

@@ -1,7 +1,6 @@
 import Image from "next/image";
 import React from "react";
 import BreadCrumbs from "./[productId]/ui/BreadCrumbs";
-import { ProductsFilterProvider } from "./context/ProductsFilterContext";
 import Content from "./ui/Content";
 
 function Page() {
@@ -15,9 +14,7 @@ function Page() {
         className="w-full"
       />
       <BreadCrumbs />
-      <ProductsFilterProvider>
-        <Content />
-      </ProductsFilterProvider>
+      <Content />
     </div>
   );
 }

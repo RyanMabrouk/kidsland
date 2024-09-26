@@ -6,15 +6,37 @@ import { Pagination } from "@mui/material";
 import { SelectGeneric, SelectGenericOption } from "@/app/ui/SelectGeneric";
 import { Tables } from "@/types/database.types";
 import { useEffect, useState } from "react";
-import { useProductsFilter } from "../context/ProductsFilterContext";
 import FiltersLaptop from "./FiltersLaptop";
 import FiltersPhone from "./FiltersPhone";
 import { ToggleSortArrow } from "./ToggleSortArrow";
 import Product from "../../home/ui/ProductsSection/Product";
 import useTranslation from "@/translation/useTranslation";
-
+import { Spinner } from "@/app/ui/Spinner";
+import { Player } from "@lottiefiles/react-lottie-player";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import useCategories from "@/hooks/data/categories/useCategories";
+import createNewPathname from "@/helpers/createNewPathname";
+export interface ProductsFilterType {
+  minDiscount: number;
+  priceRange: [number, number];
+  category_id: number | null;
+}
 export default function Content() {
   const { data: translation } = useTranslation();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
+  const { data: categories } = useCategories();
+  const filters: ProductsFilterType = {
+    category_id:
+      categories?.data?.find((e) => e.name === searchParams.get("category"))
+        ?.id ?? null,
+    priceRange: [
+      Number(searchParams.get("minPrice")),
+      Number(searchParams.get("maxPrice")),
+    ],
+    minDiscount: Number(searchParams.get("discount")),
+  };
   const sortOptions = [
     {
       label: translation?.lang["price"],
@@ -33,14 +55,13 @@ export default function Content() {
       value: "title",
     },
   ] as const;
-  const [page, setPage] = useState(1);
-  const { filters } = useProductsFilter();
+  const page = Number(searchParams.get("page") ?? 1);
   const [sort, setSort] = useState({
     column: "created_at" as keyof Tables<"products">,
     ascending: false,
   });
   const limit = 18;
-  const { data: products } = useProducts({
+  const queryArgs = {
     page,
     limit,
     sort,
@@ -48,19 +69,15 @@ export default function Content() {
     match: filters.category_id
       ? { category_id: filters.category_id }
       : undefined,
-  });
+  };
+  const { data: products, isLoading } = useProducts(queryArgs);
   const queryClient = useQueryClient();
   useEffect(() => {
     if (products?.meta?.has_next_page) {
       queryClient.prefetchQuery(
         productsQuery({
+          ...queryArgs,
           page: page + 1,
-          limit,
-          sort,
-          filters,
-          match: filters.category_id
-            ? { category_id: filters.category_id }
-            : undefined,
         }),
       );
     }
@@ -97,17 +114,48 @@ export default function Content() {
             {products?.meta?.total_count} {translation?.lang["Products"]}
           </span>
         </div>
-        <div className="mx-auto grid min-h-screen w-[50rem] grid-cols-3 gap-x-10 gap-y-10 max-[1150px]:w-max max-[1150px]:grid-cols-2 max-[830px]:grid-cols-2">
-          {products?.data?.map((product, key) => (
-            <Product key={key} {...product} />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="flex min-h-screen w-screen max-w-[50rem] items-start justify-center pt-[20%]">
+            <Spinner className="size-12 self-center justify-self-center" />
+          </div>
+        ) : products.data && products.data.length > 1 ? (
+          <div className="mx-auto grid min-h-screen w-[50rem] grid-cols-3 gap-x-10 gap-y-10 max-[1150px]:w-max max-[1150px]:grid-cols-2 max-[830px]:grid-cols-2">
+            {products.data.map((product, key) => (
+              <Product key={key} {...product} />
+            ))}
+          </div>
+        ) : (
+          <div className="flex min-h-screen w-screen max-w-[50rem] items-start justify-center pt-[20%]">
+            <Player
+              src={
+                "https://lottie.host/fb8aeca5-0f35-4b8c-bd0e-853461ff27a0/gcsVrueMx1.json"
+              }
+              className="h-60 w-60"
+              loop
+              autoplay
+            />
+          </div>
+        )}
+
         <Pagination
           className="flex w-full justify-center"
           count={products?.meta?.total_pages}
           page={page}
           boundaryCount={1}
-          onChange={(e, value) => setPage(value)}
+          onChange={(e, value) => {
+            router.push(
+              createNewPathname({
+                currentPathname: pathname,
+                currentSearchParams: searchParams,
+                values: [
+                  {
+                    name: "page",
+                    value: String(value),
+                  },
+                ],
+              }),
+            );
+          }}
         />
       </div>
     </div>

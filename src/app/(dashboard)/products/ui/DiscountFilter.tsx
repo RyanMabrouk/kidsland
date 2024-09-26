@@ -1,18 +1,12 @@
 import Checkbox from "@/app/ui/Checkbox";
+import createNewPathname from "@/helpers/createNewPathname";
 import useTranslation from "@/translation/useTranslation";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 
-export default function DiscountFilter({
-  onChange,
-  defaultValue,
-}: {
-  onChange: (value: number) => void;
-  defaultValue?: number;
-}) {
-  const discount = useSearchParams().get("discount");
-
+export default function DiscountFilter() {
+  const searchParamsDiscount = useSearchParams().get("discount");
+  const discount = Number(searchParamsDiscount);
   const discount_options = useMemo(
     () => [
       {
@@ -26,15 +20,9 @@ export default function DiscountFilter({
     ],
     [],
   );
-  const [value, setValue] = useState<number | null>(null);
-  useEffect(() => {
-    setValue(discount ? discount_options[0].value : null);
-  }, [discount, discount_options]);
-  useEffect(() => {
-    if (defaultValue && defaultValue !== value) {
-      setValue(defaultValue);
-    }
-  }, [defaultValue]);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const { data: translation } = useTranslation();
   return (
     <div className="flex flex-col items-start justify-center bg-white">
@@ -46,10 +34,23 @@ export default function DiscountFilter({
           key={e.value}
           name="discount_options"
           label={e.label}
-          checked={value === e.value}
+          checked={discount === e.value}
           onChange={() => {
-            setValue(e.value === value ? 0 : e.value);
-            onChange(e.value === value ? 0 : e.value);
+            router.push(
+              createNewPathname({
+                currentPathname: pathname,
+                currentSearchParams: searchParams,
+                values: [
+                  {
+                    name: "discount",
+                    value: String(discount === e.value ? "" : e.value),
+                  },
+                ],
+              }),
+              {
+                scroll: false,
+              },
+            );
           }}
         />
       ))}

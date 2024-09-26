@@ -29,7 +29,7 @@ export default function Items() {
   const finalCart = isReversed ? [...(sortedCart ?? [])].reverse() : sortedCart;
   if (cart.data?.length === 0)
     return (
-      <div className="flex h-full w-full items-center justify-center rounded-md bg-color1 bg-white shadow-md">
+      <div className="flex h-full w-full max-w-[40rem] items-center justify-center rounded-md bg-white shadow-md">
         <Player
           src={
             "https://lottie.host/85fb7313-2848-45c2-bdb9-2b729f57afc2/AwfmWMtW8n.json"
