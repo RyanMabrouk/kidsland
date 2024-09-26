@@ -1,3 +1,4 @@
+"use server";
 import { QueriesConfig } from "@/constants/QueriesConfig";
 import { populatedWishlistQuery } from "@/hooks/data/wishlist/populatedWishlistQuery";
 import {

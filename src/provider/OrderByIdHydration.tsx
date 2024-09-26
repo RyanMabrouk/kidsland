@@ -1,6 +1,6 @@
+"use server";
 import { QueriesConfig } from "@/constants/QueriesConfig";
 import OrderByIdQuery from "@/hooks/data/orders/OrderByIdQuery";
-import { productByIdQuery } from "@/hooks/data/products/productByIdQuery";
 import {
   QueryClient,
   dehydrate,

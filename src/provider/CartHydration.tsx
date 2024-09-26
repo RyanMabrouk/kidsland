@@ -1,3 +1,4 @@
+"use server";
 import { QueriesConfig } from "@/constants/QueriesConfig";
 import { cartPopulatedQuery } from "@/hooks/data/cart/cartPopulatedQuery";
 import {

@@ -1,3 +1,4 @@
+"use server";
 import { QueriesConfig } from "@/constants/QueriesConfig";
 import { productByIdQuery } from "@/hooks/data/products/productByIdQuery";
 import {
