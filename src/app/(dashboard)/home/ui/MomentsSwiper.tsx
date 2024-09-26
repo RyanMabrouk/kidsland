@@ -77,7 +77,7 @@ export default function MomentsSwiper() {
           slides={moments.map((e, i) => (
             <div
               key={i}
-              className={`flex h-[8rem] max-w-[15rem] flex-row items-center justify-center gap-4 rounded-lg max-[600px]:h-[6rem] ${e.bg} p-6`}
+              className={`flex h-[8rem] flex-row items-center justify-center gap-4 rounded-lg max-[600px]:h-[6rem] ${e.bg} p-6`}
             >
               <span className="text-lg font-bold text-white">{e.title}</span>
               {e.icon}
