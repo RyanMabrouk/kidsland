@@ -24,7 +24,7 @@ export default function Page({
           className="w-full"
         />
         <BreadCrumbs />
-        {/* <ProductDetails /> */}
+        <ProductDetails />
         <Policies />
         <RecommendationSection />
       </div>
