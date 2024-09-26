@@ -6,12 +6,21 @@ import { useParams } from "next/navigation";
 import { WishlistHart } from "@/app/(dashboard)/home/ui/ProductsSection/WishListHart";
 import useTranslation from "@/translation/useTranslation";
 import CustomSwiper from "@/app/ui/Swiper";
+import { use, useEffect, useState } from "react";
 
 export default function ProductDetails() {
   const { productId } = useParams();
   const { data: translation } = useTranslation();
   const { data } = useProductById(String(productId));
+  const [images, setImages] = useState<(string | null)[]>([]);
   const product = data?.data;
+  useEffect(() => {
+    if (product?.extra_images_url)
+      setImages((prev) => [...prev, ...(product.extra_images_url ?? [])]);
+  }, [product?.extra_images_url]);
+  useEffect(() => {
+    if (product?.image_url) setImages((prev) => [...prev, product.image_url]);
+  }, [product?.image_url]);
   return (
     <div className="flex flex-row gap-20 py-8 dark:bg-gray-800 md:flex-col">
       <div className="mx-auto flex max-w-6xl flex-row gap-20 px-4 sm:px-6 lg:px-8">
@@ -27,10 +36,7 @@ export default function ProductDetails() {
                 autoplay={{
                   delay: 5000,
                 }}
-                slides={[
-                  product?.image_url,
-                  ...(product?.extra_images_url ?? []),
-                ].map((url) => (
+                slides={images.map((url) => (
                   <Image
                     key={url}
                     className="object-scale-down"
