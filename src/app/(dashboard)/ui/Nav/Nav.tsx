@@ -46,7 +46,7 @@ export function Nav() {
       <div className="flex flex-row items-center justify-evenly gap-12 max-[530px]:gap-2">
         <SearchBar />
         <span className="flex flex-row items-center justify-center gap-2">
-          <LanguageSwitcher />
+          {/* <LanguageSwitcher /> */}
           <div className="flex flex-row items-center">
             <UserMenu />
             <Link href="/Cart">
