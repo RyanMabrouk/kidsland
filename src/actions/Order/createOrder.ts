@@ -21,7 +21,7 @@ export default async function confirmOrder({
     | "wholesale_price"
   >;
 }) {
-  const translation = await getTranslation();
+  const translation = await getTranslation("fr");
   const { data: cart } = await getData<"cart", ICartResponse[]>({
     tableName: "cart",
     column: "*,products(*)",
