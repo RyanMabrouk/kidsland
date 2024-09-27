@@ -1,6 +1,6 @@
 "use client";
+import { createCsrClient } from "@/lib/client.supabase";
 import { dbTableType } from "@/types/database.tables.types";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useEffect } from "react";
 type optionsType = {
   event: "UPDATE" | "INSERT" | "DELETE" | "*";
@@ -22,7 +22,7 @@ export default function useRealTime({
   event?: "UPDATE" | "INSERT" | "DELETE" | "*";
   onReceive: (payload: any) => void;
 }) {
-  const supabase = createClientComponentClient();
+  const supabase = createCsrClient();
   const channelName = tableName + "_" + event;
   const filterString = filters?.reduce(
     (acc, e, i) =>

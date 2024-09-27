@@ -3,7 +3,7 @@ import signInWithOAuth from "@/actions/auth/signInWithOAuth";
 import FcGoogle from "@/components/icons/FcGoogle";
 import { useToast } from "@/hooks/useToast";
 import useTranslation from "@/translation/useTranslation";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -11,6 +11,7 @@ export default function LoginWithGoogle() {
   const router = useRouter();
   const { data: translation } = useTranslation();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const { mutate } = useMutation({
     mutationFn: async () => {
       const { data, error } = await signInWithOAuth({ provider: "google" });
@@ -19,6 +20,7 @@ export default function LoginWithGoogle() {
       return data;
     },
     onSuccess: (data) => {
+      queryClient.invalidateQueries();
       if (data?.url) {
         router.push(data.url);
       }

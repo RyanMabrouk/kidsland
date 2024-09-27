@@ -1,6 +1,5 @@
 "use server";
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { createClient } from "@/lib/supabase";
 export default async function login({
   email,
   password,
@@ -8,7 +7,7 @@ export default async function login({
   email: string;
   password: string;
 }) {
-  const supabase = createServerActionClient({ cookies });
+  const supabase = createClient();
   const { error } = await supabase.auth.signInWithPassword({
     email,
     password,

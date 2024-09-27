@@ -1,6 +1,6 @@
 "use server";
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
-import { cookies, headers } from "next/headers";
+import { createClient } from "@/lib/supabase";
+import { headers } from "next/headers";
 export default async function signUp({
   email,
   password,
@@ -8,12 +8,11 @@ export default async function signUp({
   email: string;
   password: string;
 }) {
-
   const headersList = headers();
   const header_url = headersList.get("host") || "";
   const proto = headersList.get("x-forwarded-proto") || "http";
 
-  const supabase = createServerActionClient({ cookies });
+  const supabase = createClient();
   const { data, error: signUpErr } = await supabase.auth.signUp({
     email: email,
     password: password,

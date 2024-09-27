@@ -1,7 +1,6 @@
 "use server";
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import { Database, Tables } from "@/types/database.types";
+import { createClient } from "@/lib/supabase";
+import { Tables } from "@/types/database.types";
 import { dbTableType } from "@/types/database.tables.types";
 import getSession from "./getSession";
 export default async function getData<
@@ -35,7 +34,7 @@ export default async function getData<
     page: number;
   };
 }) {
-  const supabase = createServerActionClient<Database>({ cookies });
+  const supabase = createClient();
   let query = supabase.from(tableName).select(column, count);
   if (match) {
     query = query.match(match);
@@ -47,12 +46,7 @@ export default async function getData<
       return {
         data: null,
         count: null,
-        error: {
-          message: "User not found",
-          details: "User not found",
-          hint: `User ${user_id} not found`,
-          code: "404",
-        },
+        error: "User not found",
       };
     }
     query = query.eq("user_id", user_id);

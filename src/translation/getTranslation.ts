@@ -8,13 +8,14 @@ const dictionaries = {
   fr: () => import("./locales/fr.json").then((module) => module.default),
 };
 
-export default async function getTranslation() {
+export default async function getTranslation(locale: "en" | "fr") {
   const { session } = await getSession();
-  const default_language = await getData({
+  let default_language = await getData({
     tableName: "profiles",
     column: "default_language",
     match: { user_id: session?.user.id },
   }).then((res) => res.data?.[0]?.default_language);
-  const lang = await dictionaries?.[default_language ?? "fr"]?.();
+  default_language = default_language ?? locale;
+  const lang = await dictionaries?.[default_language]?.();
   return { lang, default_language };
 }

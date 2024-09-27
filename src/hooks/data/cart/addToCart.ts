@@ -5,19 +5,20 @@ import postData from "@/api/postData";
 import { useToast } from "@/hooks/useToast";
 import useTranslation from "@/translation/useTranslation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { redirect, useRouter } from "next/navigation";
+import useUser from "../user/useUser";
 
 export function useAddToCart() {
   const { toast } = useToast();
   const { data: translation } = useTranslation();
+  const router = useRouter();
   const queryClient = useQueryClient();
+  const { data: user } = useUser();
   return useMutation({
     mutationFn: async ({ product_id }: { product_id: string }) => {
-      const { session } = await getSession();
-      if (!session) {
-        throw (
-          new Error(translation?.lang["User is not authenticated"]) ??
-          "User is not authenticated"
-        );
+      if (!user?.data) {
+        router.push("/login");
+        throw new Error(translation?.lang["Please login to add to cart"]);
       }
       const isAvailable = await getData({
         tableName: "products",
@@ -33,7 +34,7 @@ export function useAddToCart() {
         payload: [
           {
             product_id,
-            user_id: session.user.id,
+            user_id: user.data.user_id,
           },
         ],
       });

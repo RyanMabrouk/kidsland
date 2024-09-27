@@ -5,7 +5,6 @@ import React from "react";
 
 export default async function Page() {
   const { session } = await getSession();
-
   if (session) redirect("/home");
   return (
     <div className="flex min-h-screen items-center justify-center">

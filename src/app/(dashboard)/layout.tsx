@@ -1,6 +1,4 @@
 import React from "react";
-import { redirect } from "next/navigation";
-import getSession from "../../api/getSession";
 import { Nav } from "./ui/Nav/Nav";
 import Footer from "./ui/Footer";
 export default async function Layout({
@@ -8,8 +6,6 @@ export default async function Layout({
 }: {
   children: React.ReactNode;
 }) {
-  const { session } = await getSession();
-  if (!session) redirect("/login");
   return (
     <div className="flex h-full min-h-screen flex-col overflow-x-hidden">
       <Nav />

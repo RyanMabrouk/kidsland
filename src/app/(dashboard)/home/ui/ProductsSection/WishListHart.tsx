@@ -1,4 +1,5 @@
 "use client";
+import useUser from "@/hooks/data/user/useUser";
 import { useAddToWishlist } from "@/hooks/data/wishlist/addToWishlist";
 import { useRemoveFromWishlist } from "@/hooks/data/wishlist/removeFromWishlist";
 import useTranslation from "@/translation/useTranslation";
@@ -18,6 +19,8 @@ export function WishlistHart({
     useRemoveFromWishlist();
   const isPending = isPending1 || isPending2;
   const { data: translation } = useTranslation();
+  const { data: user } = useUser();
+  if (!user?.data) return null;
   return (
     <>
       <FaRegHeart

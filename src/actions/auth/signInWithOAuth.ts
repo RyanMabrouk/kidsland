@@ -1,6 +1,6 @@
 "use server";
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
-import { cookies, headers } from "next/headers";
+import { createClient } from "@/lib/supabase";
+import { headers } from "next/headers";
 import { Provider } from "@supabase/supabase-js";
 
 export default async function signInWithOAuth({
@@ -8,7 +8,7 @@ export default async function signInWithOAuth({
 }: {
   provider: Provider;
 }) {
-  const supabase = createServerActionClient({ cookies });
+  const supabase = createClient();
 
   const headersList = headers();
   const headerUrl = headersList.get("host") || "";

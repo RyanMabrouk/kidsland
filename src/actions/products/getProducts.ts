@@ -1,8 +1,7 @@
 "use server";
 import { DiscountTypeEnum } from "./../../types/database.tables.types";
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import { Database, Tables } from "@/types/database.types";
+import { createClient } from "@/lib/supabase";
+import { Tables } from "@/types/database.types";
 import { paginateQuery } from "@/helpers/paginateQuery";
 export default async function getProducts({
   tableName,
@@ -37,7 +36,7 @@ export default async function getProducts({
     page: number;
   };
 }) {
-  const supabase = createServerActionClient<Database>({ cookies });
+  const supabase = createClient();
   let query = supabase.from(tableName).select("*", count);
   if (sort) {
     query = query.order(sort.column as string, { ascending: sort.ascending });

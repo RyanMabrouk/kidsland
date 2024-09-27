@@ -1,7 +1,6 @@
 "use server";
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import { Database, Tables } from "@/types/database.types";
+import { createClient } from "@/lib/supabase";
+import { Tables } from "@/types/database.types";
 import { paginateQuery } from "@/helpers/paginateQuery";
 import getSession from "@/api/getSession";
 
@@ -29,11 +28,11 @@ export default async function getWishlist({
     page: number;
   };
 }) {
-  const supabase = createServerActionClient<Database>({ cookies });
+  const supabase = createClient();
   let query = supabase.from(tableName).select(
     `*, 
-    products (*)`, 
-    count
+    products (*)`,
+    count,
   );
   if (sort) {
     query = query.order(sort.column as string, { ascending: sort.ascending });
@@ -64,7 +63,9 @@ export default async function getWishlist({
   }
   const { data, error, count: items_count } = await query;
   return {
-    data: data as (Tables<"wishlist"> & { products: Tables<"products"> })[] | null,
+    data: data as
+      | (Tables<"wishlist"> & { products: Tables<"products"> })[]
+      | null,
     error,
     count: items_count,
   };

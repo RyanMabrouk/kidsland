@@ -1,8 +1,7 @@
 "use server";
 import { dbTableType } from "@/types/database.tables.types";
 import { Tables } from "@/types/database.types";
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { createClient } from "@/lib/supabase";
 export default async function deleteData<ITableName extends dbTableType>({
   tableName,
   match,
@@ -15,7 +14,7 @@ export default async function deleteData<ITableName extends dbTableType>({
     in: string[];
   };
 }) {
-  const supabase = createServerActionClient({ cookies });
+  const supabase = createClient();
   let query = supabase.from(tableName).delete();
   if (match) {
     query = query.match(match);

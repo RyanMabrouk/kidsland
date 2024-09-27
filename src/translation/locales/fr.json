@@ -165,7 +165,8 @@
   "phone number": "numero de telephone",
   "To": "Vers",
   "additional informations": "informations supplémentaires",
-  "payment method" : "methode de paiment",
-  "Order Products" : "produits du commande",
-  "Total price" : "prix totale"
+  "payment method": "methode de paiment",
+  "Order Products": "produits du commande",
+  "Total price": "prix totale",
+  "Please login to add to cart": "Veuillez vous connecter pour ajouter au panier"
 }

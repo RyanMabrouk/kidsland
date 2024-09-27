@@ -3,7 +3,7 @@ import login from "@/actions/auth/login";
 import Input from "@/components/Input";
 import PrimaryButton from "@/components/PrimaryButton";
 import useTranslation from "@/translation/useTranslation";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import React from "react";
 import { z } from "zod";
@@ -30,6 +30,7 @@ export default function LoginWithPassword() {
       })
       .min(6, translation?.lang["Password must be at least 6 characters"]),
   });
+  const queryClient = useQueryClient();
   const { mutate, isPending } = useMutation({
     mutationFn: async (formObject: FormData) => {
       const data = Object.fromEntries(formObject) as {
@@ -68,6 +69,7 @@ export default function LoginWithPassword() {
       }
     },
     onSuccess: () => {
+      queryClient.invalidateQueries();
       setSuccessMessage(translation?.lang["Login successful"] ?? "");
     },
   });

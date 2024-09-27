@@ -4,12 +4,13 @@ import Input from "@/components/Input";
 import PrimaryButton from "@/components/PrimaryButton";
 import SecondaryLink from "@/components/SecondaryLink";
 import useTranslation from "@/translation/useTranslation";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { z } from "zod";
 
 export default function SignupWithPassword() {
   const { data: translation } = useTranslation();
+  const queryClient = useQueryClient();
   const schema = z
     .object({
       email: z
@@ -121,6 +122,7 @@ export default function SignupWithPassword() {
       }
     },
     onSuccess: () => {
+      queryClient.invalidateQueries();
       setSuccessMessage(translation?.lang["Successfully signed up"] ?? "");
     },
   });

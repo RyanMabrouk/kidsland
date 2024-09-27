@@ -94,7 +94,7 @@ export default function SearchBar() {
         />
         {value !== null && (
           <div
-            className={`absolute top-[110%] z-[70] flex h-fit w-[125%] flex-col rounded-b-lg rounded-t-sm bg-white transition-all duration-200 ease-in max-[400px]:-right-[70%] max-[400px]:w-[200%] ${
+            className={`absolute top-[110%] z-[100] flex h-fit w-[125%] flex-col rounded-b-lg rounded-t-sm bg-white transition-all duration-200 ease-in max-[400px]:-right-[70%] max-[400px]:w-[200%] ${
               isEmptyResult
                 ? "right-0 min-h-60 w-full items-center justify-center"
                 : "-right-[12.5%] w-[125%]"

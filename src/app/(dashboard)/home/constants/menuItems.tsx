@@ -22,21 +22,27 @@ const menuItems = [
     subItems: [
       {
         title: "Concentration",
-        filter: `category=concentration`,
+        filter: {
+          category: "concentration",
+        },
         icon: ({ className }: { className: string }) => (
           <GiBrain className={className} />
         ),
       },
       {
         title: "Social",
-        filter: `category=social`,
+        filter: {
+          category: "social",
+        },
         icon: ({ className }: { className: string }) => (
           <MdToys className={className} />
         ),
       },
       {
         title: "Construction",
-        filter: `category=construction`,
+        filter: {
+          category: "construction",
+        },
         icon: ({ className }: { className: string }) => (
           <MdConstruction className={className} />
         ),
@@ -53,7 +59,9 @@ const menuItems = [
     subItems: [
       {
         title: "Discounts",
-        filter: `discount=true`,
+        filter: {
+          discount: 10,
+        },
         icon: ({ className }: { className: string }) => (
           <RiDiscountPercentFill className={className} />
         ),

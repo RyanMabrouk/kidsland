@@ -1,6 +1,5 @@
 "use server";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { createClient } from "@/lib/supabase";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -10,7 +9,7 @@ export async function GET(request: NextRequest) {
     if (!code) {
       throw new Error("code is not defined");
     }
-    const supabase = createRouteHandlerClient({ cookies });
+    const supabase = createClient();
     await supabase.auth.exchangeCodeForSession(code);
     return NextResponse.redirect(
       `${requestUrl.protocol}//${requestUrl.host}/change_password`,

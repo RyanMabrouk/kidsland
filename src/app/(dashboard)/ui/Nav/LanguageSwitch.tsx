@@ -1,6 +1,5 @@
 "use client";
 import { Check, ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,10 +9,10 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Enums } from "@/types/database.types";
 import updateData from "@/api/updateData";
-import getSession from "@/api/getSession";
 import useTranslation from "@/translation/useTranslation";
 import { useState } from "react";
 import { useToast } from "@/hooks/useToast";
+import useUser from "@/hooks/data/user/useUser";
 
 export default function LanguageSwitcher() {
   const [languages] = useState([
@@ -23,15 +22,16 @@ export default function LanguageSwitcher() {
   const { data: translation } = useTranslation();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { data: user } = useUser();
   const { mutate } = useMutation({
     mutationFn: async (newLang: Enums<"languages_enum">) => {
-      const { session } = await getSession();
-      if (!session) {
-        throw new Error(translation?.lang["User is not authenticated"]);
+      if (!user?.data) {
+        localStorage.setItem("locale", newLang);
+        return;
       }
       await updateData({
         tableName: "profiles",
-        match: { user_id: session.user.id },
+        match: { user_id: user?.data?.user_id },
         payload: { default_language: newLang },
       });
     },
@@ -45,14 +45,17 @@ export default function LanguageSwitcher() {
       toast.error(error.message);
     },
   });
-  const language = languages.find(
-    (lang) => lang.code === translation?.default_language,
-  );
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="focus:outline-none">
         <div className="flex w-[2.5rem] flex-row items-center justify-between gap-0.5 rounded-md border border-slate-400 p-1.5 text-sm">
-          <span>{language?.flag} </span>
+          <span>
+            {
+              languages.find(
+                (lang) => lang.code === translation?.default_language,
+              )?.flag
+            }{" "}
+          </span>
           <ChevronDown className="h-5 w-5" />
         </div>
       </DropdownMenuTrigger>
@@ -66,7 +69,9 @@ export default function LanguageSwitcher() {
             className="w-full min-w-max cursor-pointer justify-between p-1 text-sm"
           >
             <span className="text-lg">{lang.flag}</span>
-            {language?.code === lang.code && <Check className="h-4 w-4" />}
+            {languages.find(
+              (lang) => lang.code === translation?.default_language,
+            )?.code === lang.code && <Check className="h-4 w-4" />}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

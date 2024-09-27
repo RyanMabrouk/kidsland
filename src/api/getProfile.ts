@@ -1,15 +1,17 @@
 "use server";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { createClient } from "@/lib/supabase";
 export default async function getProfile() {
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = createClient();
   const {
     data: { session },
   } = await supabase.auth.getSession();
+  if (!session) {
+    return { data: null, error: null };
+  }
   const { data, error } = await supabase
     .from("profiles")
     .select()
-    .eq("id", session?.user.id)
+    .match({ user_id: session?.user.id })
     .single();
   return { data, error };
 }
