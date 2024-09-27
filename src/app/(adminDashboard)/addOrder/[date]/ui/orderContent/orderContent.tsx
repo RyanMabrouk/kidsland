@@ -43,9 +43,10 @@ export default function OrderContent() {
         (product) => product.id,
       );
       setInsufficientStockProducts(outOfStockProductIds);
-      if (insufficientStockProducts.length > 0) {
+      if (outOfStockProductIds.length > 0) {
         throw new Error(`Not enough stock`);
       }
+
       const orderId = await postData({
         payload: [
           {

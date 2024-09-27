@@ -63,7 +63,7 @@ export default function Page() {
   };
   const monthOptions = generateMonthOptions();
   const { data: orders, isLoading, error } = useOrders({
-    columns:["total_price", "wholesale_price","created_at"],
+    columns:["total_price", "wholesale_price","created_at","status"],
     sort: { ascending: false, column: "created_at" },
     date: {
       from: `${startDate.toISOString().split("T")[0]}T00:00:00`,

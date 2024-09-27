@@ -12,6 +12,7 @@ import { uploadFile } from "@/api/uploadFile";
 import { v4 as uuidv4 } from 'uuid';
 import { useToast } from "@/hooks/useToast";
 import PictureUploader from "./ui/picture_uploader";
+import { Player } from "@lottiefiles/react-lottie-player";
 
 const schema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -31,10 +32,16 @@ export default function Page() {
   const { productId } = useParams();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { data: product  } = useProductById(String(productId));
-  const [preview, setPreview] = useState<string>("/noArticlePic.png");
+  const { data: product , isLoading  } = useProductById(String(productId));
+  const [preview, setPreview] = useState<string>(product.data?.image_url ?? "/noArticlePic.png");
   const [images, setImages] = useState<File[]>([]);
-  const [savedImages, setSavedImages] = useState<string[]>([]);
+  useEffect(() => {
+    if (product?.data) {
+      if (product.data.image_url) {
+        setPreview(product.data.image_url);
+      }
+    }
+  },[product]);
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -42,22 +49,12 @@ export default function Page() {
       setPreview(objectUrl);
     }
   };
-  useEffect(() => {
-    if (product?.data) {
-      if (product.data.image_url) {
-        setPreview(product.data.image_url);
-      }
-  
-      if (product.data.extra_images_urls) {
-        setSavedImages(product.data.extra_images_urls);
-      }
-    }
-  }, [product?.data]);
   const Options: { label: string; value: string }[] = [
     { label: "Concentration Games", value: "1" },
     { label: "Social", value: "2" },
     { label: "Construction", value: "3" },
   ];
+
   const UpdateArticleMutation = useMutation({
     mutationFn: async (formData: FormData) => {
       const title = String(formData.get("title"));
@@ -90,6 +87,7 @@ export default function Page() {
           title:uuidv4(),
         });
       }
+      const newExtra_images_urls = product?.data?.extra_images_urls ?? [];
       if (images.length > 0) { 
         for (let i = 0; i < images.length; i++) {
           const file = images[i];
@@ -100,7 +98,7 @@ export default function Page() {
             name: "file",
             title: uuidv4(),
           });
-        savedImages.push(uploadedUrl);
+          newExtra_images_urls.push(uploadedUrl);
         }
       }
       setImages([]);
@@ -115,7 +113,7 @@ export default function Page() {
         description,
         category_id: category_id,
         wholesale_price,
-        extra_images_urls: savedImages,
+        extra_images_urls: newExtra_images_urls,
       };
       const match = {
         id: product?.data?.id,
@@ -135,7 +133,6 @@ export default function Page() {
       await queryClient.invalidateQueries({
         queryKey: ["products", productId],
       });
-      setSavedImages(product.data?.extra_images_urls || []);
     },  
     onError: (error) => {
       toast.error(
@@ -144,6 +141,17 @@ export default function Page() {
       );
         },
   });
+  if (isLoading) {
+    return     <div className="m-auto flex min-h-screen items-center justify-center">
+    <Player
+      className="m-auto"
+      autoplay
+      loop
+      src="/AnimationLoading.json"
+      style={{ height: "12rem", width: "12rem" }}
+    />
+  </div>;
+  }
 
 
   return (
@@ -292,7 +300,7 @@ export default function Page() {
       defaultValue={Options.find(option => option.value === String(product?.data?.category_id))} 
     />
   </div>
-  <PictureUploader images={images} setImages={setImages} savedImages={savedImages} productId={product.data?.id as string} setSavedImages={setSavedImages} />
+  <PictureUploader images={images} setImages={setImages} savedImages={product?.data?.extra_images_urls ?? []} productId={product.data?.id as string}  />
   <button
     className="mt-5 w-[10rem] rounded border border-slate-700 bg-slate-100 p-2 px-5 font-bold text-slate-700 duration-300 ease-in-out hover:!bg-slate-600 hover:!text-slate-200"
     type="submit"
@@ -300,7 +308,5 @@ export default function Page() {
     Submit
   </button>
 </form>
-
-
   );
 }
