@@ -2,16 +2,14 @@
 import { createClient } from "@/lib/supabase";
 export default async function getProfile() {
   const supabase = createClient();
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  if (!session) {
+  const { data } = await supabase.auth.getUser();
+  if (!data.user) {
     return { data: null, error: null };
   }
-  const { data, error } = await supabase
+  const { data: profile, error } = await supabase
     .from("profiles")
     .select()
-    .match({ user_id: session?.user.id })
+    .match({ user_id: data?.user.id })
     .single();
-  return { data, error };
+  return { data: profile, error };
 }
