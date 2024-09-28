@@ -66,6 +66,7 @@ const ordersQuery = (args: {
     else {
       return {
         data: data?.data?? [],
+        meta : null,
         error: data.error || countData.error,
         count: countData.count,
       };
