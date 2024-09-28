@@ -14,7 +14,7 @@ export const infinityPagination = <T>(
   data: T[],
   options: {
     total_count: number;
-    limit: number;
+    limit: number ;
     page: number;
   },
 ): InfinityPaginationResultType<T> => {

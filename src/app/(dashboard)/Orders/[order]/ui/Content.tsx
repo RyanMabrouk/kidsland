@@ -7,7 +7,7 @@ import useTranslation from "@/translation/useTranslation";
 export default function Content({ id }: { id: string }) {
   const {data: translation} = useTranslation();
   const { data } = useOrderById(Number(id));
-  const { order, orderProducts } = data ?? {};
+  const { order, orderProducts } = data?.data ?? {};
   return (
     <div className="flex w-full flex-col items-center">
       <div className="w-[55rem] max-md:w-[30rem] max-sm:w-[25rem]">

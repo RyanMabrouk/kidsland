@@ -151,6 +151,7 @@ export function SelectGeneric({
             </MenuItem>
           )}
         </Select>
+        
         {error && (
           <span className="absolute -bottom-[1.375rem] left-0 w-max text-sm text-red-600">
             {error}
