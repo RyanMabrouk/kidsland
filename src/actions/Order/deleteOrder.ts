@@ -7,5 +7,6 @@ export async function deleteOrder(id: number) {
     tableName: "orders",
     match: { id },
   });
-  if (error) throw new Error(error.message);
+  if (error) return { error: error.message };
+  return { error: null };
 }

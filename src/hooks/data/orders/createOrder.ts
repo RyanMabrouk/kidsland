@@ -1,6 +1,6 @@
 "use client";
 import clearCart from "@/actions/Cart/clearCart";
-import confirmOrder from "@/actions/Order/createOrder";
+import createOrder from "@/actions/Order/createOrder";
 import { useToast } from "@/hooks/useToast";
 import useTranslation from "@/translation/useTranslation";
 import { PaymentMethodEnum } from "@/types/database.tables.types";
@@ -120,10 +120,14 @@ export default function useCreateOrder() {
           });
         }
       }
-      const user_id = await confirmOrder({
+      const { user_id, error: createOrderError } = await createOrder({
         order: args,
       });
-      await clearCart(user_id);
+      if (createOrderError) throw new Error(createOrderError);
+      if (!user_id)
+        throw new Error(translation?.lang["Failed to submit order"]);
+      const { error } = await clearCart(user_id);
+      if (error) throw new Error(error);
       localStorage.clear();
     },
     onSuccess: async () => {

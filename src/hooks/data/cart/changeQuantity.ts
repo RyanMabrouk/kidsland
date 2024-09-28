@@ -20,7 +20,8 @@ export default function useChangeQuantity(product: IProduct | null) {
       if (product.stock < quantity) {
         throw new Error(translation?.lang["Not enough stock"]);
       }
-      return await handleProductQuantity(product.id, quantity);
+      const { error } = await handleProductQuantity(product.id, quantity);
+      if (error) throw new Error(error);
     },
     onMutate: async (quantity) => {
       const queryKey = cartPopulatedQuery()["queryKey"];

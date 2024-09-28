@@ -13,7 +13,8 @@ export default function useDeleteFromCart(product: IProduct | null) {
       if (!product) {
         throw new Error(translation?.lang["Product not found"]);
       }
-      await handleDeleteCartItem(product.id);
+      const { error } = await handleDeleteCartItem(product.id);
+      if (error) throw new Error(error);
     },
     onSuccess: () => {
       toast.success(

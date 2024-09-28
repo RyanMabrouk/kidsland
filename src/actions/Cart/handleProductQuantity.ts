@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import getUser from "../../api/getUser";
 import updateData from "@/api/updateData";
@@ -13,8 +13,9 @@ async function handleProductQuantity(id: string, quantity: number) {
     match: { user_id: user.id, product_id: id },
   });
   if (error) {
-    throw new Error(error.message);
+    return { error: error.message };
   }
+  return { error: null };
 }
 
 export default handleProductQuantity;

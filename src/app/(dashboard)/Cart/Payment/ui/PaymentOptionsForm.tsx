@@ -48,10 +48,9 @@ export default function PaymentOptionsForm({ close }: { close: () => void }) {
         {selectedOption === PaymentMethodEnum.CASH && (
           <div className="mt-3 rounded bg-gray-100 p-3">
             <p className="text-sm text-gray-700">
-              Payez plus tard en espèces ou au moment de la livraison, une fois
-              que votre commande est livrée.
+              {translation?.lang["pay on delivery"]}
               <a href="#" className="ml-1 text-indigo-500">
-                Détails
+                {translation?.lang["Details"]}
               </a>
             </p>
             <div className="mt-2 flex items-center justify-end">
@@ -65,7 +64,7 @@ export default function PaymentOptionsForm({ close }: { close: () => void }) {
         )}
       </div>
 
-      <div className="mb-4">
+      {/* <div className="mb-4">
         <div className="flex items-center gap-2">
           <input
             type="radio"
@@ -108,7 +107,7 @@ export default function PaymentOptionsForm({ close }: { close: () => void }) {
             </div>
           </div>
         )}
-      </div>
+      </div> */}
 
       <div className="flex justify-end gap-2 text-right">
         <button
