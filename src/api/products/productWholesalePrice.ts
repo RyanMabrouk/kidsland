@@ -10,7 +10,7 @@ export default async function productsWholeSalePrice() {
     .select("stock, wholesale_price");
 
   if (error) {
-    throw new Error(`Error fetching products: ${error.message}`);
+    return { error: error.message };
   }
   const totaleWholesalePrice = products.reduce((acc, product) => {
     const stock = product.stock || 0;

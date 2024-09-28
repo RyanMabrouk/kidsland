@@ -10,8 +10,7 @@ export default async function getOrdersById(orderId: number) {
     .select("*")
     .eq("order_id", orderId);  
   if (fetchError) {
-    console.error("Error fetching order products:", fetchError);
-    return null;  
+    return { error: fetchError.message };  
   }
 
   return order_products; 

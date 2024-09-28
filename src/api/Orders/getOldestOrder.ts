@@ -12,8 +12,7 @@ export default async function getOldestOrder() {
     .order("created_at", { ascending: true })  
     .limit(1); 
   if (ordersError) {
-    console.error("Error fetching orders:", ordersError);
-    return { error: ordersError };
+    return { error: ordersError.message };
   }
 
   if (orders && orders.length > 0) {

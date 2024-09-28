@@ -55,12 +55,22 @@ const ordersQuery = (args: {
         error: res.error,
       })),
     ]);
-    return infinityPagination(data?.data as Tables<"orders">[], {
-      total_count: countData.count ?? 0,
-           limit: args.pagination?.limit,
-      page: args.pagination?.page,
-      
-    });
+    if(args.pagination){
+      return infinityPagination(data?.data ?? [], {
+        total_count: countData.count ?? 0,
+        limit: args.pagination?.limit,
+        page: args.pagination?.page,
+        
+      });
+    }
+    else {
+      return {
+        data: data?.data?? [],
+        error: data.error || countData.error,
+        count: countData.count,
+      };
+    }
+
   }
 });
 

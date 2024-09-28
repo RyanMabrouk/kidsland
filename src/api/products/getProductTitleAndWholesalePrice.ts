@@ -11,8 +11,8 @@ export default async function getProductTitleAndWholesalePrice(productId : strin
     .single()
 
   if (error) {
-    throw new Error(`Error fetching products: ${error.message}`);
-  }
+      return { error: error.message };
+    }
   return {
     title: product.title,
     wholesalePrice: product.wholesale_price,
