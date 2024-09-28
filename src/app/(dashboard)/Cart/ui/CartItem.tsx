@@ -1,4 +1,5 @@
 "use client";
+import { Spinner } from "@/app/ui/Spinner";
 import useChangeQuantity from "@/hooks/data/cart/changeQuantity";
 import useDeleteFromCart from "@/hooks/data/cart/deleteFromCart";
 import useTranslation from "@/translation/useTranslation";
@@ -15,7 +16,7 @@ export default function CartItem({
   quantity: number;
 }) {
   const { mutate: change } = useChangeQuantity(product);
-  const { mutate: remove } = useDeleteFromCart(product);
+  const { mutate: remove, isPending: isDeleting } = useDeleteFromCart(product);
   const { data: translation } = useTranslation();
   return (
     <div className="w-[95%] border-2 border-solid transition-all duration-200 hover:w-[97%] hover:shadow-md max-[480px]:w-full">
@@ -69,9 +70,13 @@ export default function CartItem({
       <div className="flex items-center justify-between p-4">
         <button
           onClick={() => remove()}
-          className="min-w-[6rem] rounded-xl border-2 bg-color1 p-2 text-white transition-all duration-300 hover:border-color1 hover:bg-white hover:text-color1"
+          className="flex min-w-[6rem] items-center justify-center rounded-xl border-2 bg-color1 p-2 text-white transition-all duration-300 hover:border-color1 hover:bg-white hover:text-color1"
         >
-          {translation?.lang["Delete"]}
+          {isDeleting ? (
+            <Spinner className="size-6" />
+          ) : (
+            translation?.lang["Delete"]
+          )}
         </button>
         <div className="flex gap-7">
           <button
