@@ -1,7 +1,7 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import OrderByIdQuery from "./orderByIdQuery";
+import orderByIdQuery from "./orderByIdQuery";
 
 export default function useOrdersById(orderId: number) {
-  return useQuery(OrderByIdQuery(orderId));
+  return useQuery(orderByIdQuery(orderId));
 }

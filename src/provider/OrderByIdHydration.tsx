@@ -1,6 +1,6 @@
 "use server";
 import { QueriesConfig } from "@/constants/QueriesConfig";
-import OrderByIdQuery from "@/hooks/data/orders/OrderByIdQuery";
+import orderByIdQuery from "@/hooks/data/orders/orderByIdQuery";
 import {
   QueryClient,
   dehydrate,
@@ -15,7 +15,7 @@ export default async function OrderByIdHydration({
   id: number;
 }) {
   const queryClient = new QueryClient(QueriesConfig);
-  await Promise.all([queryClient.prefetchQuery(OrderByIdQuery(id))]);
+  await Promise.all([queryClient.prefetchQuery(orderByIdQuery(id))]);
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       {children}

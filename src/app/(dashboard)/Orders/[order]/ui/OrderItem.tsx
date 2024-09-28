@@ -1,4 +1,4 @@
-import { OrderProduct } from "@/hooks/data/orders/OrderByIdQuery";
+import { OrderProduct } from "@/hooks/data/orders/orderByIdQuery";
 import { formatProduct } from "@/hooks/data/products/formatProducts";
 import useTranslation from "@/translation/useTranslation";
 import Image from "next/image";
