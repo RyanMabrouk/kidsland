@@ -1,5 +1,4 @@
 "use client";
-
 export function saveLocalValues(key: string, value: any) {
   try {
     const serializedValue = JSON.stringify(value);

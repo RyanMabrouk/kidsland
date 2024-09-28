@@ -1,7 +1,7 @@
 "use client";
 import createNewPathname from "@/helpers/createNewPathname";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 export function NavbarItemsSubmenu(item: {
   title: string;

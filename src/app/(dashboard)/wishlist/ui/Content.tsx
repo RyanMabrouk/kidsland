@@ -8,6 +8,8 @@ import useTranslation from "@/translation/useTranslation";
 import usePopulatedWishlist from "@/hooks/data/wishlist/usePopulatedWishlist";
 import Product from "../../home/ui/ProductsSection/Product";
 import { Player } from "@lottiefiles/react-lottie-player";
+import useUser from "@/hooks/data/user/useUser";
+import { useRouter } from "next/navigation";
 
 function Content() {
   const [page, setPage] = useState(1);
@@ -25,6 +27,9 @@ function Content() {
     }
   }, [page, wishlist?.meta?.has_next_page, queryClient]);
   const { data: translation } = useTranslation();
+  const { data: user } = useUser();
+  const router = useRouter();
+  if (!user?.data) router.push("/login");
   return (
     <>
       <div className="flex flex-row items-center justify-center gap-3">

@@ -1,6 +1,12 @@
 import React from "react";
-import { Nav } from "./ui/Nav/Nav";
 import Footer from "./ui/Footer";
+import dynamic from "next/dynamic";
+const ClientSideNav = dynamic(
+  () => import("./ui/Nav/Nav").then((mod) => mod.Nav),
+  {
+    ssr: false,
+  },
+);
 export default async function Layout({
   children,
 }: {
@@ -8,7 +14,7 @@ export default async function Layout({
 }) {
   return (
     <div className="flex h-full min-h-screen flex-col overflow-x-hidden">
-      <Nav />
+      <ClientSideNav />
       <main className="h-full min-h-screen w-full">{children}</main>
       <Footer />
     </div>

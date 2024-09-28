@@ -1,7 +1,8 @@
 import Image from "next/image";
-import React from "react";
+import React, { Suspense } from "react";
 import BreadCrumbs from "./[productId]/ui/BreadCrumbs";
 import Content from "./ui/Content";
+import { Spinner } from "@/app/ui/Spinner";
 
 function Page() {
   return (
@@ -14,7 +15,9 @@ function Page() {
         className="w-full"
       />
       <BreadCrumbs />
-      <Content />
+      <Suspense fallback={<Spinner />}>
+        <Content />
+      </Suspense>
     </div>
   );
 }

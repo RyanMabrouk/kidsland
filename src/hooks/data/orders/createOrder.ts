@@ -1,3 +1,4 @@
+"use client";
 import clearCart from "@/actions/Cart/clearCart";
 import confirmOrder from "@/actions/Order/createOrder";
 import { useToast } from "@/hooks/useToast";
