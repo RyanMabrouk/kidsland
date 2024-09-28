@@ -1,4 +1,4 @@
-import { OrderProduct } from "@/hooks/data/orders/orderByIdQuery";
+import { OrderProduct } from "@/hooks/data/orders/OrderByIdQuery";
 import OrderItem from "./OrderItem";
 
 export default function OrderProducts({

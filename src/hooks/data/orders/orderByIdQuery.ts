@@ -5,7 +5,7 @@ export interface OrderProduct extends Tables<"order_products"> {
   products: Tables<"products">;
 }
 
-export default function orderByIdQuery(id: number | null) {
+export default function OrderByIdQuery(id: number | null) {
   return {
     queryKey: ["orders", { id, user: true }],
     queryFn: async () => {
