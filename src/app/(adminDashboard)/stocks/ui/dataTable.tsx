@@ -13,16 +13,15 @@ const DataTable = ({
 }: {
   data: Array<{ id:string;product: string; stock: number; wholesale_price: number; price: number; income: number }>;
 }) => {
-  const [totalIncome, setTotalIncome] = useState<number | null>(null); // State for storing total income
+  const [totalIncome, setTotalIncome] = useState<number | undefined>(0); // State for storing total income
   const [sortField, setSortField] = useState<keyof typeof data[0]>("product");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
-  const [totalWholesalePrice, setTotalWholesalePrice] = useState<number | null>(null);
+  const [totalWholesalePrice, setTotalWholesalePrice] = useState<number | undefined>(0);
 
-  // Fetch total income using the server-side function
   useEffect(() => {
     const fetchWholesalePrice = async () => {
       try {
-        const wholesalePrice = await productsWholeSalePrice();
+        const {totaleWholesalePrice :wholesalePrice,error} = await productsWholeSalePrice();
         setTotalWholesalePrice(wholesalePrice);
       } catch (error) {
         console.error("Failed to fetch total wholesale price:", error);
@@ -32,7 +31,7 @@ const DataTable = ({
 
     const fetchIncome = async () => {
       try {
-        const income = await productsIncome();
+        const {totalIncome: income} = await productsIncome();
         setTotalIncome(income);
       } catch (error) {
         console.error("Failed to fetch total income:", error);
@@ -41,10 +40,6 @@ const DataTable = ({
 
     fetchIncome();
   }, []);
-
-  // Filtered data based on search query
-
-  // Sorting logic
   const sortedData = [...data].sort((a, b) => {
     if (a[sortField] < b[sortField]) return sortDirection === "asc" ? -1 : 1;
     if (a[sortField] > b[sortField]) return sortDirection === "asc" ? 1 : -1;
@@ -58,7 +53,6 @@ const DataTable = ({
 
   return (
     <div>
-      {/* Table */}
       <Table className="min-w-full table-auto">
         <TableHead className="px-0 bg-gray-100 text-base font-semibold">
           <TableRow className="grid grid-cols-11">
