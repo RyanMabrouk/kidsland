@@ -1,9 +1,10 @@
 import Image from "next/image";
-import React, { Suspense } from "react";
+import React from "react";
 import BreadCrumbs from "./[productId]/ui/BreadCrumbs";
-import Content from "./ui/Content";
-import { Spinner } from "@/app/ui/Spinner";
-
+import dynamic from "next/dynamic";
+const ClientSideContent = dynamic(() => import("./ui/Content"), {
+  ssr: false, // Ensure the component is only rendered on the client side
+});
 function Page() {
   return (
     <div className="mb-20 flex flex-col">
@@ -15,9 +16,7 @@ function Page() {
         className="w-full"
       />
       <BreadCrumbs />
-      <Suspense fallback={<Spinner />}>
-        <Content />
-      </Suspense>
+      <ClientSideContent />
     </div>
   );
 }
