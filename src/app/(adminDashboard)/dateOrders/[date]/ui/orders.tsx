@@ -42,7 +42,7 @@ export default function Orders({ searchQuery }: { searchQuery: string }) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (orders?.meta.has_next_page) {
+    if (orders?.meta?.has_next_page) {
       queryClient.prefetchQuery(
         ordersQuery({
           date : {
@@ -60,7 +60,7 @@ export default function Orders({ searchQuery }: { searchQuery: string }) {
         }),
       );
     }
-  }, [page, orders?.meta.has_next_page, queryClient]);
+  }, [page, orders?.meta?.has_next_page, queryClient]);
 
   return (
     <div className='flex flex-col gap-5'>
@@ -136,7 +136,7 @@ export default function Orders({ searchQuery }: { searchQuery: string }) {
 
       <Pagination
         className="flex w-full justify-center"
-        count={orders?.meta.total_pages}
+        count={orders?.meta?.total_pages}
         page={page}
         boundaryCount={3}
         siblingCount={3}

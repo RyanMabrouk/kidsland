@@ -5,7 +5,7 @@ import { Player } from '@lottiefiles/react-lottie-player';
 import React, { useState, useEffect } from 'react';
 
 export default function Item({ item }: { item: Tables<"order_products"> }) {
-  const [title, setTitle] = useState<string | null>(null);
+  const [title, setTitle] = useState<string | undefined>("");
 
   useEffect(() => {
     const fetchProductDetails = async () => {
