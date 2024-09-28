@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 
-type CallbackFunction = () => void;
+type CallbackFunction = (...args: any) => void;
 
 export default function useTimeout(callback: CallbackFunction, delay: number) {
   const callbackRef = useRef<CallbackFunction>(callback);

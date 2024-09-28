@@ -1,3 +1,4 @@
+import useTranslation from "@/translation/useTranslation";
 import { useState } from "react";
 
 export default function Textarea({
@@ -25,9 +26,8 @@ export default function Textarea({
       <textarea
         defaultValue={defaultValue}
         id="input"
-        placeholder="Write here..."
         name={name}
-        className="rounded-md border-2 h-40 border-gray-400 p-[14px] pl-[10px] text-xs transition-all duration-200 focus:border-color1 focus:outline-none"
+        className="h-40 rounded-md border-2 border-gray-400 p-[14px] pl-[10px] text-xs transition-all duration-200 focus:border-color1 focus:outline-none"
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
       />

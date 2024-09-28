@@ -4,19 +4,21 @@ import { useToast } from "@/hooks/useToast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useCart from "./useCart";
 import deleteData from "@/api/deleteData";
+import useTranslation from "@/translation/useTranslation";
 
 export function useClearCart() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { data: translation } = useTranslation();
   const { data: oldCart } = useCart();
   return useMutation({
     mutationFn: async () => {
       const { session } = await getSession();
       if (!session) {
-        throw new Error("User is not authenticated");
+        throw new Error(translation?.lang["User is not authenticated"]);
       }
       if (!oldCart?.data) {
-        throw new Error("User cart not found");
+        throw new Error(translation?.lang["User cart not found"]);
       }
       await deleteData({
         tableName: "cart",
@@ -31,7 +33,6 @@ export function useClearCart() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
-      toast.success("Cart was cleared");
     },
   });
 }

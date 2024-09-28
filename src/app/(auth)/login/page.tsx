@@ -1,12 +1,10 @@
 import getSession from "@/api/getSession";
-import LoginForm from "@/app/(auth)/login/components/LoginForm";
-import { createClient } from "@supabase/supabase-js";
+import LoginForm from "@/app/(auth)/login/ui/LoginForm";
 import { redirect } from "next/navigation";
 import React from "react";
 
 export default async function Page() {
   const { session } = await getSession();
-
   if (session) redirect("/home");
   return (
     <div className="flex min-h-screen items-center justify-center">

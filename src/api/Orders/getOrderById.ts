@@ -1,10 +1,9 @@
 "use server";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
 import { Database } from "@/types/database.types";
+import { createClient } from "@/lib/supabase";
 
 export default async function getOrdersById(orderId: number) {
-  const supabase = createServerComponentClient<Database>({ cookies });
+  const supabase = createClient();
 
   const { data: order_products, error: fetchError } = await supabase
     .from("order_products")

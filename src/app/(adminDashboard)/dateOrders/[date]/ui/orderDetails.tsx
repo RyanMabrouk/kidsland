@@ -7,7 +7,6 @@ import { Enums, Tables } from '@/types/database.types';
 
 export default function OrderDetails({ order }: { order: Tables<"orders"> }) {
   const { data: orderDetails, isPending } = useOrdersById(order.id);
-  console.log("🚀 ~ OrderDetails ~ orderDetails:", orderDetails)
   const client = order.first_name + " " + order.last_name;
   const address = order.region + ", " + order.city + ", " + order.additional_info;
 
@@ -59,10 +58,10 @@ export default function OrderDetails({ order }: { order: Tables<"orders"> }) {
         ) : (
           <>
             <div
-              className={`flex flex-col w-full gap-1 mt-2 ${orderDetails && orderDetails.length > 0 ? ' overflow-y-auto ' : ''
+              className={`flex flex-col w-full gap-1 mt-2 ${orderDetails?.data.orderProducts && orderDetails.data.orderProducts?.length > 0 ? ' overflow-y-auto ' : ''
               }`}
             >
-              {orderDetails?.map((item) => (
+              {orderDetails?.data.orderProducts?.map((item ) => (
                 <Item key={item.id} item={item} />
               ))}
             </div>

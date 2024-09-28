@@ -1,24 +1,25 @@
+"use client";
 import useCartPopulated from "@/hooks/data/cart/useCartPopulated";
+import useTranslation from "@/translation/useTranslation";
 import Link from "next/link";
 
 export default function OrderButton() {
+  const { data: translation } = useTranslation();
   const { data: cart } = useCartPopulated();
-  const quantity = cart?.data?.reduce((acc, item) => acc + item.quantity, 0);
-
-  if (cart?.data?.length === 0) {
+  if (cart.data?.length === 0) {
     return (
       <Link
         href="products"
-        className="w-full rounded-lg cursor-not-allowed bg-color1 p-3 text-center text-xl font-semibold text-white transition-all duration-300 hover:bg-gray-800"
+        className="w-full cursor-not-allowed rounded-lg bg-color1 p-3 text-center text-xl font-semibold text-white transition-all duration-300 hover:bg-gray-800"
       >
-        Order Some Products first
+        {translation?.lang["Order Some Products first"]}
       </Link>
     );
   }
-  if (quantity === 0) {
+  if (cart.total_products_quantity === 0) {
     return (
       <div className="w-full rounded-lg bg-gray-600 p-3 text-center text-xl font-semibold text-white transition-all duration-300 hover:bg-gray-800">
-        Select a quantity
+        {translation?.lang["Select a quantity"]}
       </div>
     );
   }
@@ -28,7 +29,10 @@ export default function OrderButton() {
       href="/Cart/Payment"
       className="w-full rounded-lg bg-color1 p-3 text-center text-xl font-semibold text-white transition-all duration-300 hover:bg-red-400"
     >
-      Order ({cart.total_after_discount} TND)
+      {translation?.lang["Order ${PRICE} TND"].replace(
+        "${PRICE}",
+        cart.total_after_discount.toFixed(2),
+      )}
     </Link>
   );
 }

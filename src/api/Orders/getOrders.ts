@@ -1,7 +1,6 @@
 "use server";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import { Database, Enums, Tables } from "@/types/database.types";
+import {  Enums, Tables } from "@/types/database.types";
+import { createClient } from "@/lib/supabase";
 
 export type getOrdersParams = {
   match?: Partial<Tables<"orders">>;
@@ -52,7 +51,7 @@ export default async function getOrders({
   search,
   filter,
 }: getOrdersParams) {
-  const supabase = createServerComponentClient<Database>({ cookies });
+  const supabase = createClient();
 
   let query = supabase
     .from("orders")

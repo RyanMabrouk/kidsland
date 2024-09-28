@@ -1,14 +1,16 @@
+"use client";
 import clearCart from "@/actions/Cart/clearCart";
-import confirmOrder from "@/actions/Order/createOrder";
+import createOrder from "@/actions/Order/createOrder";
 import { useToast } from "@/hooks/useToast";
+import useTranslation from "@/translation/useTranslation";
 import { PaymentMethodEnum } from "@/types/database.tables.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { redirect, useRouter } from "next/navigation";
 import { z } from "zod";
 
 export default function useCreateOrder() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const { data: translation } = useTranslation();
   return useMutation({
     mutationFn: async (args: {
       first_name: string;
@@ -21,44 +23,90 @@ export default function useCreateOrder() {
       payment_method: PaymentMethodEnum;
     }) => {
       const schema = z.object({
-        first_name: z.string({ message: "First name is required" }).min(2, {
-          message: "First name must be at least 2 characters",
-        }),
-        last_name: z
+        first_name: z
           .string({
-            message: "Last name is required",
+            message: translation?.lang["${ELEMENT} is required"].replace(
+              "${ELEMENT}",
+              "First name",
+            ),
           })
           .min(2, {
-            message: "Last name must be at least 2 characters",
+            message: translation?.lang[
+              "${ELEMENT} must be at least ${MIN} characters"
+            ]
+              .replace("${ELEMENT}", "First name")
+              .replace("${MIN}", "2"),
+          }),
+        last_name: z
+          .string({
+            message: translation?.lang["${ELEMENT} is required"].replace(
+              "${ELEMENT}",
+              "Last name",
+            ),
+          })
+          .min(2, {
+            message: translation?.lang[
+              "${ELEMENT} must be at least ${MIN} characters"
+            ]
+              .replace("${ELEMENT}", "Last name")
+              .replace("${MIN}", "2"),
           }),
         address: z
           .string({
-            message: "address is required",
+            message: translation?.lang["${ELEMENT} is required"].replace(
+              "${ELEMENT}",
+              "Address",
+            ),
           })
           .min(4, {
-            message: "address must be at least 4 characters",
+            message: translation?.lang[
+              "${ELEMENT} must be at least ${MIN} characters"
+            ]
+              .replace("${ELEMENT}", "Address")
+              .replace("${MIN}", "4"),
           }),
         region: z.string({
-          message: "Region is required",
+          message: translation?.lang["${ELEMENT} is required"].replace(
+            "${ELEMENT}",
+            "Region",
+          ),
         }),
         city: z.string({
-          message: "City is required",
+          message: translation?.lang["${ELEMENT} is required"].replace(
+            "${ELEMENT}",
+            "City",
+          ),
         }),
         phone_number: z
           .string({
-            message: "Phone number is required",
+            message: translation?.lang["${ELEMENT} is required"].replace(
+              "${ELEMENT}",
+              "Phone number",
+            ),
           })
-          .regex(/^\+?[1-9]\d{1,14}$/, "Invalid phone number format"),
+          .regex(
+            /^\+?[1-9]\d{1,14}$/,
+            translation?.lang["Invalid ${ELEMENT} format"].replace(
+              "${ELEMENT}",
+              "phone number",
+            ),
+          ),
 
         additional_info: z
           .string({
-            message: "Additional info must be a string",
+            message: translation?.lang["${ELEMENT} must be a string"].replace(
+              "${ELEMENT}",
+              "Additional info",
+            ),
           })
           .optional(),
         payment_method: z.enum(
           [PaymentMethodEnum.CASH, PaymentMethodEnum.ONLINE],
           {
-            message: "Choose a payment method",
+            message: translation?.lang["Choose a ${ELEMENT}"].replace(
+              "${ELEMENT}",
+              "payment method",
+            ),
           },
         ),
       });
@@ -72,18 +120,24 @@ export default function useCreateOrder() {
           });
         }
       }
-      const user_id = await confirmOrder({
+      const { user_id, error: createOrderError } = await createOrder({
         order: args,
       });
-      await clearCart(user_id);
+      if (createOrderError) throw new Error(createOrderError);
+      if (!user_id)
+        throw new Error(translation?.lang["Failed to submit order"]);
+      const { error } = await clearCart(user_id);
+      if (error) throw new Error(error);
       localStorage.clear();
     },
     onSuccess: async () => {
-      toast.success("Order created successfully", "success");
+      toast.success(
+        translation?.lang["Order created successfully"] ??
+          "Order created successfully",
+      );
       await queryClient.invalidateQueries({
         queryKey: ["cart"],
       });
-      redirect("/Cart");
     },
     onError: (error) => {
       if (!error.message.includes("{")) {

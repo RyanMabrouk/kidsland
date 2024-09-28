@@ -6,6 +6,8 @@ import { FaHeart } from "react-icons/fa";
 import SignOutBtn from "./SignOutBtn";
 import TooltipGeneric from "@/app/ui/InsightGeneric";
 import { FaUserLarge } from "react-icons/fa6";
+import useTranslation from "@/translation/useTranslation";
+import Link from "next/link";
 
 export default function UserMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -16,16 +18,17 @@ export default function UserMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const { data: translation } = useTranslation();
   const items = [
     {
-      title: "My Orders",
+      title: translation?.lang["My Orders"],
       icon: (
         <FaUserLarge className="size-[1.85rem] rounded-full bg-gray-500 p-1.5 text-center text-sm text-white group-hover:bg-white group-hover:text-color1" />
       ),
-      href: "/orders",
+      href: "/Orders",
     },
     {
-      title: "Wishlist",
+      title: translation?.lang["Wishlist"],
       icon: (
         <FaHeart className="ml-1 size-6 text-gray-500 group-hover:text-white" />
       ),
@@ -34,7 +37,10 @@ export default function UserMenu() {
   ];
   return (
     <>
-      <TooltipGeneric tip="Account" position="bottom">
+      <TooltipGeneric
+        tip={translation?.lang["Account"] ?? "Account"}
+        position="bottom"
+      >
         <IconButton
           onClick={handleClick}
           size="small"
@@ -81,13 +87,14 @@ export default function UserMenu() {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         {items.map((item) => (
-          <div
-            key={item.title}
-            className="group flex cursor-pointer flex-row items-center gap-4 px-3 py-2 transition-all ease-linear hover:bg-color1 hover:text-white"
-            onClick={handleClose}
-          >
-            {item.icon}
-            {item.title}
+          <div key={item.title} onClick={handleClose}>
+            <Link
+              href={item.href}
+              className="group flex cursor-pointer flex-row items-center gap-4 px-3 py-2 transition-all ease-linear hover:bg-color1 hover:text-white"
+            >
+              {item.icon}
+              {item.title}
+            </Link>
           </div>
         ))}
         <Divider />
@@ -97,7 +104,7 @@ export default function UserMenu() {
         >
           <SignOutBtn>
             <Logout className="ml-1 size-7 text-gray-500 group-hover:text-white" />
-            <span className="">Logout</span>
+            <span className="">{translation?.lang["Logout"]}</span>
           </SignOutBtn>
         </div>
       </Menu>

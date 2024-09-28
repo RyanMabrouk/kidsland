@@ -1,9 +1,8 @@
 "use server";
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import { Database, Tables } from "@/types/database.types";
+import { DiscountTypeEnum } from "./../../types/database.tables.types";
+import { createClient } from "@/lib/supabase";
+import { Tables } from "@/types/database.types";
 import { paginateQuery } from "@/helpers/paginateQuery";
-import { match } from "assert";
 export default async function getProducts({
   tableName,
   count = {},
@@ -13,6 +12,7 @@ export default async function getProducts({
   pagination,
   search,
   match,
+  minStock,
 }: {
   tableName: "products";
   count?: {
@@ -28,6 +28,7 @@ export default async function getProducts({
     | Partial<{ [k in keyof Tables<"products">]: Tables<"products">[k] }>
     | undefined;
   minDiscount?: number;
+  minStock?: number;
   priceRange?: number[];
   category?: string;
   pagination?: {
@@ -35,7 +36,7 @@ export default async function getProducts({
     page: number;
   };
 }) {
-  const supabase = createServerActionClient<Database>({ cookies });
+  const supabase = createClient();
   let query = supabase.from(tableName).select("*", count);
   if (sort) {
     query = query.order(sort.column as string, { ascending: sort.ascending });
@@ -48,13 +49,18 @@ export default async function getProducts({
     query = query.range(start, end);
   }
   if (minDiscount) {
-    query = query.gte("discount", minDiscount);
+    query = query
+      .gte("discount", minDiscount)
+      .eq("discount_type", DiscountTypeEnum.PERCENTAGE);
   }
   if (priceRange) {
     query = query.gte("price", priceRange[0]).lte("price", priceRange[1]);
   }
   if (match) {
     query = query.match(match);
+  }
+  if (minStock) {
+    query = query.gte("stock", minStock);
   }
   const { data, error, count: items_count } = await query;
   return {

@@ -14,6 +14,7 @@ export interface ProductsQueryType {
   filters?: {
     minDiscount?: number;
     priceRange?: number[];
+    minStock?: number;
   };
   match?:
     | Partial<{ [k in keyof Tables<"products">]: Tables<"products">[k] }>
@@ -35,6 +36,7 @@ const productsQuery = (args: ProductsQueryType) => ({
         match: args.match,
         minDiscount: args.filters?.minDiscount,
         priceRange: args.filters?.priceRange,
+        minStock: args.filters?.minStock,
         pagination: {
           page: args.page,
           limit: args.limit,
@@ -47,6 +49,7 @@ const productsQuery = (args: ProductsQueryType) => ({
         match: args.match,
         minDiscount: args.filters?.minDiscount,
         priceRange: args.filters?.priceRange,
+        minStock: args.filters?.minStock,
         pagination: {
           page: args.page,
           limit: args.limit,

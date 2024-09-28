@@ -1,9 +1,12 @@
+import CartHydration from "@/provider/CartHydration";
 import Content from "./ui/Content";
 
 export default async function page() {
   return (
-    <div className="flex flex-col h-fit items-center justify-start bg-gray-100 mb-20">
-      <Content />
-    </div>
+    <CartHydration>
+      <div className="flex h-full flex-col items-center justify-start overflow-y-scroll bg-gray-100">
+        <Content />
+      </div>
+    </CartHydration>
   );
 }

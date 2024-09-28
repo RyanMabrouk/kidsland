@@ -2,27 +2,27 @@
 
 import Items from "./Items";
 import Resume from "./Resume";
-import {
-  cartSortFilters,
-  cartSortFiltersValues,
-} from "../constants/CartFilters";
+import { cartSortFilters } from "../constants/CartFilters";
 import { Filters } from "./Filters";
-import { useState } from "react";
+import { FiltersProvider } from "../context/FiltersProvider";
+import useUser from "@/hooks/data/user/useUser";
+import { useRouter } from "next/navigation";
 
 export default function Content() {
-  const [isReversed, setIsReversed] = useState<boolean>(false);
-  const [filter, setFilter] = useState<cartSortFiltersValues>("title");
+  const { data: user } = useUser();
+  const router = useRouter();
+  if (!user?.data) router.push("/login");
   return (
-    <div className="mb-20 flex h-screen w-8/12 flex-row justify-between p-10">
-      <div className="mb-20 w-8/12">
-        <Filters
-          filters={cartSortFilters}
-          setFilter={setFilter}
-          setIsReversed={setIsReversed}
-        />
-        <Items filter={filter} isReversed={isReversed} />
+    <FiltersProvider>
+      <div className="flex h-full w-full flex-col items-center p-10 transition-all duration-500 max-[480px]:p-4">
+        <div className="flex w-full max-w-[63rem] items-center justify-start">
+          <Filters filters={cartSortFilters} />
+        </div>
+        <div className="relative mb-20 flex w-full flex-row justify-center gap-6 max-md:flex-col sm:items-center md:items-start">
+          <Items />
+          <Resume />
+        </div>
       </div>
-      <Resume />
-    </div>
+    </FiltersProvider>
   );
 }

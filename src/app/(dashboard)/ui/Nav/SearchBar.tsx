@@ -2,11 +2,13 @@
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import { IoSearchSharp } from "react-icons/io5";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useProducts from "@/hooks/data/products/useProducts";
 import Image from "next/image";
 import Link from "next/link";
 import { Player } from "@lottiefiles/react-lottie-player";
+import { Spinner } from "@/app/ui/Spinner";
+import debounce from "lodash.debounce";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -34,18 +36,29 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 
 export default function SearchBar() {
   const [value, setValue] = useState(null as string | null);
-  const limit = 6;
-  const page = 1;
-  const { data: products } = useProducts({
-    limit,
-    page,
-    search: value
+  const [debouncedValue, setDebouncedValue] = useState(null as string | null);
+  const { data: products, isLoading } = useProducts({
+    limit: 6,
+    page: 1,
+    search: debouncedValue
       ? {
           column: "title",
-          value: value,
+          value: debouncedValue,
         }
       : undefined,
   });
+  const debouncedOnChange = useCallback(
+    debounce((newValue: string | null) => {
+      setDebouncedValue(newValue);
+    }, 500),
+    [value],
+  );
+  useEffect(() => {
+    debouncedOnChange(value);
+    return () => {
+      debouncedOnChange.cancel();
+    };
+  }, [value]);
   const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: "inherit",
     width: "100%",
@@ -62,7 +75,7 @@ export default function SearchBar() {
       },
     },
   }));
-  const isEmptyResult = !products?.data || products.data.length === 0;
+  const isEmptyResult = products.data && products.data.length === 0;
   return (
     <>
       <Search className="relative max-[400px]:w-[50%]">
@@ -79,38 +92,17 @@ export default function SearchBar() {
             setValue(e.target.value);
           }}
         />
-        {value && (
+        {value !== null && (
           <div
-            className={`absolute  transition-all ease-in duration-200 top-[110%] z-[70] flex h-fit w-[125%] flex-col rounded-b-lg rounded-t-sm bg-white max-[400px]:-right-[70%] max-[400px]:w-[200%] ${
-              isEmptyResult ? "min-h-60 w-full right-0 justify-center items-center" : "w-[125%] -right-[12.5%]"
+            className={`absolute top-[110%] z-[100] flex h-fit w-[125%] flex-col rounded-b-lg rounded-t-sm bg-white transition-all duration-200 ease-in max-[400px]:-right-[70%] max-[400px]:w-[200%] ${
+              isEmptyResult
+                ? "right-0 min-h-60 w-full items-center justify-center"
+                : "-right-[12.5%] w-[125%]"
             }`}
           >
-            {!isEmptyResult ? (
-              products.data?.map((product) => (
-                <Link
-                  href={`/products/${product?.id}`}
-                  key={product?.id}
-                  className="flex cursor-pointer flex-row items-start gap-2 border-b border-gray-300 p-2 hover:bg-gray-100"
-                  onClick={() => {
-                    setValue(null);
-                  }}
-                >
-                  <Image
-                    src={product?.image_url ?? ""}
-                    alt=""
-                    className="overflow-clip rounded-sm bg-clip-border"
-                    width={75}
-                    height={75}
-                  />
-                  <div className="mt-2 flex-col">
-                    <p className="font-semibold">{product?.title}</p>
-                    <p className="line-clamp-2 text-sm">
-                      {product?.description}
-                    </p>
-                  </div>
-                </Link>
-              ))
-            ) : (
+            {isLoading ? (
+              <Spinner className="my-14 ml-[40%] size-12 self-center justify-self-center" />
+            ) : isEmptyResult ? (
               <Player
                 src={
                   "https://lottie.host/85fb7313-2848-45c2-bdb9-2b729f57afc2/AwfmWMtW8n.json"
@@ -119,11 +111,19 @@ export default function SearchBar() {
                 loop
                 autoplay
               />
+            ) : (
+              products.data?.map((product) => (
+                <SearchBarProduct
+                  key={product?.id}
+                  product={product}
+                  setValue={setValue}
+                />
+              ))
             )}
           </div>
         )}
       </Search>
-      {value && (
+      {value !== null && (
         <div
           onClick={() => {
             setValue(null);
@@ -132,5 +132,41 @@ export default function SearchBar() {
         ></div>
       )}
     </>
+  );
+}
+
+function SearchBarProduct({
+  product,
+  setValue,
+}: {
+  product: {
+    id: string;
+    title: string;
+    description: string;
+    image_url: string | null;
+  } | null;
+  setValue: (value: any) => void;
+}) {
+  return (
+    <Link
+      href={`/products/${product?.id}`}
+      key={product?.id}
+      className="flex cursor-pointer flex-row items-start gap-2 border-b border-gray-300 p-2 hover:bg-gray-100"
+      onClick={() => {
+        setValue(null);
+      }}
+    >
+      <Image
+        src={product?.image_url ?? ""}
+        alt=""
+        className="overflow-clip rounded-sm bg-clip-border"
+        width={75}
+        height={75}
+      />
+      <div className="mt-2 flex-col">
+        <p className="font-semibold">{product?.title}</p>
+        <p className="line-clamp-2 text-sm">{product?.description}</p>
+      </div>
+    </Link>
   );
 }

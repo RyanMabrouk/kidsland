@@ -1,19 +1,18 @@
 export default function createNewPathname({
   currentPathname,
   currentSearchParams,
-  name,
-  value,
+  values,
 }: {
   currentPathname: string;
   currentSearchParams: URLSearchParams;
-  name: string;
-  value: string;
+  values: {
+    name: string;
+    value: string;
+  }[];
 }) {
-  const createQueryString = (name: string, value: string) => {
-    const params = new URLSearchParams(currentSearchParams.toString());
+  const params = new URLSearchParams(currentSearchParams.toString());
+  values.forEach(({ name, value }) => {
     params.set(name, value);
-
-    return params.toString();
-  };
-  return currentPathname + "?" + createQueryString(name, value);
+  });
+  return currentPathname + "?" + params.toString();
 }

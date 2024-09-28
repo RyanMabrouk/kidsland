@@ -1,6 +1,5 @@
 "use server";
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { createClient } from "@/lib/supabase";
 import { dbTableType } from "@/types/database.tables.types";
 import { Tables, TablesUpdate } from "@/types/database.types";
 import { PostgrestError } from "@supabase/supabase-js";
@@ -16,12 +15,11 @@ export default async function updateData<ITableName extends dbTableType>({
   data: Tables<ITableName>[] | null;
   error: PostgrestError | null;
 }> {
-  console.log(match)
-  const supabase = createServerActionClient({ cookies });
+  const supabase = createClient();
   const { data, error } = await supabase
     .from(tableName)
-    .update(payload)
+    .update(payload as any)
     .match(match)
     .select();
-  return { data, error };
+  return { data, error } as any;
 }

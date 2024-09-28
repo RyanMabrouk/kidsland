@@ -1,3 +1,4 @@
+"use server";
 import deleteData from "@/api/deleteData";
 
 export default async function clearCart(id: string) {
@@ -5,6 +6,6 @@ export default async function clearCart(id: string) {
     tableName: "cart",
     match: { user_id: id },
   });
-  if (error) throw new Error(error.message);
-  return;
+  if (error) return { error: error.message };
+  return { error: null };
 }

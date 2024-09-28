@@ -1,9 +1,7 @@
 "use client";
-import getTranslation from "@/translation/getTranslation";
 import { useQuery } from "@tanstack/react-query";
+import { translationClientQuery } from "./translationClientQuery";
 export default function useTranslation() {
-  return useQuery({
-    queryKey: ["lang"],
-    queryFn: () => getTranslation(),
-  });
+  const query = useQuery(translationClientQuery());
+  return query;
 }

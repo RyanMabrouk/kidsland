@@ -1,21 +1,36 @@
 "use client";
-
-import { useState } from "react";
-import ClientAddress from "./ClientAddress";
-import PaymentOptions from "./PaymentOptions";
-import OrderResume from "./OrderResume";
-
+import { OpenFormProvider } from "../context/OpenFormProvider";
+import dynamic from "next/dynamic";
+const ClientSideClientAddress = dynamic(
+  () => import("./ClientAddress").then((mod) => mod.default),
+  {
+    ssr: false,
+  },
+);
+const ClientSidePaymentOptions = dynamic(
+  () => import("./PaymentOptions").then((mod) => mod.default),
+  {
+    ssr: false,
+  },
+);
+const ClientSideOrderResume = dynamic(
+  () => import("./OrderResume").then((mod) => mod.default),
+  {
+    ssr: false,
+  },
+);
 export type OpenPaymentFormType = "clientAddress" | "paymentOptions" | "none";
 
 export default function Content() {
-  const [open, setOpen] = useState<OpenPaymentFormType>("clientAddress");
   return (
-    <div className="flex w-full justify-center gap-7 p-8">
-      <div className="mr-52 flex w-7/12 flex-col items-center gap-5 bg-white">
-        <ClientAddress open={open} setOpen={setOpen} />
-        <PaymentOptions open={open} setOpen={setOpen} />
+    <OpenFormProvider>
+      <div className="flex w-full flex-col items-center justify-center gap-24 p-8 py-20 transition-all duration-500 lg:flex-row lg:items-start">
+        <div className="flex w-full flex-col items-center gap-5 bg-white lg:w-7/12">
+          <ClientSideClientAddress />
+          <ClientSidePaymentOptions />
+        </div>
+        <ClientSideOrderResume />
       </div>
-      <OrderResume />
-    </div>
+    </OpenFormProvider>
   );
 }

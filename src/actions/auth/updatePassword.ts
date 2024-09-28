@@ -1,13 +1,12 @@
 "use server";
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { createClient } from "@/lib/supabase";
 import { redirect } from "next/navigation";
 export default async function updatePassword({
   newPassword,
 }: {
   newPassword: string;
 }) {
-  const supabase = createServerActionClient({ cookies });
+  const supabase = createClient();
   const { error } = await supabase.auth.updateUser({
     password: newPassword,
   });

@@ -26,7 +26,6 @@ export default function TextInput({
         defaultValue={defaultValue}
         id="input"
         type={type}
-        placeholder="Write here..."
         name={name}
         className="rounded-md border-2 border-gray-400 p-[14px] pl-[10px] text-xs transition-all duration-200 focus:border-color1 focus:outline-none"
         onFocus={() => setIsFocused(true)}

@@ -1,9 +1,9 @@
 "use server";
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+
+import { createClient } from "@/lib/supabase";
 
 export default async function productsWholeSalePrice() {
-  const supabase = createServerActionClient({ cookies });
+  const supabase = createClient();
 
   const { data: products, error } = await supabase
     .from("products")

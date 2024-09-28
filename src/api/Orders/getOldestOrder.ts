@@ -1,10 +1,10 @@
 "use server";
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { Database } from "@/types/database.types";  
+import { createClient } from "@/lib/supabase";
 
 export default async function getOldestOrder() {
-  const supabase = createServerActionClient<Database>({ cookies });
+  const supabase = createClient();
   
   const { data: orders, error: ordersError } = await supabase
     .from("orders")

@@ -3,17 +3,25 @@ import { useToast } from "@/hooks/useToast";
 import { IProduct, QueryReturnType } from "@/types/database.tables.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { cartPopulatedQuery } from "./cartPopulatedQuery";
+import useTranslation from "@/translation/useTranslation";
 
 export default function useChangeQuantity(product: IProduct | null) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
-
+  const { data: translation } = useTranslation();
   return useMutation({
     mutationFn: async (quantity: number) => {
       if (!product) {
-        throw new Error("Product not found");
+        throw new Error(translation?.lang["Product not found"]);
       }
-      return await handleProductQuantity(product.id, quantity);
+      if (quantity < 1) {
+        throw new Error(translation?.lang["Quantity must be at least 1"]);
+      }
+      if (product.stock < quantity) {
+        throw new Error(translation?.lang["Not enough stock"]);
+      }
+      const { error } = await handleProductQuantity(product.id, quantity);
+      if (error) throw new Error(error);
     },
     onMutate: async (quantity) => {
       const queryKey = cartPopulatedQuery()["queryKey"];
@@ -46,7 +54,6 @@ export default function useChangeQuantity(product: IProduct | null) {
       return previousCart;
     },
     onSuccess: () => {
-      toast.success("Quantity updated successfully");
       queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
     onError: (error, _, previousCart) => {

@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Lato } from "next/font/google";
 import "./globals.css";
-import Hydration from "@/provider/hydration";
-import Store from "@/provider/store";
+import Hydration from "@/provider/MainHydration";
 import { ToastContainer, ToastProvider } from "@/hooks/useToast";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
+import Store from "@/provider/QCStore";
 
 const lato = Lato({
   weight: ["100", "300", "400", "700", "900"],

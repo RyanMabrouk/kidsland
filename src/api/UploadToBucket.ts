@@ -1,5 +1,5 @@
 "use server";
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "@/lib/supabase";
 import { cookies } from "next/headers";
 export async function UploadToBucket({
   file,
@@ -10,7 +10,7 @@ export async function UploadToBucket({
   fileName: string;
   bucketName: string;
 }) {
-  const supabase = createServerActionClient({ cookies });
+  const supabase = createClient();
   const { data, error } = await supabase.storage
     .from(bucketName)
     .upload(fileName, file, {

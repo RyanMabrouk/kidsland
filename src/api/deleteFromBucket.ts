@@ -1,6 +1,5 @@
 "use server";
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { createClient } from "@/lib/supabase";
 export async function DeleteFromBucket({
   url,
   bucketName,
@@ -8,7 +7,7 @@ export async function DeleteFromBucket({
   url: string;
   bucketName: string;
 }) {
-  const supabase = createServerActionClient({ cookies });
+  const supabase = createClient();
   const filePath = url.split(`${bucketName}/`)[1];
   const { error } = await supabase.storage.from(bucketName).remove([filePath]);
 

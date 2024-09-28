@@ -4,31 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import AddToCartBtn from "./AddToCartBtn";
 import { WishlistHart } from "./WishListHart";
-type ProductProps = {
-  title: string;
-  price: number;
-  discount: number;
-  image_url: string | null;
-  price_after_discount: number;
-  id: string;
-  isInCart: boolean;
-  isInWishlist: boolean;
-};
+import { IProduct } from "@/types/database.tables.types";
 
-export default function Product({
-  title,
-  price,
-  price_after_discount,
-  discount,
-  image_url,
-  id,
-  isInCart,
-  isInWishlist,
-}: Partial<ProductProps>) {
+export default function Product(product: Partial<IProduct>) {
   return (
-    <div className="relative flex h-[25rem] w-[15rem] flex-col items-center justify-center gap-4 overflow-hidden max-[540px]:h-[17.5rem] max-[540px]:w-[10rem]">
+    <div className="relative flex h-[25rem] w-[15rem] flex-col items-center justify-center gap-4 overflow-hidden max-[640px]:h-[17.5rem] max-[640px]:w-[10rem]">
       <div className="group h-full w-full overflow-hidden rounded-md border transition-all ease-linear hover:backdrop-brightness-75">
-        {!!discount && (
+        {!!product.discount && (
           <Image
             src={"/home/icons/promo.png"}
             alt=""
@@ -37,31 +19,43 @@ export default function Product({
             className=".preserve-3d absolute -left-[9px] -top-[10px] h-[6rem] w-[6rem] rounded-tl-lg border-t transition-all duration-200 ease-out group-hover:-left-[7px] group-hover:-top-[8px] group-hover:opacity-0"
           />
         )}
-        <Link href={`/products/${id}`}>
+        <Link href={`/products/${product.id}`}>
           <Image
-            src={image_url ?? ""}
+            src={product.image_url ?? ""}
             alt=""
             width={2000}
             height={2000}
             className=".preserve-3d h-full w-full cursor-pointer rounded-md object-scale-down transition-all ease-linear group-hover:scale-[120%] group-hover:brightness-75"
           />
         </Link>
-        <AddToCartBtn product_id={id ?? ""} isInCart={isInCart} />
+        <AddToCartBtn
+          product_id={product.id ?? ""}
+          isInCart={product.isInCart}
+          available={product.available}
+        />
       </div>
       <div className="fle z-20 w-full flex-col items-center justify-center gap-6 text-lg">
         <WishlistHart
-          product_id={id}
-          isInWishlist={isInWishlist}
+          product_id={product.id}
+          isInWishlist={product.isInWishlist}
           variant="absolute"
         />
-        <TooltipGeneric tip={title ?? ""}>
-          <span className="z-0 mr-9 line-clamp-1 text-left">{title}</span>
+        <TooltipGeneric tip={product.title ?? ""}>
+          <span className="z-0 mr-9 line-clamp-1 text-left">
+            {product.title}
+          </span>
         </TooltipGeneric>
         <div className="flex flex-row items-center justify-start gap-4 max-[540px]:text-sm">
-          {!!discount && (
-            <span className="text-color8">{price_after_discount} TND</span>
+          {!!product.discount && (
+            <span className="text-color8">
+              {product.price_after_discount} TND
+            </span>
           )}
-          {!!discount ? <del>{price} TND</del> : <span>{price} TND</span>}
+          {!!product.discount ? (
+            <del>{product.price} TND</del>
+          ) : (
+            <span>{product.price} TND</span>
+          )}
         </div>
       </div>
     </div>

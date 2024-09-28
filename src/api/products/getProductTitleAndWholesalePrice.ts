@@ -1,9 +1,9 @@
 "use server";
-import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+
+import { createClient } from "@/lib/supabase";
 
 export default async function getProductTitleAndWholesalePrice(productId : string) {
-  const supabase = createServerActionClient({ cookies });
+  const supabase = createClient();
   const { data: product, error } = await supabase
     .from("products")
     .select("title, wholesale_price")
