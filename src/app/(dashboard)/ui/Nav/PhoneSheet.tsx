@@ -42,7 +42,7 @@ export default function PhoneSheet() {
             {menuItems.map((item) => {
               const Icon = item.icon;
               return (
-                <SheetClose asChild className="w-full" key={item.title}>
+                <SheetClose className="w-full" key={item.title}>
                   <Link
                     key={item.title}
                     href={item.href}
