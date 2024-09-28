@@ -50,7 +50,7 @@ export function Nav() {
         <span className="flex flex-row items-center justify-center gap-2">
           <LanguageSwitcher />
           <div className="flex flex-row items-center">
-            {user?.data || isLoading ? (
+            {user?.data ? (
               <>
                 <UserMenu />
                 <Link href="/Cart">
