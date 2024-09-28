@@ -3,7 +3,7 @@ import { Spinner } from "@/app/ui/Spinner";
 import useChangeQuantity from "@/hooks/data/cart/changeQuantity";
 import useDeleteFromCart from "@/hooks/data/cart/deleteFromCart";
 import useTranslation from "@/translation/useTranslation";
-import { IProduct } from "@/types/database.tables.types";
+import { DiscountTypeEnum, IProduct } from "@/types/database.tables.types";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -58,7 +58,10 @@ export default function CartItem({
                     {product.price} TND
                   </div>
                   <div className="min-w-max bg-red-100 p-1 text-red-600">
-                    {product.discount} %
+                    {product.discount}{" "}
+                    {product.discount_type === DiscountTypeEnum.PERCENTAGE
+                      ? "%"
+                      : ""}
                   </div>
                 </div>
               )}
