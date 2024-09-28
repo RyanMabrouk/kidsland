@@ -60,7 +60,7 @@ const productsQuery = (args: ProductsQueryType) => ({
       })),
     ]);
     return {
-      ...infinityPagination(data?.data as Tables<"products">[], {
+      ...infinityPagination(data?.data ?? [], {
         page: args.page,
         limit: args.limit,
         total_count: countData.count ?? 0,
