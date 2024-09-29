@@ -1,10 +1,11 @@
 "use client";
-import { useAddToCart } from "@/hooks/data/cart/addToCart";
 import { cn } from "@/lib/utils";
 import { FaShoppingCart } from "react-icons/fa";
 import { FaCheckCircle } from "react-icons/fa";
 import { Spinner } from "../../../../ui/Spinner";
 import useTranslation from "@/translation/useTranslation";
+import { useAddToCart } from "@/hooks/data/cart/addToCart";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function AddToCartBtn({
   product_id,
@@ -18,16 +19,21 @@ export default function AddToCartBtn({
   available: boolean | undefined;
 }) {
   const { data: translation } = useTranslation();
-  const { mutate: addToCart, isPending } = useAddToCart();
+  const { addToCart } = useAddToCart();
+  const queryClient = useQueryClient();
+
+
+  const handleAddToCart = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await addToCart({ product_id });
+    
+    queryClient.invalidateQueries({ queryKey: ["cart"] });
+  };
+
   return (
-    <form className="flex items-start justify-start">
+    <form className="flex items-start justify-start" onSubmit={handleAddToCart}>
       <button
-        disabled={isPending || isInCart || !available}
-        formAction={async () => {
-          await addToCart({
-            product_id,
-          });
-        }}
+        disabled={isInCart || !available}
         className={cn(
           `absolute bottom-[5%] left-[17.5%] z-0 flex h-[2.5rem] w-[10rem] flex-row items-center justify-center gap-2 rounded-xl border bg-white px-3 py-2 text-center text-sm font-semibold capitalize opacity-0 transition-all ease-linear hover:text-white group-hover:opacity-100 max-[540px]:left-[10%] max-[540px]:w-[8rem] max-[540px]:text-sm ${
             available
@@ -43,10 +49,8 @@ export default function AddToCartBtn({
           isInCart ? (
             <>
               <span>{translation?.lang["added"]}</span>
-              <FaCheckCircle className="size-[1rem]" />{" "}
+              <FaCheckCircle className="size-[1rem]" />
             </>
-          ) : isPending ? (
-            <Spinner />
           ) : (
             <>
               <span className="block min-w-max max-[830px]:hidden">

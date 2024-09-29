@@ -11,6 +11,7 @@ export function formatProduct(
     wishlist: string[] | undefined;
   },
 ): IProduct | null {
+  
   if (!product) return null;
   return {
     ...product,

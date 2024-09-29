@@ -169,5 +169,7 @@
   "Order Products": "produits du commande",
   "Total price": "prix totale",
   "Please login to add to cart": "Veuillez vous connecter pour ajouter au panier",
-  "pay on delivery": "Payez plus tard en espèces ou au moment de la livraison, une fois que votre commande est livrée."
+  "pay on delivery": "Payez plus tard en espèces ou au moment de la livraison, une fois que votre commande est livrée.",
+  "Item already in cart" : "Article déjà dans le panier",
+  "Error loading cart": "Erreur de chargement du panier"
 }

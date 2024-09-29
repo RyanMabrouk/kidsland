@@ -1,13 +1,13 @@
 import useCreateOrder from "@/hooks/data/orders/createOrder";
-import useCartPopulated from "@/hooks/data/cart/useCartPopulated";
 import React from "react";
 import { Spinner } from "@/app/ui/Spinner";
 import getLocalValues from "@/helpers/getLocalValues";
 import { redirect } from "next/navigation";
 import useTranslation from "@/translation/useTranslation";
+import useCart from "@/hooks/data/cart/useCart";
 
 export default function OrderResume() {
-  const { data: cart } = useCartPopulated();
+  const { data: cart } = useCart();
   const clientAdressForm = getLocalValues("clientAddressForm");
   const paymentOptionsForm = getLocalValues("paymentOptionsForm");
   const orderDetails = {
@@ -22,7 +22,13 @@ export default function OrderResume() {
   };
   const { data: translation } = useTranslation();
   const { mutate, isPending } = useCreateOrder();
-  if (cart.total_products_quantity === 0) redirect("/Cart");
+    const totalQuantity = cart?.data?.reduce((sum: number, item: any) => sum + item.quantity, 0) ?? 0;
+    const totalPrice = cart?.data?.reduce((sum: number, item: any) => sum + (item.price - item.discount), 0) ?? 0;
+    const totalPriceWithoutDiscount = cart?.data?.reduce((sum: number, item: any) => sum + item.price, 0) ?? 0;
+    const totalWithDelivery = totalPrice + (totalPrice>=100? 0 :7);
+
+
+  if (totalQuantity == 0) redirect("/Cart");
   return (
     <form
       action={() => {
@@ -35,18 +41,18 @@ export default function OrderResume() {
       <div className="flex justify-between p-2">
         <h1>
           {translation?.lang["Total Articles"]} : (
-          {cart.total_products_quantity})
+          {totalQuantity})
         </h1>
-        <h1>{cart.total_after_discount} TND</h1>
+        <h1>{totalQuantity} TND</h1>
       </div>
       <hr />
       <div className="flex flex-row justify-between p-2">
         <h1>{translation?.lang["Delivery Costs"]} :</h1>
         <div className="flex flex-row items-center gap-2">
-          <span>{cart.delivery_cost} TND</span>
-          {cart.isFreeDelivery && (
+          <span>{totalPrice>=100 ? 0 : 7} TND</span>
+          {totalPrice>=100  && (
             <del className="text-color8">
-              {cart.delivery_cost_before_discount} TND
+              {totalPriceWithoutDiscount>=100 ? 0 : 7} TND
             </del>
           )}
         </div>
@@ -54,7 +60,7 @@ export default function OrderResume() {
       <hr />
       <div className="flex justify-between p-2">
         <h1>{translation?.lang["Total"]} :</h1>
-        <h1 className="text-xl">{cart.total_with_delivery} TND</h1>
+        <h1 className="text-xl">{totalWithDelivery} TND</h1>
       </div>
       <hr />
       <button

@@ -9,9 +9,6 @@ import useUser from "@/hooks/data/user/useUser";
 import { useRouter } from "next/navigation";
 
 export default function Content() {
-  const { data: user } = useUser();
-  const router = useRouter();
-  if (!user?.data) router.push("/login");
   return (
     <FiltersProvider>
       <div className="flex h-full w-full flex-col items-center p-10 transition-all duration-500 max-[480px]:p-4">

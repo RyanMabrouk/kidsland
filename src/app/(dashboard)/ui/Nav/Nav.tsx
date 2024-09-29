@@ -53,9 +53,6 @@ export function Nav() {
             {user?.data ? (
               <>
                 <UserMenu />
-                <Link href="/Cart">
-                  <CartButton />
-                </Link>
               </>
             ) : (
               <Link
@@ -65,6 +62,9 @@ export function Nav() {
                 Login
               </Link>
             )}
+            <Link href="/Cart">
+              <CartButton />
+            </Link>
           </div>
         </span>
       </div>
