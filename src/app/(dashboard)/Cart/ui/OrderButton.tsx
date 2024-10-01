@@ -7,7 +7,7 @@ export default function OrderButton() {
   const { data: translation } = useTranslation();
   const { data: cart } = useCart();
 
-  if (!cart || cart.error) {
+  if (!cart ) {
     return (
       <div className="w-full rounded-lg bg-gray-600 p-3 text-center text-xl font-semibold text-white">
         {translation?.lang["Error loading cart"]}
@@ -25,19 +25,14 @@ export default function OrderButton() {
       </Link>
     );
   }
-
-  const totalQuantity = cart.data.reduce((sum, item) => sum + item.quantity, 0);
-  if (totalQuantity === 0) {
+  if (cart.total_products_quantity === 0) {
     return (
       <div className="w-full rounded-lg bg-gray-600 p-3 text-center text-xl font-semibold text-white transition-all duration-300 hover:bg-gray-800">
         {translation?.lang["Select a quantity"]}
       </div>
     );
   }
-  const totalAfterDiscount = cart.data.reduce((sum, item) => {
-    const priceAfterDiscount = item.price - (item.discount || 0); 
-    return sum + priceAfterDiscount * item.quantity;
-  }, 0);
+
   
   return (
     <Link
@@ -46,7 +41,7 @@ export default function OrderButton() {
     >
       {translation?.lang["Order ${PRICE} TND"].replace(
         "${PRICE}",
-        totalAfterDiscount.toFixed(2)
+        cart.total_after_discount.toFixed(2)
       )}
     </Link>
   );

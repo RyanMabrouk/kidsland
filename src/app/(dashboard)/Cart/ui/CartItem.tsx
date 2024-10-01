@@ -91,10 +91,10 @@ const removeItem = () => {
                     {product.price * quantity} TND
                   </div>
                   <div className="min-w-max bg-red-100 p-1 text-red-600">
-                    {product.discount}{" "}
+                    {product.discount*quantity}{" "}
                     {product.discount_type === DiscountTypeEnum.PERCENTAGE
                       ? "%"
-                      : ""}
+                      : "dt"}
                   </div>
                 </div>
               )}

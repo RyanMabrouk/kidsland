@@ -6,7 +6,7 @@ import useCart from "@/hooks/data/cart/useCart";
 export default function Resume() {
   const { data: cart } = useCart();
   const { data: translation } = useTranslation();
-  if (!cart || cart.error) {
+  if (!cart ) {
     return (
       <div className="flex h-fit w-[21rem] flex-col items-center gap-2 rounded-xl bg-white p-4 shadow-2xl transition-all duration-300 max-md:w-full md:sticky md:top-20">
         <h1 className="text-2xl text-color1">
@@ -15,13 +15,7 @@ export default function Resume() {
       </div>
     );
   }
-  const totalBeforeDiscount = cart.data.reduce((sum, item) => {
-    return sum + item.price * item.quantity;
-  }, 0);
-  const totalAfterDiscount = cart.data.reduce((sum, item) => {
-    const priceAfterDiscount = item.price - (item.discount || 0);
-    return sum + priceAfterDiscount * item.quantity;
-  }, 0);
+
   return (
     <div className="flex h-fit w-[21rem] flex-col items-center gap-2 rounded-xl bg-white p-4 shadow-2xl transition-all duration-300 max-md:w-full md:sticky md:top-20">
       <h1 className="text-2xl text-color1">
@@ -34,11 +28,11 @@ export default function Resume() {
           {translation?.lang["Total"]}:
         </h1>
         <div className="overflow-hidden whitespace-nowrap text-xl">
-          {totalAfterDiscount.toFixed(2)} TND
+          {cart.total_after_discount.toFixed(2)} TND
         </div>
-        {totalAfterDiscount < totalBeforeDiscount && (
+        {cart.total_after_discount < cart.total_before_discount && (
           <del className="overflow-hidden whitespace-nowrap text-red-600">
-            {totalBeforeDiscount.toFixed(2)} TND
+            {cart.total_before_discount.toFixed(2)} TND
           </del>
         )}
       </div>

@@ -1,12 +1,10 @@
 "use client"
-import React, { useEffect, useState } from "react";
+import React from "react";
 import CartItem from "./CartItem";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { useFilters } from "../context/FiltersProvider";
 import useTranslation from "@/translation/useTranslation";
 import useCart from "@/hooks/data/cart/useCart";
-import { useQueryClient } from "@tanstack/react-query";
-import { cartQuery } from "@/hooks/data/cart/cartQuery";
 
 export default function Items() {
   const { filter, isReversed } = useFilters();
