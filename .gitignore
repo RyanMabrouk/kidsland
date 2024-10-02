@@ -27,7 +27,6 @@ yarn-error.log*
 
 # local env files
 .env*.local
-.env
 
 # vercel
 .vercel
@@ -45,3 +44,4 @@ sw.*
 workbox-*
 swe-worker-*
 supabase
+config.bat
