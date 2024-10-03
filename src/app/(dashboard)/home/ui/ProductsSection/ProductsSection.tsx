@@ -8,6 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { productsQuery } from "@/hooks/data/products/productsQuery";
 import { useMemo } from "react";
 import useTranslation from "@/translation/useTranslation";
+import Loading from "@/app/(adminDashboard)/loading";
 
 export function ProductsSection() {
   const [page, setPage] = useState(1);
@@ -19,7 +20,7 @@ export function ProductsSection() {
     }),
     [],
   );
-  const { data: products } = useProducts({ page, limit, sort });
+  const { data: products, isLoading } = useProducts({ page, limit, sort });
   const queryClient = useQueryClient();
   useEffect(() => {
     if (products?.meta?.has_next_page) {
@@ -52,11 +53,17 @@ export function ProductsSection() {
           width={15}
         />
       </div>
-      <div className="mx-auto grid min-h-screen w-fit grid-cols-4 gap-x-10 gap-y-10 max-[1150px]:grid-cols-3 max-[830px]:grid-cols-2">
-        {products?.data?.map((product, key) => (
-          <Product key={key} {...product} />
-        ))}
-      </div>
+      {isLoading ? (
+        <div className="h-full w-full items-center justify-center">
+          <Loading />
+        </div>
+      ) : (
+        <div className="mx-auto grid min-h-screen w-fit grid-cols-4 gap-x-10 gap-y-10 max-[1150px]:grid-cols-3 max-[830px]:grid-cols-2">
+          {products?.data?.map((product, key) => (
+            <Product key={key} {...product} />
+          ))}
+        </div>
+      )}
       <Pagination
         className="flex w-full justify-center"
         count={2}
