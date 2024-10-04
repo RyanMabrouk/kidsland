@@ -1,7 +1,6 @@
 "use server";
 import postData from "@/api/postData";
 import getData from "@/api/getData";
-import { ICartResponse } from "../../hooks/data/cart/cartPopulatedQuery";
 import { Tables } from "@/types/database.types";
 import { OrderStatusEnum } from "@/types/database.tables.types";
 import { formatProduct } from "@/hooks/data/products/formatProducts";

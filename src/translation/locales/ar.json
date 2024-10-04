@@ -169,5 +169,7 @@
   "Order Products": "طلب المنتجات",
   "Total price": "السعر الإجمالي",
   "Please login to add to cart": "يرجى تسجيل الدخول لإضافة إلى السلة",
-  "pay on delivery": "ادفع لاحقًا نقدًا عند استلام طلبك."
+  "pay on delivery": "ادفع لاحقًا نقدًا عند استلام طلبك.",
+  "Error loading cart": "خطأ في تحميل السلة",
+  "Item already in cart": "العنصر موجود بالفعل في السلة"
 }
