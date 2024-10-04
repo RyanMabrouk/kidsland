@@ -11,7 +11,7 @@ export default function Page() {
       <div className="flex min-h-screen w-screen flex-col overflow-x-hidden">
         <hr />
         <HomeSwiper />
-        <MomentsSwiper />
+        {/* <MomentsSwiper /> */}
         <OffersContainer />
         <ProductsSection />
       </div>
