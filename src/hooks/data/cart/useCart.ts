@@ -1,11 +1,8 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import useWishlist from "../wishlist/useWishlist";
-import { formatProduct } from "../products/formatProducts";
 import { cartQuery } from "./cartQuery";
 
 export default function useCart() {
-  const { data: wishlist } = useWishlist();
   const query = useQuery(cartQuery());
   const total_after_discount =
     query.data?.data?.reduce(

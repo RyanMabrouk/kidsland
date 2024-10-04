@@ -1,4 +1,5 @@
 "use client";
+import { ILanguages } from "@/types/database.tables.types";
 import getTranslation from "./getTranslation";
 
 export const translationClientQuery = () => {
@@ -8,13 +9,14 @@ export const translationClientQuery = () => {
   } catch (error) {
     console.error("Error getting locale from localStorage", error);
   }
-  if (!["en", "fr"].includes(locale)) {
+  if (!["en", "fr", "ar"].includes(locale)) {
     locale = "fr";
   }
   return {
     queryKey: ["lang", locale],
     queryFn: async () => {
-      const langRes = await getTranslation(locale as "en" | "fr");
+      console.log("🚀 ~ translationClientQuery ~ locale:", locale);
+      const langRes = await getTranslation(locale as ILanguages);
       return langRes;
     },
   };

@@ -300,7 +300,7 @@ export type Database = {
     }
     Enums: {
       discount_type_enum: "percentage" | "fixed"
-      languages_enum: "en" | "fr"
+      languages_enum: "en" | "fr" | "ar"
       payment_method_enum: "cash" | "online"
       status_type_enum: "pending" | "cancelled" | "fulfilled" | "approved"
     }

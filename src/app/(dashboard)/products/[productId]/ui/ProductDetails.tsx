@@ -84,7 +84,9 @@ export default function ProductDetails() {
                     product?.available ? "text-green-500" : "text-red-500"
                   }`}
                 >
-                  {product?.available ? "In Stock" : "Out of Stock"}
+                  {product?.available
+                    ? translation?.lang["In Stock"]
+                    : translation?.lang["Out of Stock"]}
                 </span>
               </div>
             </div>

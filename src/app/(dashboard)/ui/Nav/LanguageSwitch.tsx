@@ -18,6 +18,7 @@ export default function LanguageSwitcher() {
   const [languages] = useState([
     { code: "fr", name: "FR", flag: "🇫🇷" },
     { code: "en", name: "EN", flag: "🇬🇧" },
+    { code: "ar", name: "AR", flag: "🇹🇳" },
   ] as { code: Enums<"languages_enum">; name: string; flag: string }[]);
   const { data: translation } = useTranslation();
   const { toast } = useToast();
@@ -54,7 +55,7 @@ export default function LanguageSwitcher() {
               languages.find(
                 (lang) => lang.code === translation?.default_language,
               )?.flag
-            }{" "}
+            }
           </span>
           <ChevronDown className="h-5 w-5" />
         </div>
