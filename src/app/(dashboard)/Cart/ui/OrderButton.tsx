@@ -6,15 +6,6 @@ import Link from "next/link";
 export default function OrderButton() {
   const { data: translation } = useTranslation();
   const { data: cart } = useCart();
-
-  if (!cart ) {
-    return (
-      <div className="w-full rounded-lg bg-gray-600 p-3 text-center text-xl font-semibold text-white">
-        {translation?.lang["Error loading cart"]}
-      </div>
-    );
-  }
-
   if (cart.data?.length === 0) {
     return (
       <Link
