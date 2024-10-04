@@ -62,7 +62,7 @@ export function Nav() {
                 href="/login"
                 className={`flex h-9 items-center justify-center rounded-lg border border-slate-700 bg-transparent px-3 py-2 text-center font-semibold text-slate-700 transition-all ease-linear hover:bg-slate-700 hover:text-white`}
               >
-                Login
+                {translation?.lang["Login"]}
               </Link>
             )}
           </div>

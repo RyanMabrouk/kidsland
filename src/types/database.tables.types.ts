@@ -40,3 +40,5 @@ export enum OrderStatusEnum {
   FULFILLED = "fulfilled",
   APPROVED = "approved",
 }
+
+export type ILanguages = "en" | "fr" | "ar";
