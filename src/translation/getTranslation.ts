@@ -17,8 +17,6 @@ export default async function getTranslation(locale: ILanguages) {
     column: "default_language",
     match: { user_id: session?.user.id },
   }).then((res) => res.data?.[0]?.default_language);
-  console.log("🚀 ~ getTranslation ~ default_language:", default_language);
-
   const lang = await dictionaries?.[default_language ?? locale]?.();
-  return { lang, default_language };
+  return { lang, default_language: default_language ?? locale };
 }
