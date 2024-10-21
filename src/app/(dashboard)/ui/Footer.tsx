@@ -9,7 +9,7 @@ import useTranslation from "@/translation/useTranslation";
 
 export default function Footer() {
   const { data: translation } = useTranslation();
-  const kidsLandLinks = [
+  const SfariLinks = [
     translation?.lang["About Us"],
     translation?.lang["Contact Us"],
     translation?.lang["Privacy Policy"],
@@ -20,8 +20,8 @@ export default function Footer() {
         <Image
           src="/logo/logo-2.png"
           alt="logo"
-          width={100}
-          height={100}
+          width={150}
+          height={150}
           className="py-3"
         />
         <div className="flex flex-col items-center gap-2 max-[470px]:gap-1">
@@ -42,9 +42,9 @@ export default function Footer() {
         </div>
         <div className="max-[470px]:gap- flex flex-col items-center gap-2">
           <div className="mb-2 text-xl font-bold max-[470px]:text-[1rem]">
-            KidsLand
+            Sfari
           </div>
-          {kidsLandLinks.map((link, i) => (
+          {SfariLinks.map((link, i) => (
             <div
               className="line-clamp-1 cursor-pointer leading-6 transition-all ease-linear hover:font-medium hover:text-slate-500 hover:underline max-[470px]:text-sm"
               key={i}

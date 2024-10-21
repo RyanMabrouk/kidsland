@@ -9,7 +9,7 @@ export default function useCart() {
       (a, cartItem) =>
         a +
         ((cartItem.stock - cartItem.quantity )>= 0
-          ? (cartItem.price-cartItem.discount ?? 0) * cartItem.quantity
+          ? (cartItem.price-cartItem.discount) * cartItem.quantity
           : 0),
       0,
     ) ?? 0;

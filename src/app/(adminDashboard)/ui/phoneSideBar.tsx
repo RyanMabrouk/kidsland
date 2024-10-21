@@ -33,8 +33,8 @@ export function PhoneSideBar() {
               <Image
                 src="/logo/logo-2.png"
                 alt="logo"
-                width={60}
-                height={60}
+                width={120}
+                height={120}
                 className=""
               />
             </Link>

@@ -1,13 +1,16 @@
 "use server";
 import postData from "@/api/postData";
-import getData from "@/api/getData";
+import getTranslation from "@/translation/getTranslation";
 import { Tables } from "@/types/database.types";
 import { OrderStatusEnum } from "@/types/database.tables.types";
 import { formatProduct } from "@/hooks/data/products/formatProducts";
-import getTranslation from "@/translation/getTranslation";
+import { ICart } from "@/hooks/data/cart/cartQuery";
+import getSession from "@/api/getSession";
+import useTranslation from "@/translation/useTranslation";
 
 export default async function createOrder({
   order,
+  cart,
 }: {
   order: Omit<
     Tables<"orders">,
@@ -19,29 +22,33 @@ export default async function createOrder({
     | "user_id"
     | "wholesale_price"
   >;
+  cart: ICart | undefined;
 }) {
   const translation = await getTranslation("fr");
   try {
-    const { data: cart } = await getData<"cart", ICartResponse[]>({
-      tableName: "cart",
-      column: "*,products(*)",
-      user: true,
-    });
-    if (!cart || cart.length === 0)
+
+    if (!cart || cart.length === 0) {
       throw new Error(translation.lang["Cart is empty"]);
-    const user_id = cart[0].user_id;
+    }
+
+    const session = await getSession();
+    const user_id = session.session?.user.id
+
+    const productIds = cart.map((item) => item.id);
+
     const total_price = cart
       .map((cartItem) => ({
         ...cartItem,
-        product: formatProduct(cartItem.products, {
+        product: formatProduct(cartItem, {
           wishlist: [],
-          cart: cart.reduce((acc: string[], b) => [...acc, b.product_id], []),
+          cart: productIds,
         }),
       }))
       .reduce((acc, cartItem) => {
         if (!cartItem.product) {
           throw new Error(translation.lang["Product not found"]);
         }
+
         if (cartItem.product.stock < cartItem.quantity) {
           throw new Error(
             translation.lang["Not enough stock for ${PRODUCT_NAME}"].replace(
@@ -50,12 +57,15 @@ export default async function createOrder({
             ),
           );
         }
-        return acc + cartItem.quantity * cartItem.product?.price_after_discount;
+
+        return acc + cartItem.quantity * cartItem.product.price_after_discount;
       }, 0);
+
     const wholesale_price = cart.reduce(
-      (acc, b) => acc + b.quantity * b.products.wholesale_price,
+      (acc, item) => acc + item.quantity * item.wholesale_price,
       0,
     );
+
     const { data: newOrder, error: ordersError } = await postData<"orders">({
       tableName: "orders",
       payload: [
@@ -68,22 +78,29 @@ export default async function createOrder({
         },
       ],
     });
-    if (ordersError || !newOrder || newOrder.length === 0)
+
+    if (ordersError || !newOrder || newOrder.length === 0) {
       throw new Error(translation.lang["Failed to submit order"]);
+    }
+
+    // Insert order products
     const { error: orderProductsError } = await postData<"order_products">({
       tableName: "order_products",
       payload: cart.map((item) => ({
-        discount_type: item.products.discount_type,
-        discount: item.products.discount,
-        price_before_discount: item.products.price,
-        wholesale_price: item.products.wholesale_price,
+        discount_type: item.discount_type,
+        discount: item.discount,
+        price_before_discount: item.price,
+        wholesale_price: item.wholesale_price,
         order_id: newOrder[0].id,
-        product_id: item.product_id,
+        product_id: item.id,
         quantity: item.quantity,
       })),
     });
-    if (orderProductsError)
+
+    if (orderProductsError) {
       throw new Error(translation.lang["Something went wrong while ordering"]);
+    }
+
     return { user_id, error: null };
   } catch (error) {
     if (error instanceof Error) {

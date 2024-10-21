@@ -1,7 +1,9 @@
 "use client" ;
 import getCartProducts from "@/actions/Cart/getCartProducts";
+import { Tables } from "@/types/database.types";
 
 
+export type ICart = (Tables<"products"> & { quantity: number })[];
 
 const cartQuery=() => ({
   queryKey: ["cart"],
@@ -25,9 +27,9 @@ const cartQuery=() => ({
         error: res.error,
       })),
     ]);
-    const cartProducts = data?.data?.map((product) => ({
+    const cartProducts :ICart = data?.data?.map((product) => ({
       ...product,
-      quantity: cart.find((item: { product_id: string; quantity: number }) => item.product_id === product.id)?.quantity || 1,
+      quantity: cart.find((item: { product_id: string; quantity: number }) => item.product_id === product.id)?.quantity ?? 1,
     })) ?? [];
 
     return {
