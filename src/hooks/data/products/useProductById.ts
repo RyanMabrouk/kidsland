@@ -14,7 +14,7 @@ export default function useProductById(id: string) {
     data: {
       ...query.data,
       data: formatProduct(query.data?.data?.[0] ?? null, {
-        cart: cart?.data,
+        cart: cart?.data?.map((item) => item.id),
         wishlist: wishlist?.data,
       }),
     },

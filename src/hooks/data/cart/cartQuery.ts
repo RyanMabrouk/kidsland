@@ -1,15 +1,20 @@
-"use client" ;
+"use client";
 import getCartProducts from "@/actions/Cart/getCartProducts";
 import { Tables } from "@/types/database.types";
 
+export interface ICartItem extends Tables<"products"> {
+  quantity: number;
+}
 
-export type ICart = (Tables<"products"> & { quantity: number })[];
-
-const cartQuery=() => ({
+const cartQuery = () => ({
   queryKey: ["cart"],
   queryFn: async () => {
-    const cart = JSON.parse(localStorage.getItem("cart") ?? "[]");
-    const productsIds = cart.map((item: { product_id: string; quantity: number }) => item.product_id);
+    const cart: { product_id: string; quantity: number }[] = JSON.parse(
+      localStorage.getItem("cart") ?? "[]",
+    );
+    const productsIds = cart.map(
+      (item: { product_id: string; quantity: number }) => item.product_id,
+    );
     if (productsIds.length === 0) {
       return { data: [], error: null, count: 0 };
     }
@@ -18,7 +23,7 @@ const cartQuery=() => ({
       getCartProducts({
         tableName: "products",
         productsIds,
-     }),
+      }),
       getCartProducts({
         tableName: "products",
         productsIds,
@@ -27,10 +32,12 @@ const cartQuery=() => ({
         error: res.error,
       })),
     ]);
-    const cartProducts :ICart = data?.data?.map((product) => ({
-      ...product,
-      quantity: cart.find((item: { product_id: string; quantity: number }) => item.product_id === product.id)?.quantity ?? 1,
-    })) ?? [];
+    const cartProducts: ICartItem[] =
+      data?.data?.map((product) => ({
+        ...product,
+        quantity:
+          cart.find((item) => item.product_id === product.id)?.quantity ?? 1,
+      })) ?? [];
 
     return {
       data: cartProducts,

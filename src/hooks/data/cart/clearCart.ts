@@ -20,13 +20,13 @@ export function useClearCart() {
       if (!oldCart?.data) {
         throw new Error(translation?.lang["User cart not found"]);
       }
-      await deleteData({
-        tableName: "cart",
-        matchInArray: {
-          column: "product_id",
-          in: oldCart.data,
-        },
-      });
+      // await deleteData({
+      //   tableName: "cart",
+      //   matchInArray: {
+      //     column: "product_id",
+      //     in: oldCart.data,
+      //   },
+      // });
     },
     onError: (error: Error) => {
       toast.error(error.message);

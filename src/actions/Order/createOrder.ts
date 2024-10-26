@@ -4,7 +4,7 @@ import getTranslation from "@/translation/getTranslation";
 import { Tables } from "@/types/database.types";
 import { OrderStatusEnum } from "@/types/database.tables.types";
 import { formatProduct } from "@/hooks/data/products/formatProducts";
-import { ICart } from "@/hooks/data/cart/cartQuery";
+import { ICartItem } from "@/hooks/data/cart/cartQuery";
 import getSession from "@/api/getSession";
 import useTranslation from "@/translation/useTranslation";
 
@@ -22,17 +22,16 @@ export default async function createOrder({
     | "user_id"
     | "wholesale_price"
   >;
-  cart: ICart | undefined;
+  cart: ICartItem[] | undefined;
 }) {
   const translation = await getTranslation("fr");
   try {
-
     if (!cart || cart.length === 0) {
       throw new Error(translation.lang["Cart is empty"]);
     }
 
     const session = await getSession();
-    const user_id = session.session?.user.id
+    const user_id = session.session?.user.id;
 
     const productIds = cart.map((item) => item.id);
 

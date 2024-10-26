@@ -2,8 +2,8 @@ import handleProductQuantity from "@/actions/Cart/handleProductQuantity";
 import { useToast } from "@/hooks/useToast";
 import { IProduct, QueryReturnType } from "@/types/database.tables.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { cartPopulatedQuery } from "./cartPopulatedQuery";
 import useTranslation from "@/translation/useTranslation";
+import { cartQuery } from "./cartQuery";
 
 export default function useChangeQuantity(product: IProduct | null) {
   const queryClient = useQueryClient();
@@ -24,8 +24,8 @@ export default function useChangeQuantity(product: IProduct | null) {
       if (error) throw new Error(error);
     },
     onMutate: async (quantity) => {
-      const queryKey = cartPopulatedQuery()["queryKey"];
-      type queryReturnType = QueryReturnType<typeof cartPopulatedQuery>;
+      const queryKey = cartQuery()["queryKey"];
+      type queryReturnType = QueryReturnType<typeof cartQuery>;
       await queryClient.cancelQueries({
         queryKey,
       });
@@ -33,16 +33,14 @@ export default function useChangeQuantity(product: IProduct | null) {
       queryClient.setQueryData(
         queryKey,
         (old: queryReturnType): queryReturnType => {
-          const changedProduct = old.data?.find(
-            (e) => e.product.id === product?.id,
-          );
+          const changedProduct = old.data?.find((e) => e.id === product?.id);
           if (!changedProduct) {
             return old;
           }
           return {
             ...old,
             data: [
-              ...(old.data?.filter((e) => e.product.id !== product?.id) ?? []),
+              ...(old.data?.filter((e) => e.id !== product?.id) ?? []),
               {
                 ...changedProduct,
                 quantity,
@@ -57,7 +55,7 @@ export default function useChangeQuantity(product: IProduct | null) {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
     onError: (error, _, previousCart) => {
-      queryClient.setQueryData(cartPopulatedQuery()["queryKey"], previousCart);
+      queryClient.setQueryData(cartQuery()["queryKey"], previousCart);
       toast.error(error.message);
     },
   });

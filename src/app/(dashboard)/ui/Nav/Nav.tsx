@@ -22,8 +22,8 @@ export function Nav() {
         <Image
           src="/logo/logo-2.png"
           alt="logo"
-          width={120}
-          height={120}
+          width={110}
+          height={110}
           className="py-3 max-[830px]:hidden"
         />
       </Link>
