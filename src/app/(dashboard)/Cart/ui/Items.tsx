@@ -47,7 +47,7 @@ export default function Items() {
       <div className="ml-5 py-4 text-xl text-color1">
         {translation?.lang[
           "you have ${QUANTITY} products in your cart"
-        ].replace("${QUANTITY}", String(cart?.data?.length) ?? 0)}
+        ].replace("{QUANTITY}", String(cart?.data?.length) ?? 0)}
       </div>
 
       <div className="flex w-full flex-col items-center gap-5 pb-4">

@@ -30,7 +30,7 @@ export default function OrderButton() {
       className="w-full rounded-lg bg-color1 p-3 text-center text-xl font-semibold text-white transition-all duration-300 hover:bg-red-400"
     >
       {translation?.lang["Order ${PRICE} TND"].replace(
-        "${PRICE}",
+        "{PRICE}",
         cart.total_after_discount.toFixed(2),
       )}
     </Link>

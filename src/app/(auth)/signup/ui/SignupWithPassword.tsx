@@ -16,7 +16,7 @@ export default function SignupWithPassword() {
       email: z
         .string({
           message: translation?.lang["${ELEMENT} must be a string"].replace(
-            "${ELEMENT}",
+            "{ELEMENT}",
             "Email",
           ),
         })
@@ -24,14 +24,14 @@ export default function SignupWithPassword() {
       password: z
         .string({
           message: translation?.lang["${ELEMENT} must be a string"].replace(
-            "${ELEMENT}",
+            "{ELEMENT}",
             "Password",
           ),
         })
         .min(6, translation?.lang["Password must be at least 6 characters"]),
       confirm: z.string({
         message: translation?.lang["${ELEMENT} must be a string"].replace(
-          "${ELEMENT}",
+          "{ELEMENT}",
           "Confirm Password",
         ),
       }),
