@@ -31,8 +31,8 @@ export default function PhoneSheet() {
                 <Image
                   src="/logo/logo-2.png"
                   alt="logo"
-                  width={80}
-                  height={80}
+                  width={150}
+                  height={150}
                   className="py-3"
                 />
               </Link>

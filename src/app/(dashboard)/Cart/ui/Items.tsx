@@ -1,33 +1,35 @@
+"use client"
 import React from "react";
 import CartItem from "./CartItem";
-import useCartPopulated from "@/hooks/data/cart/useCartPopulated";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { useFilters } from "../context/FiltersProvider";
 import useTranslation from "@/translation/useTranslation";
+import useCart from "@/hooks/data/cart/useCart";
 
 export default function Items() {
   const { filter, isReversed } = useFilters();
-  const { data: cart } = useCartPopulated();
+  const { data:cart  } = useCart();
   const { data: translation } = useTranslation();
+
   const sortedCart = cart?.data?.sort((a, b) => {
     if (filter === "price") {
       return (
-        (a.product?.price_after_discount ?? 0) -
-        (b.product?.price_after_discount ?? 0)
+        (a.price ?? 0) -
+        (b?.price ?? 0)
       );
     }
 
     if (filter === "discount") {
-      return (b.product?.discount ?? 0) - (a.product?.discount ?? 0);
+      return (b.discount ?? 0) - (a.discount ?? 0);
     }
     if (filter === "title") {
-      return a.product?.title.localeCompare(b.product?.title ?? "") ?? 0;
+      return a.title.localeCompare(b.title ?? "") ?? 0;
     }
     return 0;
   });
 
   const finalCart = isReversed ? [...(sortedCart ?? [])].reverse() : sortedCart;
-  if (cart.data?.length === 0)
+  if (cart?.data?.length === 0)
     return (
       <div className="flex h-full w-full max-w-[40rem] items-center justify-center rounded-md bg-white shadow-md">
         <Player
@@ -51,11 +53,11 @@ export default function Items() {
       <div className="flex w-full flex-col items-center gap-5 pb-4">
         {finalCart?.map((item) => (
           <CartItem
-            key={item?.product_id}
-            product={item.product}
-            quantity={item.quantity}
+            key={item?.id}
+            product={item}
           />
         ))}
+
       </div>
     </div>
   );

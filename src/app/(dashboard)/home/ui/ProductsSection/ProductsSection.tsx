@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import Product from "./Product";
 import useProducts from "@/hooks/data/products/useProducts";
 import { useEffect, useState } from "react";
 import { Pagination } from "@mui/material";
@@ -9,6 +8,7 @@ import { productsQuery } from "@/hooks/data/products/productsQuery";
 import { useMemo } from "react";
 import useTranslation from "@/translation/useTranslation";
 import Loading from "@/app/(adminDashboard)/loading";
+import Product from "./Product";
 
 export function ProductsSection() {
   const [page, setPage] = useState(1);

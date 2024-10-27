@@ -6,7 +6,7 @@ import { AiOutlineMenuUnfold } from "react-icons/ai";
 
 const menuItems = [
   {
-    title: "Kidsland moments",
+    title: "Sfari moments",
     href: "/products",
     icon: ({ className }: { className: string }) => (
       <AiOutlineMenuUnfold className={className} />

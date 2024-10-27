@@ -1,23 +1,59 @@
 "use client";
+import { useEffect, useState } from "react";
 import { Spinner } from "@/app/ui/Spinner";
-import useChangeQuantity from "@/hooks/data/cart/changeQuantity";
-import useDeleteFromCart from "@/hooks/data/cart/deleteFromCart";
 import useTranslation from "@/translation/useTranslation";
 import { DiscountTypeEnum, IProduct } from "@/types/database.tables.types";
+import { Tables } from "@/types/database.types";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function CartItem({
   product,
-  quantity,
 }: {
-  product: IProduct | null;
-  quantity: number;
+  product: Tables<"products"> & { quantity: number };
 }) {
-  const { mutate: change } = useChangeQuantity(product);
-  const { mutate: remove, isPending: isDeleting } = useDeleteFromCart(product);
+  const queryClient = useQueryClient();
+  const [quantity, setQuantity] = useState(product.quantity);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const available = (product.stock - quantity) >= 0;
+  const price_after_discount = product.price - product.discount;
   const { data: translation } = useTranslation();
+  const updateCartInLocalStorage = async(updatedCart: any[]) => {
+    await localStorage.setItem("cart", JSON.stringify(updatedCart));
+    queryClient.invalidateQueries({ queryKey: ["cart"] }); 
+  };
+  const getCartFromLocalStorage = () => {
+    if (typeof window !== "undefined") {
+      const storedCart = localStorage.getItem("cart");
+      return storedCart ? JSON.parse(storedCart) : [];
+    }
+    return [];
+  };
+
+const changeQuantity = (newQuantity: number) => {
+  const cart = getCartFromLocalStorage();
+  const updatedCart = cart.map((item: any) => {
+    if ( item.product_id === product.id) {
+      return { ...item, quantity: newQuantity };
+    }
+    return item;
+  });
+  setQuantity(newQuantity);
+  updateCartInLocalStorage(updatedCart);
+  queryClient.invalidateQueries({ queryKey:["cart"] });
+};
+
+const removeItem = () => {
+  setIsDeleting(true);
+  const cart = getCartFromLocalStorage();
+  const updatedCart = cart.filter((item: any) => item.product_id !== product.id);
+  updateCartInLocalStorage(updatedCart);
+  setIsDeleting(false);
+};
+
+
   return (
     <div className="w-[95%] border-2 border-solid transition-all duration-200 hover:w-[97%] hover:shadow-md max-[480px]:w-full">
       <Link
@@ -35,33 +71,30 @@ export default function CartItem({
           <div className="flex flex-1 justify-between md:w-full md:px-5 lg:px-0">
             <div className="max-[390px]:max pt-7">
               <div
-                className={`line-clamp-1 ${product?.available ?? "text-red-600"}`}
+                className={`line-clamp-1 ${available ? "" : "text-red-600"}`}
               >
                 {product?.title}
               </div>
-              <div
-                className={`${product?.available ? "text-green-500" : "text-color1"}`}
-              >
-                {product?.available
+              <div className={`${available ? "text-green-500" : "text-color1"}`}>
+                {available
                   ? translation?.lang["In Stock"]
                   : translation?.lang["Out of Stock"]}
               </div>
             </div>
             <div className="flex flex-col items-center justify-center gap-2 p-3 max-[520px]:text-sm">
               <div className="text-right">
-                {product?.price_after_discount.toFixed(2)}
-                TND
+                {price_after_discount * quantity} TND
               </div>
               {!!product?.discount && product.discount > 0 && (
                 <div className="flex items-center gap-2">
                   <div className="min-w-max text-gray-600 line-through">
-                    {product.price} TND
+                    {product.price * quantity} TND
                   </div>
                   <div className="min-w-max bg-red-100 p-1 text-red-600">
-                    {product.discount}{" "}
+                    {product.discount*quantity}{" "}
                     {product.discount_type === DiscountTypeEnum.PERCENTAGE
                       ? "%"
-                      : ""}
+                      : "dt"}
                   </div>
                 </div>
               )}
@@ -72,7 +105,7 @@ export default function CartItem({
       <hr />
       <div className="flex items-center justify-between p-4">
         <button
-          onClick={() => remove()}
+          onClick={removeItem}
           className="flex min-w-[6rem] items-center justify-center rounded-xl border-2 bg-color1 p-2 text-white transition-all duration-300 hover:border-color1 hover:bg-white hover:text-color1"
         >
           {isDeleting ? (
@@ -84,14 +117,15 @@ export default function CartItem({
         <div className="flex gap-7">
           <button
             className="h-[2rem] w-[2rem] rounded-md bg-red-100 text-center"
-            onClick={() => change(quantity - 1)}
+            onClick={() => changeQuantity(quantity - 1)}
+            disabled={quantity <= 1}
           >
             -
           </button>
           <div>{quantity}</div>
           <button
             className="h-[2rem] w-[2rem] rounded-md bg-red-100 text-center"
-            onClick={() => change(quantity + 1)}
+            onClick={() => changeQuantity(quantity + 1)}
           >
             +
           </button>

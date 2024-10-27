@@ -1,13 +1,13 @@
 import useCreateOrder from "@/hooks/data/orders/createOrder";
-import useCartPopulated from "@/hooks/data/cart/useCartPopulated";
 import React from "react";
 import { Spinner } from "@/app/ui/Spinner";
 import getLocalValues from "@/helpers/getLocalValues";
 import { redirect } from "next/navigation";
 import useTranslation from "@/translation/useTranslation";
+import useCart from "@/hooks/data/cart/useCart";
 
 export default function OrderResume() {
-  const { data: cart } = useCartPopulated();
+  const { data: cart } = useCart();
   const clientAdressForm = getLocalValues("clientAddressForm");
   const paymentOptionsForm = getLocalValues("paymentOptionsForm");
   const orderDetails = {

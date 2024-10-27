@@ -22,8 +22,8 @@ export function Nav() {
         <Image
           src="/logo/logo-2.png"
           alt="logo"
-          width={60}
-          height={60}
+          width={110}
+          height={110}
           className="py-3 max-[830px]:hidden"
         />
       </Link>
@@ -53,9 +53,6 @@ export function Nav() {
             {!!user?.data ? (
               <>
                 <UserMenu />
-                <Link href="/Cart">
-                  <CartButton />
-                </Link>
               </>
             ) : (
               <Link
@@ -65,6 +62,9 @@ export function Nav() {
                 {translation?.lang["Login"]}
               </Link>
             )}
+            <Link href="/Cart">
+              <CartButton />
+            </Link>
           </div>
         </span>
       </div>

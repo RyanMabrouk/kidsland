@@ -6,10 +6,12 @@ import useTranslation from "@/translation/useTranslation";
 import { PaymentMethodEnum } from "@/types/database.tables.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
+import useCart from "../cart/useCart";
 
 export default function useCreateOrder() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const {data : cart } = useCart()
   const { data: translation } = useTranslation();
   return useMutation({
     mutationFn: async (args: {
@@ -122,6 +124,7 @@ export default function useCreateOrder() {
       }
       const { user_id, error: createOrderError } = await createOrder({
         order: args,
+        cart : cart.data
       });
       if (createOrderError) throw new Error(createOrderError);
       if (!user_id)

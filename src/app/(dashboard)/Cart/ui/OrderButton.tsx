@@ -1,15 +1,15 @@
 "use client";
-import useCartPopulated from "@/hooks/data/cart/useCartPopulated";
+import useCart from "@/hooks/data/cart/useCart";
 import useTranslation from "@/translation/useTranslation";
 import Link from "next/link";
 
 export default function OrderButton() {
   const { data: translation } = useTranslation();
-  const { data: cart } = useCartPopulated();
+  const { data: cart } = useCart();
   if (cart.data?.length === 0) {
     return (
       <Link
-        href="products"
+        href="/products"
         className="w-full cursor-not-allowed rounded-lg bg-color1 p-3 text-center text-xl font-semibold text-white transition-all duration-300 hover:bg-gray-800"
       >
         {translation?.lang["Order Some Products first"]}

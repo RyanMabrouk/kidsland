@@ -80,18 +80,18 @@ export default function PaymentOptionsForm({ close }: { close: () => void }) {
           </label>
         </div>
         <p className="mt-1 text-sm text-gray-500">
-          {translation?.lang["You can pay with your kidsland balance"]}
+          {translation?.lang["You can pay with your Sfari balance"]}
         </p>
         {selectedOption === PaymentMethodEnum.ONLINE && (
           <div className="mt-3 rounded bg-gray-100 p-3">
             <h1 className="mb-3 w-fit rounded-md bg-color1 p-2 text-white">
-              {translation?.lang["Your Kidsland balance"]} : 0.00TND
+              {translation?.lang["Your Sfari balance"]} : 0.00TND
             </h1>
             <hr />
             <p className="mt-2 text-sm text-gray-700">
               {
                 translation?.lang[
-                  `Pay for your purchases through Kidsland, using your Mastercard or Visa card. You will be redirected to our KidslandPay payment platform to complete your purchase. Make sure your payment details are up to date and that you have the necessary funds.`
+                  `Pay for your purchases through Sfari, using your Mastercard or Visa card. You will be redirected to our SfariPay payment platform to complete your purchase. Make sure your payment details are up to date and that you have the necessary funds.`
                 ]
               }
               <a href="#" className="ml-1 text-indigo-500">

@@ -12,7 +12,7 @@ export default function Page() {
         <hr />
         <HomeSwiper />
         <MomentsSwiper />
-        {/* <OffersContainer /> */}
+        {/*<OffersContainer />*/}
         <ProductsSection />
       </div>
     </HomeHydration>
