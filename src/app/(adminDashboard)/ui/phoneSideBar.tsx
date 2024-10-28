@@ -1,4 +1,5 @@
 "use client"
+import SignOutBtn from "@/app/(dashboard)/ui/Nav/SignOutBtn";
 import {
   Sheet,
   SheetClose,
@@ -9,6 +10,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { Logout } from "@mui/icons-material";
 import { Menu, MenuIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -44,8 +46,8 @@ export function PhoneSideBar() {
             <li
               className={` flex gap-2 items-center py-3 cursor-pointer ${
                 Pathname.includes("addProduct")
-                  ? "bg-customText text-white hover:bg-hoverbutton hover:text-gray-50"
-                  : "text-gray-500"
+                  ? "bg-customText text-white hover:bg-hoverbutton "
+                  : "text-gray-500 hover:text-gray-50"
               }`}
             >
               <FaPlusCircle className="text-xl" />  
@@ -56,8 +58,8 @@ export function PhoneSideBar() {
             <li
               className={` flex gap-2 items-center py-3 cursor-pointer ${
                 Pathname.includes("myProducts")
-                  ? "bg-customText text-white hover:bg-hoverbutton hover:text-gray-50"
-                  : "text-gray-500"
+                  ? "bg-customText text-white hover:bg-hoverbutton "
+                  : "text-gray-500 hover:text-gray-50"
               }`}
             >
               <FaGamepad className="text-2xl" />
@@ -68,8 +70,8 @@ export function PhoneSideBar() {
             <li
               className={` flex gap-2 items-center py-3 cursor-pointer ${
                 Pathname.includes("earnings")
-                ? "bg-customText text-white hover:bg-hoverbutton hover:text-gray-50"
-                  : "text-gray-500"
+                ? "bg-customText text-white hover:bg-hoverbutton "
+                  : "text-gray-500 hover:text-gray-50 "
               }`}
             >
 
@@ -81,8 +83,8 @@ export function PhoneSideBar() {
             <li
               className={` flex gap-2 items-center py-3 cursor-pointer ${
                 Pathname.includes("stocks")
-                ? "bg-customText text-white hover:bg-hoverbutton hover:text-gray-50"
-                  : "text-gray-500"       }`} 
+                ? "bg-customText text-white hover:bg-hoverbutton "
+                  : "text-gray-500 hover:text-gray-50"       }`} 
             >
               <FaBitbucket className="text-xl" />
               <span className="">Stocks</span>
@@ -92,13 +94,23 @@ export function PhoneSideBar() {
               <li
                 className={`flex gap-2 items-center py-3 cursor-pointer ${
                   Pathname.includes("orders")
-                  ? "bg-customText text-white hover:bg-hoverbutton hover:text-gray-50"
-                    : "text-gray-500"       }`} 
+                  ? "bg-customText text-white hover:bg-hoverbutton "
+                    : "text-gray-500 hover:text-gray-50"       }`} 
               >
                 <FaMailBulk className="text-xl" />
                 <span className="">Orders</span>
               </li>
             </Link>
+            <SignOutBtn>
+            <li
+              className={
+                "bg-customText hover:bg-hoverbutton text-gray-500 flex cursor-pointer items-center gap-2  py-3 hover:text-gray-50"
+              }
+            >
+              <Logout className="text-xl" />
+              <span className="">Logout</span>
+            </li>
+          </SignOutBtn>
           </ul>
           
           <SheetFooter>
