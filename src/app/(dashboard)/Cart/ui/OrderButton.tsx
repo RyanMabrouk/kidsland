@@ -29,7 +29,7 @@ export default function OrderButton() {
       href="/Cart/Payment"
       className="w-full rounded-lg bg-color1 p-3 text-center text-xl font-semibold text-white transition-all duration-300 hover:bg-red-400"
     >
-      {translation?.lang["Order ${PRICE} TND"].replace(
+      {translation?.lang["Order {PRICE} TND"].replace(
         "{PRICE}",
         cart.total_after_discount.toFixed(2),
       )}

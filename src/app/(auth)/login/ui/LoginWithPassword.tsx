@@ -15,7 +15,7 @@ export default function LoginWithPassword() {
   const loginSchema = z.object({
     email: z
       .string({
-        message: translation?.lang["${ELEMENT} must be a string"].replace(
+        message: translation?.lang["{ELEMENT} must be a string"].replace(
           "{ELEMENT}",
           "Email",
         ),
@@ -23,7 +23,7 @@ export default function LoginWithPassword() {
       .email(translation?.lang["Invalid email address"]),
     password: z
       .string({
-        message: translation?.lang["${ELEMENT} must be a string"].replace(
+        message: translation?.lang["{ELEMENT} must be a string"].replace(
           "{ELEMENT}",
           "Password",
         ),

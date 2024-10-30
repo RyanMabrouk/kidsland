@@ -50,8 +50,8 @@ export default async function createOrder({
 
         if (cartItem.product.stock < cartItem.quantity) {
           throw new Error(
-            translation.lang["Not enough stock for ${PRODUCT_NAME}"].replace(
-              "${PRODUCT_NAME}",
+            translation.lang["Not enough stock for {PRODUCT_NAME}"].replace(
+              "{PRODUCT_NAME}",
               cartItem.product.title,
             ),
           );

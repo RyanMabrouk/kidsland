@@ -16,7 +16,7 @@ export default function ForgotPasswordForm() {
   const forgotPasswordSchema = z.object({
     email: z
       .string({
-        message: translation?.lang["${ELEMENT} must be a string"].replace(
+        message: translation?.lang["{ELEMENT} must be a string"].replace(
           "{ELEMENT}",
           "Email",
         ),

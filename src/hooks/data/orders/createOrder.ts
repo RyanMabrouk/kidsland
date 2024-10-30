@@ -11,7 +11,7 @@ import useCart from "../cart/useCart";
 export default function useCreateOrder() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
-  const {data : cart } = useCart()
+  const { data: cart } = useCart();
   const { data: translation } = useTranslation();
   return useMutation({
     mutationFn: async (args: {
@@ -27,77 +27,77 @@ export default function useCreateOrder() {
       const schema = z.object({
         first_name: z
           .string({
-            message: translation?.lang["${ELEMENT} is required"].replace(
-              "${ELEMENT}",
+            message: translation?.lang["{ELEMENT} is required"].replace(
+              "{ELEMENT}",
               "First name",
             ),
           })
           .min(2, {
             message: translation?.lang[
-              "${ELEMENT} must be at least ${MIN} characters"
+              "{ELEMENT} must be at least {MIN} characters"
             ]
-              .replace("${ELEMENT}", "First name")
-              .replace("${MIN}", "2"),
+              .replace("{ELEMENT}", "First name")
+              .replace("{MIN}", "2"),
           }),
         last_name: z
           .string({
-            message: translation?.lang["${ELEMENT} is required"].replace(
-              "${ELEMENT}",
+            message: translation?.lang["{ELEMENT} is required"].replace(
+              "{ELEMENT}",
               "Last name",
             ),
           })
           .min(2, {
             message: translation?.lang[
-              "${ELEMENT} must be at least ${MIN} characters"
+              "{ELEMENT} must be at least {MIN} characters"
             ]
-              .replace("${ELEMENT}", "Last name")
-              .replace("${MIN}", "2"),
+              .replace("{ELEMENT}", "Last name")
+              .replace("{MIN}", "2"),
           }),
         address: z
           .string({
-            message: translation?.lang["${ELEMENT} is required"].replace(
-              "${ELEMENT}",
+            message: translation?.lang["{ELEMENT} is required"].replace(
+              "{ELEMENT}",
               "Address",
             ),
           })
           .min(4, {
             message: translation?.lang[
-              "${ELEMENT} must be at least ${MIN} characters"
+              "{ELEMENT} must be at least {MIN} characters"
             ]
-              .replace("${ELEMENT}", "Address")
-              .replace("${MIN}", "4"),
+              .replace("{ELEMENT}", "Address")
+              .replace("{MIN}", "4"),
           }),
         region: z.string({
-          message: translation?.lang["${ELEMENT} is required"].replace(
-            "${ELEMENT}",
+          message: translation?.lang["{ELEMENT} is required"].replace(
+            "{ELEMENT}",
             "Region",
           ),
         }),
         city: z.string({
-          message: translation?.lang["${ELEMENT} is required"].replace(
-            "${ELEMENT}",
+          message: translation?.lang["{ELEMENT} is required"].replace(
+            "{ELEMENT}",
             "City",
           ),
         }),
         phone_number: z
           .string({
-            message: translation?.lang["${ELEMENT} is required"].replace(
-              "${ELEMENT}",
+            message: translation?.lang["{ELEMENT} is required"].replace(
+              "{ELEMENT}",
               "Phone number",
             ),
           })
           .regex(
             /^\+?[1-9]\d{1,14}$/,
-            translation?.lang["Invalid ${ELEMENT} format"].replace(
-              "${ELEMENT}",
+            translation?.lang["Invalid {ELEMENT} format"].replace(
+              "{ELEMENT}",
               "phone number",
             ),
           ),
 
         additional_info: z
           .string({
-            message: translation?.lang["${ELEMENT} must be a string"].replace(
-              "${ELEMENT}",
+            message: translation?.lang["{ELEMENT} must be a string"].replace(
+              "{ELEMENT}",
               "Additional info",
             ),
           })
@@ -105,8 +105,8 @@ export default function useCreateOrder() {
         payment_method: z.enum(
           [PaymentMethodEnum.CASH, PaymentMethodEnum.ONLINE],
           {
-            message: translation?.lang["Choose a ${ELEMENT}"].replace(
-              "${ELEMENT}",
+            message: translation?.lang["Choose a {ELEMENT}"].replace(
+              "{ELEMENT}",
               "payment method",
             ),
           },
@@ -124,7 +124,7 @@ export default function useCreateOrder() {
       }
       const { user_id, error: createOrderError } = await createOrder({
         order: args,
-        cart : cart.data
+        cart: cart.data,
       });
       if (createOrderError) throw new Error(createOrderError);
       if (!user_id)
