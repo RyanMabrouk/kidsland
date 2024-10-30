@@ -9,39 +9,42 @@ import useProductById from "@/hooks/data/products/useProductById";
 import updateData from "@/api/updateData";
 import { SelectGeneric } from "@/app/ui/SelectGeneric";
 import { uploadFile } from "@/api/uploadFile";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { useToast } from "@/hooks/useToast";
 import PictureUploader from "./ui/picture_uploader";
 import { Player } from "@lottiefiles/react-lottie-player";
 
 const schema = z.object({
-  title: z.string().min(1, "Title is required"),
-  subtitle: z.string().min(1, "Subtitle is required"),
-  description: z.string().min(1, "Description is required"),
-  price: z.number().positive("Price must be a positive number"),
+  title: z.string().min(1, "Le titre est requis"),
+  description: z.string().min(1, "La description est requise"),
+  price: z.number().positive("Le prix doit être un nombre positif"),
   discount: z.number().optional(),
-  stock: z.number().positive("Stock must be a positive number"),
-  wholesale_price: z.number().positive("Wholesale price must be a positive number"),
-  category_id: z.union([
-    z.literal(1),
-    z.literal(2),
-    z.literal(3),
-  ], { message: "Invalid category" }),
+  stock: z.number().positive("Le stock doit être un nombre positif"),
+  wholesale_price: z
+    .number()
+    .positive("Le prix de gros doit être un nombre positif"),
+  category_id: z.union([z.literal(1), z.literal(2), z.literal(3)], {
+    message: "Catégorie invalide",
+  }),
 });
+
 export default function Page() {
   const { productId } = useParams();
+  const id = productId as string;
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { data: product , isLoading  } = useProductById(String(productId));
-  const [preview, setPreview] = useState<string>(product.data?.image_url ?? "/noArticlePic.png");
+  const { data: product, isLoading } = useProductById(String(productId));
+  const [preview, setPreview] = useState<string>(
+    product.data?.image_url ?? "/noArticlePic.png"
+  );
   const [images, setImages] = useState<File[]>([]);
+
   useEffect(() => {
-    if (product?.data) {
-      if (product.data.image_url) {
-        setPreview(product.data.image_url);
-      }
+    if (product?.data?.image_url) {
+      setPreview(product.data.image_url);
     }
-  },[product]);
+  }, [product]);
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -49,8 +52,9 @@ export default function Page() {
       setPreview(objectUrl);
     }
   };
-  const Options: { label: string; value: string }[] = [
-    { label: "Concentration Games", value: "1" },
+
+  const Options = [
+    { label: "Jeux de concentration", value: "1" },
     { label: "Social", value: "2" },
     { label: "Construction", value: "3" },
   ];
@@ -65,7 +69,8 @@ export default function Page() {
       const description = String(formData.get("description"));
       const category_id = Number(formData.get("category_id"));
       const wholesale_price = Number(formData.get("wholesale_price"));
-      const filepicture = formData.get("filepicture") as File ;      
+      const filepicture = formData.get("filepicture") as File;
+
       const result = schema.safeParse({
         title,
         subtitle,
@@ -76,19 +81,19 @@ export default function Page() {
         category_id: category_id,
         wholesale_price,
       });
-      if (!result.success) {
-        throw new Error("Validation error");
-      }
-      let image_url = product?.data?.image_url  ;
+      if (!result.success) throw new Error("Erreur de validation");
+
+      let image_url = product?.data?.image_url;
       if (filepicture.size > 0) {
         image_url = await uploadFile({
           formData,
           name: "filepicture",
-          title:uuidv4(),
+          title: uuidv4(),
         });
       }
-      const newExtra_images_urls = product?.data?.extra_images_urls ?? [];
-      if (images.length > 0) { 
+
+      const newExtraImagesUrls = product?.data?.extra_images_urls ?? [];
+      if (images.length > 0) {
         for (let i = 0; i < images.length; i++) {
           const file = images[i];
           const formDataImage = new FormData();
@@ -98,11 +103,11 @@ export default function Page() {
             name: "file",
             title: uuidv4(),
           });
-          newExtra_images_urls.push(uploadedUrl);
+          newExtraImagesUrls.push(uploadedUrl);
         }
       }
       setImages([]);
-      
+
       const payload = {
         image_url,
         title,
@@ -111,202 +116,211 @@ export default function Page() {
         discount,
         stock,
         description,
-        category_id: category_id,
+        category_id,
         wholesale_price,
-        extra_images_urls: newExtra_images_urls,
+        extra_images_urls: newExtraImagesUrls,
       };
-      const match = {
-        id: product?.data?.id,
-      };
+      const match = { id: product?.data?.id };
+
       const { data, error } = await updateData({
-        tableName: "products", 
+        tableName: "products",
         payload,
         match,
       });
-      if (error) {
-        throw new Error(error.message || "Failed to update the article");
-      }
+      if (error) throw new Error(error.message || "Erreur de mise à jour");
+
       return data;
     },
-    onSuccess: async() => {
-      toast.success( "Success!" , "Product Updated successfully!");
-      await queryClient.invalidateQueries({
-        queryKey: ["products", productId],
-      });
-    },  
+    onSuccess: () => {
+      toast.success("Succès!", "Produit mis à jour avec succès!");
+      queryClient.invalidateQueries({ queryKey: ["products", {id}] });
+    },
     onError: (error) => {
       toast.error(
-        "Error",
-        error.message || "An error occurred while adding the article.",
+        "Erreur",
+        error.message || "Une erreur s'est produite lors de la mise à jour."
       );
-        },
+    },
   });
+
   if (isLoading) {
-    return     <div className="m-auto flex min-h-screen items-center justify-center">
-    <Player
-      className="m-auto"
-      autoplay
-      loop
-      src="/AnimationLoading.json"
-      style={{ height: "12rem", width: "12rem" }}
-    />
-  </div>;
+    return (
+      <div className="m-auto flex min-h-screen items-center justify-center">
+        <Player
+          className="m-auto"
+          autoplay
+          loop
+          src="/AnimationLoading.json"
+          style={{ height: "12rem", width: "12rem" }}
+        />
+      </div>
+    );
   }
 
-
   return (
-<form
-  action={UpdateArticleMutation.mutate}
-  className="flex flex-col gap-5 m-auto w-full max-w-[50rem] justify-center mt-20 px-4 pb-4 sm:px-10"
->
-  <div className="flex flex-row items-center gap-3 justify-center">
-    <Image
-      src="/home/icons/flower_yellow.png"
-      alt=""
-      height={15}
-      width={15}
-    />
-    <div className="text-xl sm:text-2xl font-bold uppercase text-color5">
-      Edit Article
-    </div>
-    <Image
-      src="/home/icons/flower_yellow.png"
-      alt=""
-      height={15}
-      width={15}
-    />
-  </div>
-
-  <div className="flex flex-col lg:flex-row gap-10 m-auto w-full items-start mt-5 ">
-  <div className="flex h-[15rem] w-full flex-col gap-5 lg:w-[30rem]">
-      <div className="flex flex-col gap-3 ">
-        <div className="text-sm font-semibold text-gray-900">
-          Product Title:
-        </div>
-        <input
-          className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 w-full tx-lg text-gray-500 focus:outline-none"
-          type="text"
-          placeholder="Product Title..."
-          name="title"
-          defaultValue={product?.data?.title || ""}
-        />
-      </div>
-
-      <div className="flex flex-col gap-3 h-full">
-        <div className="text-sm font-semibold text-gray-900">
-          Description:
-        </div>
-        <textarea
-          className="placeholder:text-sm placeholder:text-gray-300 border-[1px] border-gray-200 px-4 py-2 text-base text-gray-500 focus:outline-none h-full"
-          placeholder="Description..."
-          name="description"
-          defaultValue={product?.data?.description || ""}
-        ></textarea>
-      </div>
-    </div>
-    
-
-    <div
-      className="flex flex-col gap-2 bg-gray-200 h-[15rem] w-full max-w-[15rem] justify-center py-2 cursor-pointer"
-      onClick={() =>
-        document
-          .querySelector<HTMLInputElement>('input[name="filepicture"]')
-          ?.click()
-      }
-    >
-      <Image
-        src={preview}
-        width={150}
-        height={150}
-        alt="Article Picture"
-        className="m-auto"
-      />
-      <input
-        className=""
-        name="filepicture"
-        type="file"
-        accept="image/*"
-        style={{ display: "none" }}
-        onChange={handleImageChange}
-      />
-      <div className="text-xs text-gray-500 w-48 mx-auto text-center">
-        Image size should be under 1MB and image ratio needs to be 1:1
-      </div>
-    </div>
-  </div>
-  <div className="flex flex-col gap-3 ">
-        <div className="text-sm font-semibold text-gray-900">
-          Product Subtitle:
-        </div>
-        <input
-          className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 w-full tx-lg text-gray-500 focus:outline-none"
-          type="text"
-          placeholder="Product Subtitle..."
-          name="subtitle"
-          defaultValue={product?.data?.subtitle || ""}
-        />
-      </div>
-
-  <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 w-full items-center">
-    <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
-      Original Price :
-    </div>
-    <input
-      className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 tx-base text-gray-500 focus:outline-none sm:col-span-4 w-full"
-      type="number"
-      placeholder="Price..."
-      name="price"
-      defaultValue={product?.data?.price || ""}
-    />
-    <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
-      Discount :
-    </div>
-    <input
-      className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 tx-base text-gray-500 focus:outline-none sm:col-span-4 w-full"
-      type="number"
-      placeholder="Price After Discount..."
-      name="discount"
-      defaultValue={product?.data?.discount || ""}
-    />
-
-    <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
-      Stock :
-    </div>
-    <input
-      className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 tx-lg text-gray-500 focus:outline-none sm:col-span-4 w-full"
-      type="number"
-      placeholder="Stock..."
-      name="stock"
-      defaultValue={product?.data?.stock || ""}
-    />
-    <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
-      Wholesale Price :
-    </div>
-    <input
-      className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 text-base text-gray-500 focus:outline-none sm:col-span-4 w-full"
-      type="number"
-      placeholder="Wholesale Price..."
-      name="wholesale_price"
-      defaultValue={product?.data?.wholesale_price || ""}
-    />
-    <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
-      Subtitle :
-    </div>
-    <SelectGeneric
-      name="category_id"
-      className="placeholder:text-sm placeholder:text-gray-300 sm:col-span-4 w-full"
-      inputLabel="Select Subtitle..."
-      options={Options}
-      defaultValue={Options.find(option => option.value === String(product?.data?.category_id))} 
-    />
-  </div>
-  <PictureUploader images={images} setImages={setImages} savedImages={product?.data?.extra_images_urls ?? []} productId={product.data?.id as string}  />
-  <button
-    className="mt-5 w-[10rem] rounded border border-slate-700 bg-slate-100 p-2 px-5 font-bold text-slate-700 duration-300 ease-in-out hover:!bg-slate-600 hover:!text-slate-200"
-    type="submit"
+    <form
+    action={UpdateArticleMutation.mutate}
+    className="flex flex-col gap-5 m-auto w-full max-w-[50rem] justify-center mt-20 px-4 pb-4 sm:px-10"
   >
-    Submit
-  </button>
-</form>
+    <div className="flex flex-row items-center gap-3 justify-center">
+      <Image
+        src="/home/icons/flower_yellow.png"
+        alt=""
+        height={15}
+        width={15}
+      />
+      <div className="text-xl sm:text-2xl font-bold uppercase text-color5">
+        Modifier l'article
+      </div>
+      <Image
+        src="/home/icons/flower_yellow.png"
+        alt=""
+        height={15}
+        width={15}
+      />
+    </div>
+  
+    <div className="flex flex-col lg:flex-row gap-10 m-auto w-full items-start mt-5">
+      <div className="flex h-[15rem] w-full flex-col gap-5 lg:w-[30rem]">
+        <div className="flex flex-col gap-3">
+          <div className="text-sm font-semibold text-gray-900">
+            Titre du produit :
+          </div>
+          <input
+            className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 w-full tx-lg text-gray-500 focus:outline-none"
+            type="text"
+            placeholder="Titre du produit..."
+            name="title"
+            defaultValue={product?.data?.title || ""}
+          />
+        </div>
+  
+        <div className="flex flex-col gap-3 h-full">
+          <div className="text-sm font-semibold text-gray-900">
+            Description :
+          </div>
+          <textarea
+            className="placeholder:text-sm placeholder:text-gray-300 border-[1px] border-gray-200 px-4 py-2 text-base text-gray-500 focus:outline-none h-full"
+            placeholder="Description..."
+            name="description"
+            defaultValue={product?.data?.description || ""}
+          ></textarea>
+        </div>
+      </div>
+  
+      <div
+        className="flex flex-col gap-2 bg-gray-200 h-[15rem] w-full max-w-[15rem] justify-center py-2 cursor-pointer"
+        onClick={() =>
+          document
+            .querySelector<HTMLInputElement>('input[name="filepicture"]')
+            ?.click()
+        }
+      >
+        <Image
+          src={preview}
+          width={150}
+          height={150}
+          alt="Photo de l'article"
+          className="m-auto"
+        />
+        <input
+          name="filepicture"
+          type="file"
+          accept="image/*"
+          style={{ display: "none" }}
+          onChange={handleImageChange}
+        />
+        <div className="text-xs text-gray-500 w-48 mx-auto text-center">
+          La taille de l'image doit être inférieure à 1 Mo et le ratio d'image doit être de 1:1
+        </div>
+      </div>
+    </div>
+  
+    <div className="flex flex-col gap-3">
+      <div className="text-sm font-semibold text-gray-900">
+        Sous-titre du produit :
+      </div>
+      <input
+        className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 w-full tx-lg text-gray-500 focus:outline-none"
+        type="text"
+        placeholder="Sous-titre du produit..."
+        name="subtitle"
+        defaultValue={product?.data?.subtitle || ""}
+      />
+    </div>
+  
+    <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 w-full items-center">
+      <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
+        Prix original :
+      </div>
+      <input
+        className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 tx-base text-gray-500 focus:outline-none sm:col-span-4 w-full"
+        type="number"
+        placeholder="Prix..."
+        name="price"
+        defaultValue={product?.data?.price || ""}
+      />
+  
+      <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
+        Remise :
+      </div>
+      <input
+        className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 tx-base text-gray-500 focus:outline-none sm:col-span-4 w-full"
+        type="number"
+        placeholder="remise..."
+        name="discount"
+        defaultValue={product?.data?.discount || ""}
+      />
+  
+      <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
+        Stock :
+      </div>
+      <input
+        className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 tx-lg text-gray-500 focus:outline-none sm:col-span-4 w-full"
+        type="number"
+        placeholder="Stock..."
+        name="stock"
+        defaultValue={product?.data?.stock || ""}
+      />
+  
+      <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
+        Prix de gros :
+      </div>
+      <input
+        className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 text-base text-gray-500 focus:outline-none sm:col-span-4 w-full"
+        type="number"
+        placeholder="Prix de gros..."
+        name="wholesale_price"
+        defaultValue={product?.data?.wholesale_price || ""}
+      />
+  
+      <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
+        Catégorie :
+      </div>
+      <SelectGeneric
+        name="category_id"
+        className="placeholder:text-sm placeholder:text-gray-300 sm:col-span-4 w-full"
+        inputLabel="Sélectionner une catégorie..."
+        options={Options}
+        defaultValue={Options.find(option => option.value === String(product?.data?.category_id))} 
+      />
+    </div>
+  
+    <PictureUploader
+      images={images}
+      setImages={setImages}
+      savedImages={product?.data?.extra_images_urls ?? []}
+      productId={product.data?.id as string}
+    />
+  
+    <button
+      className="mt-5 w-[10rem] rounded border border-slate-700 bg-slate-100 p-2 px-5 font-bold text-slate-700 duration-300 ease-in-out hover:!bg-slate-600 hover:!text-slate-200"
+      type="submit"
+      disabled={UpdateArticleMutation.isPending}
+    >
+      {UpdateArticleMutation.isPending ? "Chargement..." : "Soumettre"}
+    </button>
+  </form>
+  
   );
 }

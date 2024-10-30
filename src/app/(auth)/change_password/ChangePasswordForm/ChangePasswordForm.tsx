@@ -18,14 +18,14 @@ export default function ChangePasswordForm() {
     .object({
       newPassword: z
         .string({
-          message: translation?.lang["${ELEMENT} must be a string"].replace(
+          message: translation?.lang["{ELEMENT} must be a string"].replace(
             "{ELEMENT}",
             "New password",
           ),
         })
         .min(6, translation?.lang["Password must be at least 6 characters"]),
       confirmPassword: z.string({
-        message: translation?.lang["${ELEMENT} must be a string"].replace(
+        message: translation?.lang["{ELEMENT} must be a string"].replace(
           "{ELEMENT}",
           "Confirm password",
         ),
