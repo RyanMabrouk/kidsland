@@ -267,7 +267,7 @@ export default function Page() {
       <input
         className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 tx-base text-gray-500 focus:outline-none sm:col-span-4 w-full"
         type="number"
-        placeholder="Prix après remise..."
+        placeholder="remise..."
         name="discount"
         defaultValue={product?.data?.discount || ""}
       />
