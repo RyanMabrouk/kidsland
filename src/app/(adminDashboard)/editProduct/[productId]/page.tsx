@@ -43,7 +43,7 @@ export default function Page() {
     if (product?.data?.image_url) {
       setPreview(product.data.image_url);
     }
-  }, [product]);
+  }, [product?.data?.image_url]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

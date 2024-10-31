@@ -6,6 +6,7 @@ import {
   ProductsPaginationProvider,
   useProductsPagination,
 } from "./context/useProductsPagination";
+import { SearchIcon } from "lucide-react";
 
 function ProductListPage() {
   const [searchQuery, setSearchQuery] = useState<string>(""); // State for search query
@@ -36,13 +37,8 @@ function ProductListPage() {
         />
       </div>
       <div className="flex  flex-row items-center gap-1 rounded-full border-2 border-gray-200 px-2  w-56 sm:mx-auto sm:w-96 ">
-        <Image
-          src="/MagnifyingGlass.Png"
-          alt="Search Icon"
-          width={20}
-          height={20}
-          
-        />
+        <SearchIcon size={20} />
+
         <input
           type="text"
           placeholder="Search products..."

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { StockPaginationProvider, useStockPagination } from "./context/useStockPagination";
 import Table from "./ui/table";
+import { SearchIcon } from "lucide-react";
 
 function ProductListPage() {
   const [searchQuery, setSearchQuery] = useState<string>(""); // State for search query
@@ -34,8 +35,8 @@ function ProductListPage() {
       </div>
 
       <div className="flex flex-row gap-1 items-center border-gray-200 border-2 px-2 w-[40rem] m-auto">
-        <Image src="/MagnifyingGlass.Png" alt="Search Icon" width={20} height={20} />
-        <input
+      <SearchIcon size={20} />
+      <input
           type="text"
           placeholder="Search products..."
           value={searchQuery}
