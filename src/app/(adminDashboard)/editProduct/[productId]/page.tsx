@@ -37,13 +37,14 @@ export default function Page() {
   const [preview, setPreview] = useState<string>(
     product.data?.image_url ?? "/noArticlePic.png"
   );
+  console.log("🚀 ~ Page ~ preview:", preview)
   const [images, setImages] = useState<File[]>([]);
 
   useEffect(() => {
     if (product?.data?.image_url) {
       setPreview(product.data.image_url);
     }
-  }, [product]);
+  }, [product?.data?.image_url]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -70,6 +71,7 @@ export default function Page() {
       const category_id = Number(formData.get("category_id"));
       const wholesale_price = Number(formData.get("wholesale_price"));
       const filepicture = formData.get("filepicture") as File;
+      console.log("🚀 ~ Page ~ preview:", preview)
 
       const result = schema.safeParse({
         title,
@@ -231,7 +233,7 @@ export default function Page() {
           onChange={handleImageChange}
         />
         <div className="text-xs text-gray-500 w-48 mx-auto text-center">
-          La taille de l'image doit être inférieure à 1 Mo et le ratio d'image doit être de 1:1
+          La taille de l'image doit être inférieure à 1 Mo et le ratio d'image doit être de 1:1{preview}
         </div>
       </div>
     </div>
