@@ -75,7 +75,7 @@ export default function OrderItem({
             <h1>{order.created_at.substring(0, 10)}</h1>
           </div>
           <div className="text-right font-semibold max-sm:col-span-2 max-sm:text-left">
-            Total : {order.total_price} TND
+            Total : {order.total_price<100 ? order.total_price+ 8 : order.total_price} TND
           </div>
           <div className="col-span-2 flex gap-2">
             <h1 className="text-nowrap font-semibold">

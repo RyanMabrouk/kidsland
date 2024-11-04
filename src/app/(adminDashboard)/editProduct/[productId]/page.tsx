@@ -35,7 +35,7 @@ export default function Page() {
   const queryClient = useQueryClient();
   const { data: product, isLoading } = useProductById(String(productId));
   const [preview, setPreview] = useState<string>(
-    product.data?.image_url ?? "/noArticlePic.png"
+    product.data?.image_url ?? "/noArticlePic.png",
   );
   const [images, setImages] = useState<File[]>([]);
 
@@ -133,12 +133,12 @@ export default function Page() {
     },
     onSuccess: () => {
       toast.success("Succès!", "Produit mis à jour avec succès!");
-      queryClient.invalidateQueries({ queryKey: ["products", {id}] });
+      queryClient.invalidateQueries({ queryKey: ["products", { id }] });
     },
     onError: (error) => {
       toast.error(
         "Erreur",
-        error.message || "Une erreur s'est produite lors de la mise à jour."
+        error.message || "Une erreur s'est produite lors de la mise à jour.",
       );
     },
   });
@@ -159,168 +159,174 @@ export default function Page() {
 
   return (
     <form
-    action={UpdateArticleMutation.mutate}
-    className="flex flex-col gap-5 m-auto w-full max-w-[50rem] justify-center mt-20 px-4 pb-4 sm:px-10"
-  >
-    <div className="flex flex-row items-center gap-3 justify-center">
-      <Image
-        src="/home/icons/flower_yellow.png"
-        alt=""
-        height={15}
-        width={15}
-      />
-      <div className="text-xl sm:text-2xl font-bold uppercase text-color5">
-        Modifier l'article
-      </div>
-      <Image
-        src="/home/icons/flower_yellow.png"
-        alt=""
-        height={15}
-        width={15}
-      />
-    </div>
-  
-    <div className="flex flex-col lg:flex-row gap-10 m-auto w-full items-start mt-5">
-      <div className="flex h-[15rem] w-full flex-col gap-5 lg:w-[30rem]">
-        <div className="flex flex-col gap-3">
-          <div className="text-sm font-semibold text-gray-900">
-            Titre du produit :
-          </div>
-          <input
-            className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 w-full tx-lg text-gray-500 focus:outline-none"
-            type="text"
-            placeholder="Titre du produit..."
-            name="title"
-            defaultValue={product?.data?.title || ""}
-          />
-        </div>
-  
-        <div className="flex flex-col gap-3 h-full">
-          <div className="text-sm font-semibold text-gray-900">
-            Description :
-          </div>
-          <textarea
-            className="placeholder:text-sm placeholder:text-gray-300 border-[1px] border-gray-200 px-4 py-2 text-base text-gray-500 focus:outline-none h-full"
-            placeholder="Description..."
-            name="description"
-            defaultValue={product?.data?.description || ""}
-          ></textarea>
-        </div>
-      </div>
-  
-      <div
-        className="flex flex-col gap-2 bg-gray-200 h-[15rem] w-full max-w-[15rem] justify-center py-2 cursor-pointer"
-        onClick={() =>
-          document
-            .querySelector<HTMLInputElement>('input[name="filepicture"]')
-            ?.click()
-        }
-      >
-        <Image
-          src={preview}
-          width={150}
-          height={150}
-          alt="Photo de l'article"
-          className="m-auto"
-        />
-        <input
-          name="filepicture"
-          type="file"
-          accept="image/*"
-          style={{ display: "none" }}
-          onChange={handleImageChange}
-        />
-        <div className="text-xs text-gray-500 w-48 mx-auto text-center">
-          La taille de l'image doit être inférieure à 1 Mo et le ratio d'image doit être de 1:1
-        </div>
-      </div>
-    </div>
-  
-    <div className="flex flex-col gap-3">
-      <div className="text-sm font-semibold text-gray-900">
-        Sous-titre du produit :
-      </div>
-      <input
-        className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 w-full tx-lg text-gray-500 focus:outline-none"
-        type="text"
-        placeholder="Sous-titre du produit..."
-        name="subtitle"
-        defaultValue={product?.data?.subtitle || ""}
-      />
-    </div>
-  
-    <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 w-full items-center">
-      <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
-        Prix original :
-      </div>
-      <input
-        className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 tx-base text-gray-500 focus:outline-none sm:col-span-4 w-full"
-        type="number"
-        placeholder="Prix..."
-        name="price"
-        defaultValue={product?.data?.price || ""}
-      />
-  
-      <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
-        Remise :
-      </div>
-      <input
-        className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 tx-base text-gray-500 focus:outline-none sm:col-span-4 w-full"
-        type="number"
-        placeholder="remise..."
-        name="discount"
-        defaultValue={product?.data?.discount || ""}
-      />
-  
-      <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
-        Stock :
-      </div>
-      <input
-        className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 tx-lg text-gray-500 focus:outline-none sm:col-span-4 w-full"
-        type="number"
-        placeholder="Stock..."
-        name="stock"
-        defaultValue={product?.data?.stock || ""}
-      />
-  
-      <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
-        Prix de gros :
-      </div>
-      <input
-        className="placeholder:text-sm placeholder:text-gray-300 border-gray-200 border-[1px] px-4 py-2 text-base text-gray-500 focus:outline-none sm:col-span-4 w-full"
-        type="number"
-        placeholder="Prix de gros..."
-        name="wholesale_price"
-        defaultValue={product?.data?.wholesale_price || ""}
-      />
-  
-      <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
-        Catégorie :
-      </div>
-      <SelectGeneric
-        name="category_id"
-        className="placeholder:text-sm placeholder:text-gray-300 sm:col-span-4 w-full"
-        inputLabel="Sélectionner une catégorie..."
-        options={Options}
-        defaultValue={Options.find(option => option.value === String(product?.data?.category_id))} 
-      />
-    </div>
-  
-    <PictureUploader
-      images={images}
-      setImages={setImages}
-      savedImages={product?.data?.extra_images_urls ?? []}
-      productId={product.data?.id as string}
-    />
-  
-    <button
-      className="mt-5 w-[10rem] rounded border border-slate-700 bg-slate-100 p-2 px-5 font-bold text-slate-700 duration-300 ease-in-out hover:!bg-slate-600 hover:!text-slate-200"
-      type="submit"
-      disabled={UpdateArticleMutation.isPending}
+      action={UpdateArticleMutation.mutate}
+      className="m-auto mt-20 flex w-full max-w-[50rem] flex-col justify-center gap-5 px-4 pb-4 sm:px-10"
     >
-      {UpdateArticleMutation.isPending ? "Chargement..." : "Soumettre"}
-    </button>
-  </form>
-  
+      <div className="flex flex-row items-center justify-center gap-3">
+        <Image
+          src="/home/icons/flower_yellow.png"
+          alt=""
+          height={15}
+          width={15}
+        />
+        <div className="text-xl font-bold uppercase text-color5 sm:text-2xl">
+          Modifier l'article
+        </div>
+        <Image
+          src="/home/icons/flower_yellow.png"
+          alt=""
+          height={15}
+          width={15}
+        />
+      </div>
+
+      <div className="m-auto mt-5 flex w-full flex-col items-start gap-10 lg:flex-row">
+        <div className="flex h-[15rem] w-full flex-col gap-5 lg:w-[30rem]">
+          <div className="flex flex-col gap-3">
+            <div className="text-sm font-semibold text-gray-900">
+              Titre du produit :
+            </div>
+            <input
+              className="tx-lg w-full border-[1px] border-gray-200 px-4 py-2 text-gray-500 placeholder:text-sm placeholder:text-gray-300 focus:outline-none"
+              type="text"
+              placeholder="Titre du produit..."
+              name="title"
+              defaultValue={product?.data?.title || ""}
+            />
+          </div>
+
+          <div className="flex h-full flex-col gap-3">
+            <div className="text-sm font-semibold text-gray-900">
+              Description :
+            </div>
+            <textarea
+              className="h-full border-[1px] border-gray-200 px-4 py-2 text-base text-gray-500 placeholder:text-sm placeholder:text-gray-300 focus:outline-none"
+              placeholder="Description..."
+              name="description"
+              defaultValue={product?.data?.description || ""}
+            ></textarea>
+          </div>
+        </div>
+
+        <div
+          className="flex h-[15rem] w-full max-w-[15rem] cursor-pointer flex-col justify-center gap-2 bg-gray-200 py-2"
+          onClick={() =>
+            document
+              .querySelector<HTMLInputElement>('input[name="filepicture"]')
+              ?.click()
+          }
+        >
+          <Image
+            src={preview}
+            width={150}
+            height={150}
+            alt="Photo de l'article"
+            className="m-auto"
+          />
+          <input
+            name="filepicture"
+            type="file"
+            accept="image/*"
+            style={{ display: "none" }}
+            onChange={handleImageChange}
+          />
+          <div className="mx-auto w-48 text-center text-xs text-gray-500">
+            La taille de l'image doit être inférieure à 1 Mo et le ratio d'image
+            doit être de 1:1
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <div className="text-sm font-semibold text-gray-900">
+          Sous-titre du produit :
+        </div>
+        <input
+          className="tx-lg w-full border-[1px] border-gray-200 px-4 py-2 text-gray-500 placeholder:text-sm placeholder:text-gray-300 focus:outline-none"
+          type="text"
+          placeholder="Sous-titre du produit..."
+          name="subtitle"
+          defaultValue={product?.data?.subtitle || ""}
+        />
+      </div>
+
+      <div className="grid w-full grid-cols-1 items-center gap-3 sm:grid-cols-12">
+        <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
+          Prix original :
+        </div>
+        <input
+          className="tx-base w-full border-[1px] border-gray-200 px-4 py-2 text-gray-500 placeholder:text-sm placeholder:text-gray-300 focus:outline-none sm:col-span-4"
+          type="number"
+          step="0.01"
+          placeholder="Prix..."
+          name="price"
+          defaultValue={product?.data?.price || ""}
+        />
+
+        <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
+          Remise :
+        </div>
+        <input
+          className="tx-base w-full border-[1px] border-gray-200 px-4 py-2 text-gray-500 placeholder:text-sm placeholder:text-gray-300 focus:outline-none sm:col-span-4"
+          type="number"
+          step="0.01"
+          placeholder="remise..."
+          name="discount"
+          defaultValue={product?.data?.discount || ""}
+        />
+
+        <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
+          Stock :
+        </div>
+        <input
+          className="tx-lg w-full border-[1px] border-gray-200 px-4 py-2 text-gray-500 placeholder:text-sm placeholder:text-gray-300 focus:outline-none sm:col-span-4"
+          type="number"
+          step="0.01"
+          placeholder="Stock..."
+          name="stock"
+          defaultValue={product?.data?.stock || ""}
+        />
+
+        <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
+          Prix de gros :
+        </div>
+        <input
+          className="w-full border-[1px] border-gray-200 px-4 py-2 text-base text-gray-500 placeholder:text-sm placeholder:text-gray-300 focus:outline-none sm:col-span-4"
+          type="number"
+          step="0.01"
+          placeholder="Prix de gros..."
+          name="wholesale_price"
+          defaultValue={product?.data?.wholesale_price || ""}
+        />
+
+        <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
+          Catégorie :
+        </div>
+        <SelectGeneric
+          name="category_id"
+          className="w-full placeholder:text-sm placeholder:text-gray-300 sm:col-span-4"
+          inputLabel="Sélectionner une catégorie..."
+          options={Options}
+          defaultValue={Options.find(
+            (option) => option.value === String(product?.data?.category_id),
+          )}
+        />
+      </div>
+
+      <PictureUploader
+        images={images}
+        setImages={setImages}
+        savedImages={product?.data?.extra_images_urls ?? []}
+        productId={product.data?.id as string}
+      />
+
+      <button
+        className="mt-5 w-[10rem] rounded border border-slate-700 bg-slate-100 p-2 px-5 font-bold text-slate-700 duration-300 ease-in-out hover:!bg-slate-600 hover:!text-slate-200"
+        type="submit"
+        disabled={UpdateArticleMutation.isPending}
+      >
+        {UpdateArticleMutation.isPending ? "Chargement..." : "Soumettre"}
+      </button>
+    </form>
   );
 }
