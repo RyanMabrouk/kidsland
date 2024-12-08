@@ -1,53 +1,59 @@
-"use server";
-import { createTransport } from "nodemailer";
-require("dotenv").config();
-let transporter = createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  service: "gmail",
-  auth: {
-    type: "OAUTH2",
-    user: process.env.GMAIL_USERNAME,
-    clientId: process.env.OAUTH_CLIENT_ID,
-    clientSecret: process.env.OAUTH_CLIENT_SECRET,
-    refreshToken: process.env.OAUTH_REFRESH_TOKEN,
-    accessToken: process.env.OAUTH_ACCESS_TOKEN,
-    expires: 3599,
-  },
-});
-type EmailResponse = {
-  Error: unknown;
-  Status: string;
-  message: string;
-};
-export async function sendMail(
-  toWho: string,
-  subject: string,
-  content: any,
-): Promise<EmailResponse> {
+import axios from "axios";
+
+const BASE_URL = "https://api.sendgrid.com";
+
+export async function sendMail({
+  to,
+  subject,
+  text,
+  html,
+}: {
+  to: string;
+  subject: string;
+  text: string;
+  html: string;
+}) {
   try {
-    const mailOptions = {
-      from: "softyhr@gmail.com",
-      to: toWho,
-      subject: subject,
-      html: content,
+    const isValidEmail = /\S+@\S+\.\S+/.test(to);
+    if (!isValidEmail) {
+      console.error("Invalid email address : " + to);
+      return;
+    }
+    const emailData = {
+      personalizations: [
+        {
+          to: [{ email: to }],
+        },
+      ],
+      from: {
+        email: process.env.USER_MAIL,
+        name: "Dar Iwen", //
+      },
+      subject,
+      content: [
+        {
+          type: "text/plain",
+          value: text,
+        },
+        {
+          type: "text/html",
+          value: html,
+        },
+      ],
     };
-    transporter.sendMail(mailOptions, (err, info) => {
-      if (err) {
-        throw new Error(err.message);
-      }
+
+    await axios.post(`${BASE_URL}/v3/mail/send`, emailData, {
+      headers: {
+        Authorization: `Bearer ${process.env.SENDGRID_API_KEY}`,
+        "Content-Type": "application/json",
+      },
     });
-    return {
-      Error: null,
-      Status: "failed",
-      message: "Error sending message",
-    };
+    console.log("Email sent to " + to);
   } catch (error) {
-    return {
-      Error: error,
-      Status: "failed",
-      message: "Something Went Wrong",
-    };
+    if (axios.isAxiosError(error)) {
+      console.error(error.response?.data);
+    } else {
+      console.error("Error sending email:" + error);
+    }
   }
 }
