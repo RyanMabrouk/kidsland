@@ -27,7 +27,7 @@ export async function sendMail({
       ],
       from: {
         email: process.env.USER_MAIL,
-        name: "Dar Iwen", //
+        name: "Safari Kids shop", //
       },
       subject,
       content: [
