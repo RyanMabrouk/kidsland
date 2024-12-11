@@ -11,7 +11,7 @@ export function ProductSwiper({
 }) {
   return (
     <div className="flex w-full items-center justify-center">
-      <div className="relative ml-6 max-w-[75rem] max-[1230px]:max-w-[50rem] max-[880px]:max-w-[35rem]">
+      <div className="relative ml-6 w-full max-w-[75rem] max-[1230px]:max-w-[50rem] max-[880px]:max-w-[35rem]">
         <MdKeyboardArrowRight className="btn_swiper_arrow_left absolute -left-[3.5rem] top-[35%] z-20 size-[3.5rem] rotate-180 cursor-pointer text-slate-700 max-[640px]:hidden" />
         <MdKeyboardArrowRight className="btn_swiper_arrow_right absolute right-0 top-[35%] z-20 size-[3.5rem] cursor-pointer text-slate-700 max-[1230px]:-right-8 max-[640px]:hidden" />
         <CustomSwiper

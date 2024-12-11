@@ -19,6 +19,7 @@ export default function RecommendationSection() {
     },
   });
   const { data: translation } = useTranslation();
+  if (!products.data || products.data?.length === 0) return null;
   return (
     <div className="mt-20 flex flex-col gap-12">
       <div className="flex flex-row items-center justify-center gap-3">

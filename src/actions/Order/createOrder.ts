@@ -6,7 +6,8 @@ import { OrderStatusEnum } from "@/types/database.tables.types";
 import { formatProduct } from "@/hooks/data/products/formatProducts";
 import { ICartItem } from "@/hooks/data/cart/cartQuery";
 import getSession from "@/api/getSession";
-import useTranslation from "@/translation/useTranslation";
+import { sendMail } from "@/api/sendEmail";
+import { EMAIL } from "@/constants/Admin";
 
 export default async function createOrder({
   order,
@@ -99,6 +100,20 @@ export default async function createOrder({
     if (orderProductsError) {
       throw new Error(translation.lang["Something went wrong while ordering"]);
     }
+
+    await sendMail({
+      to: session.session?.user.email ?? "",
+      subject: "Order confirmation",
+      text: "Your order has been confirmed",
+      html: "<h1>Your order has been confirmed</h1>",
+    });
+
+    await sendMail({
+      to: EMAIL,
+      subject: "New order",
+      text: "You have a new order",
+      html: "<h1>You have a new order</h1>",
+    });
 
     return { user_id, error: null };
   } catch (error) {
