@@ -133,7 +133,11 @@ export default function useCreateOrder() {
       if (!user_id)
         throw new Error(translation?.lang["Failed to submit order"]);
       const emailTemplate = (isAdmin = false, args: any, cart: any) => {
-        const subtotal = cart.data?.reduce((acc: number, item: any) => acc + item.price * item.quantity, 0) || 0;
+        const subtotal =
+          cart.data?.reduce(
+            (acc: number, item: any) => acc + item.price * item.quantity,
+            0,
+          ) || 0;
         const deliveryCost = subtotal < 100 ? 8 : 0;
         const total = subtotal + deliveryCost;
       
@@ -178,9 +182,21 @@ export default function useCreateOrder() {
                           <td style="padding: 15px; border-top: 1px solid #e0e0e0; font-weight: bold;">Email :</td>
                           <td style="padding: 15px; border-top: 1px solid #e0e0e0;">${args.address}</td>
                         </tr>
+                        <tr>
+                          <td style="padding: 15px; border-top: 1px solid #e0e0e0; font-weight: bold;">Région :</td>
+                          <td style="padding: 15px; border-top: 1px solid #e0e0e0;">${args.region}</td>
+                        </tr>
+                        <tr>
+                          <td style="padding: 15px; border-top: 1px solid #e0e0e0; font-weight: bold;">Ville :</td>
+                          <td style="padding: 15px; border-top: 1px solid #e0e0e0;">${args.city}</td>
+                        </tr>
+                        <tr>
+                          <td style="padding: 15px; border-top: 1px solid #e0e0e0; font-weight: bold;">Informations supplémentaires :</td>
+                          <td style="padding: 15px; border-top: 1px solid #e0e0e0;">${args.additional_info || 'Non spécifié'}</td>
+                        </tr>
                       </table>
                       `
-                      : ''
+                      : ""
                   }
                   <table width="100%" cellpadding="0" cellspacing="0" style="border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; margin-bottom: 20px;">
                     <tr>
@@ -205,7 +221,7 @@ export default function useCreateOrder() {
                           ${(item.price * item.quantity).toFixed(2)} dt
                         </td>
                       </tr>
-                    `
+                    `,
                       )
                       .join("")}
                     <tr>
@@ -254,15 +270,7 @@ export default function useCreateOrder() {
           </body>
           </html>
         `;
-      };
-      
-      
-      
-      
-      
-
-
-
+      };   
       try {
         await sendMail({
           to: args.address,
@@ -272,7 +280,7 @@ export default function useCreateOrder() {
         });
 
         await sendMail({
-          to: process.env.USER_MAIL ?? "snenmontassar@gmail.com",
+          to: process.env.USER_MAIL ?? "abirsn93@gmail.com",
           subject: "New Order Received - Safari Kids Shop",
           text: "A new order has been placed.",
           html: emailTemplate(true, args, cart),
