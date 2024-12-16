@@ -18,7 +18,7 @@ export function Nav() {
   const { data: user, isLoading } = useUser();
 
   return (
-    <nav className="mx-auto flex h-20 w-full flex-row items-center justify-evenly px-4 max-[830px]:justify-between max-[439px]:px-2 min-[830px]:max-w-[80rem]">
+    <nav dir={translation?.default_language === "ar" ? "rtl" : "ltr"} className="mx-auto flex h-20 w-full flex-row items-center justify-evenly px-4 max-[830px]:justify-between max-[439px]:px-2 min-[830px]:max-w-[80rem]">
       <PhoneSheet />
       <Link href={"/home"}>
         <Image
@@ -29,7 +29,7 @@ export function Nav() {
           className="py-3 max-[830px]:hidden"
         />
       </Link>
-      <div className="flex h-full flex-row items-center justify-center gap-6 max-[830px]:hidden">
+      <div  className="flex h-full flex-row items-center justify-center gap-6 max-[830px]:hidden">
         {menuItems.map((item) => (
           <NavbarItemsSubmenu
             {...{

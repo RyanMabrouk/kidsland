@@ -1,6 +1,7 @@
 "use client";
 import { ILanguages } from "@/types/database.tables.types";
 import getTranslation from "./getTranslation";
+import locale from "antd/es/date-picker/locale/en_US";
 
 export const translationClientQuery = () => {
   let locale = "fr";

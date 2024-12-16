@@ -10,7 +10,7 @@ export default function BreadCrumbs() {
   const product = data?.data;
   const { data: translation } = useTranslation();
   return (
-    <div className="flex w-full items-center justify-center bg-gray-100">
+    <div  dir={translation?.default_language ==="ar" ? "rtl" : "ltr"} className="flex w-full items-center justify-center bg-gray-100">
       <div className="flex h-[3rem] w-full max-w-[75rem] flex-row items-center justify-start gap-3 px-6 text-sm capitalize">
         <Link
           href={"/home"}

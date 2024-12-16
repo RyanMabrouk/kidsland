@@ -31,7 +31,10 @@ function Content() {
   const router = useRouter();
   if (!user?.data) router.push("/login");
   return (
-    <>
+    <div
+      className="flex flex-col gap-20"
+      dir={translation?.default_language === "ar" ? "rtl" : "ltr"}
+    >
       <div className="flex flex-row items-center justify-center gap-3">
         <Image
           src="/home/icons/flower_yellow.png"
@@ -69,13 +72,14 @@ function Content() {
         </div>
       )}
       <Pagination
+        dir="ltr"
         className="flex w-full justify-center"
         count={wishlist.meta?.total_pages}
         page={page}
         boundaryCount={1}
         onChange={(e, value) => setPage(value)}
       />
-    </>
+    </div>
   );
 }
 

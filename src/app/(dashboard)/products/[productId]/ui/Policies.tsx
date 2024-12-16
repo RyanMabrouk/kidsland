@@ -34,7 +34,7 @@ export default function Policies() {
     },
   ];
   return (
-    <div className="flex flex-col items-center justify-center gap-8">
+    <div dir={translation?.default_language ==="ar" ? "rtl" : "ltr"} className="flex flex-col items-center justify-center gap-8">
       <div className="text-2xl font-extrabold uppercase text-slate-700 max-[420px]:text-lg">
         {translation?.lang["DELIVERY AND RETURN OF GOODS"]}
       </div>

@@ -13,8 +13,10 @@ import useTranslation from "@/translation/useTranslation";
 import { useState } from "react";
 import { useToast } from "@/hooks/useToast";
 import useUser from "@/hooks/data/user/useUser";
+import { useRouter } from "next/navigation";
 
 export default function LanguageSwitcher() {
+  const router = useRouter();
   const [languages] = useState([
     { code: "fr", name: "FR", flag: "🇫🇷" },
     { code: "en", name: "EN", flag: "🇬🇧" },
@@ -41,6 +43,7 @@ export default function LanguageSwitcher() {
       toast.success(
         translation?.lang["Language changed"] ?? "Language changed",
       );
+      router.refresh();
     },
     onError: (error) => {
       toast.error(error.message);

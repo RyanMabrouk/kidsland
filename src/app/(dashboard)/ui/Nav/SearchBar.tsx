@@ -78,7 +78,7 @@ export default function SearchBar() {
   const isEmptyResult = products.data && products.data.length === 0;
   return (
     <>
-      <Search className="relative max-[400px]:w-[50%]">
+      <Search dir="ltr" className="relative max-[400px]:w-[50%]">
         <SearchIconWrapper>
           <IoSearchSharp className="z-[70] h-5 w-5 text-slate-500 group-focus-within:text-slate-900" />
         </SearchIconWrapper>

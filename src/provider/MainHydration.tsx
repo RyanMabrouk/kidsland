@@ -1,6 +1,5 @@
 "use server";
 import { QueriesConfig } from "@/constants/QueriesConfig";
-import { translationQuery } from "@/translation/translationQuery";
 import {
   QueryClient,
   dehydrate,

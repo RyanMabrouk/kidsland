@@ -25,7 +25,7 @@ export default function AddToCartBtn({
 
   const handleAddToCart = async (e: React.FormEvent) => {
     e.preventDefault();
-    await addToCart({ product_id });
+   addToCart({ product_id });
     
     queryClient.invalidateQueries({ queryKey: ["cart"] });
   };
