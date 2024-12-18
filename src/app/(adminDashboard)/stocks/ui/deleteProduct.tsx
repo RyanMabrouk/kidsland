@@ -11,8 +11,10 @@ import {
 import { FaTrash } from 'react-icons/fa';
 import deleteData from '@/api/deleteData';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useToast } from '@/hooks/useToast';
 
 export default function DeleteProduct({ id }: { id: string }) {
+  const {toast} = useToast();
   const queryClient = useQueryClient();
   const DeleteMutation = useMutation({
     mutationFn: async () => {
@@ -20,7 +22,7 @@ export default function DeleteProduct({ id }: { id: string }) {
       if (error) throw new Error(error.message); // Removed `error.message` as `error` is already a string.
     },
     onSuccess: () => {
-      alert("Success");
+      toast.success("Success!", "The product was deleted.");
       queryClient.invalidateQueries({
         queryKey: ["products"],
       });

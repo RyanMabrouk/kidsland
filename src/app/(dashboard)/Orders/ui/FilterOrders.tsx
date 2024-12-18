@@ -1,20 +1,23 @@
+"use client";
 import React from "react";
 import { useOrderFilters } from "../context/FilterProvider";
 import { OrderStatusEnum } from "@/types/database.tables.types";
+import useTranslation from "@/translation/useTranslation";
 
 type FilterOption = {
   name: OrderStatusEnum;
   color: string;
 };
 
-const filterOptions: FilterOption[] = [
-  { name: OrderStatusEnum.CANCELLED, color: "red-500" },
-  { name: OrderStatusEnum.FULFILLED, color: "green-500" },
-  { name: OrderStatusEnum.PENDING, color: "yellow-400" },
-  { name: OrderStatusEnum.APPROVED, color: "blue-500" },
-];
+
 
 export default function FilterOrders() {
+  const filterOptions: FilterOption[] = [
+    { name: OrderStatusEnum.CANCELLED, color: "red-500" },
+    { name: OrderStatusEnum.FULFILLED, color: "green-500" },
+    { name: OrderStatusEnum.PENDING, color: "yellow-400" },
+    { name: OrderStatusEnum.APPROVED, color: "blue-500" },
+  ];
   const { filters } = useOrderFilters();
 
   return (
@@ -41,6 +44,8 @@ function FilterElement({
   checked: boolean;
 }) {
   const { setFilters } = useOrderFilters();
+  const {data: traslation} = useTranslation();
+
 
   const handleChange = () => {
     setFilters((prev) => ({ ...prev, [name]: !prev[name] }));
@@ -76,7 +81,7 @@ function FilterElement({
       <span
         className={`text-${color} text-lg font-semibold capitalize max-[760px]:text-sm`}
       >
-        {name}
+        {traslation?.lang[name] }
       </span>
     </div>
   );

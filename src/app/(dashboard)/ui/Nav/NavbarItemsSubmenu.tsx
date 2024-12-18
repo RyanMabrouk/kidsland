@@ -15,7 +15,7 @@ export function NavbarItemsSubmenu(item: {
   const [isHovering, setIsHovering] = React.useState(false);
   const searchParams = useSearchParams();
   return (
-    <div className="relative h-full">
+    <div  className="relative h-full">
       <Link
         className={`${
           isHovering ? "bg-color1 text-white" : "text-slate-700"

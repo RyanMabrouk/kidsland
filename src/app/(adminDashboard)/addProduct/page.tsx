@@ -57,12 +57,12 @@ export default function Page() {
         wholesalePrice: Number(formData.get("wholesalePrice")),
         category_id: Number(formData.get("category_id")),
       });
-  
+
       if (!result.success) {
-        const errorMessages = result.error.errors[0].message
-        throw new Error(errorMessages); 
+        const errorMessages = result.error.errors[0].message;
+        throw new Error(errorMessages);
       }
-  
+
       // The rest of your mutation function remains unchanged
       let image_url = "";
       const filepicture = formData.get("filepicture") as File;
@@ -75,7 +75,7 @@ export default function Page() {
       } else {
         throw new Error("Product Image is Required.");
       }
-  
+
       let extra_images_urls: string[] = [];
       if (images.length > 0) {
         await Promise.all(
@@ -91,7 +91,7 @@ export default function Page() {
           }),
         );
       }
-  
+
       const { error } = await postData({
         payload: [
           {
@@ -100,7 +100,7 @@ export default function Page() {
             stock: Number(formData.get("stock")),
             description: String(formData.get("description")),
             subtitle: String(formData.get("subtitle")),
-            discount: Number(formData.get("discount")),
+            discount: Number(formData.get("price"))-Number(formData.get("discount")),
             discount_type: "fixed",
             wholesale_price: Number(formData.get("wholesalePrice")),
             image_url,
@@ -113,9 +113,9 @@ export default function Page() {
       if (error) throw new Error(error.message);
     },
     onSuccess: () => {
-      toast.success("Article added successfully!", "The product was created.");
+      toast.success("Success!", "The product was created.");
       queryClient.invalidateQueries({ queryKey: ["products"] });
-  
+
       formRef.current?.reset();
       setPreview("");
       setImages([]);
@@ -123,11 +123,10 @@ export default function Page() {
     onError: (error: any) => {
       toast.error(
         "Error",
-        error.message || "An error occurred while adding the article."
+        error.message || "An error occurred while adding the article.",
       );
     },
   });
-  
 
   return (
     <form
@@ -226,6 +225,7 @@ export default function Page() {
         <input
           className="tx-base w-full border-[1px] border-gray-200 px-4 py-2 text-gray-500 placeholder:text-sm placeholder:text-gray-300 focus:outline-none sm:col-span-4"
           type="number"
+          step="0.01"
           placeholder="Prix..."
           name="price"
         />
@@ -235,6 +235,7 @@ export default function Page() {
         <input
           className="tx-base w-full border-[1px] border-gray-200 px-4 py-2 text-gray-500 placeholder:text-sm placeholder:text-gray-300 focus:outline-none sm:col-span-4"
           type="number"
+          step="0.01"
           placeholder="remise..."
           name="discount"
         />
@@ -245,6 +246,7 @@ export default function Page() {
         <input
           className="tx-lg w-full border-[1px] border-gray-200 px-4 py-2 text-gray-500 placeholder:text-sm placeholder:text-gray-300 focus:outline-none sm:col-span-4"
           type="number"
+          step="0.01"
           placeholder="Stock..."
           name="stock"
         />
@@ -254,6 +256,7 @@ export default function Page() {
         <input
           className="w-full border-[1px] border-gray-200 px-4 py-2 text-base text-gray-500 placeholder:text-sm placeholder:text-gray-300 focus:outline-none sm:col-span-4"
           type="number"
+          step="0.01"
           placeholder="Prix de gros..."
           name="wholesalePrice"
         />

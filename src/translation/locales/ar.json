@@ -124,7 +124,7 @@
   "An unexpected error occurred": "حدث خطأ غير متوقع",
   "Login successful": "تم تسجيل الدخول بنجاح",
   "If you have an account, log in with your email address.": "إذا كان لديك حساب، قم بتسجيل الدخول باستخدام عنوان بريدك الإلكتروني.",
-  "Login": "تسجيل الدخول",
+  "Login": "التسجيل",
   "Sign In": "تسجيل الدخول",
   "Forgot your password?": "هل نسيت كلمة المرور؟",
   "A password reset link has been sent to your email.": "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.",
@@ -171,5 +171,10 @@
   "Please login to add to cart": "يرجى تسجيل الدخول لإضافة إلى السلة",
   "pay on delivery": "ادفع لاحقًا نقدًا عند استلام طلبك.",
   "Error loading cart": "خطأ في تحميل السلة",
-  "Item already in cart": "العنصر موجود بالفعل في السلة"
+  "Item already in cart": "العنصر موجود بالفعل في السلة",
+  "pending" : "قيد الانتظار",
+  "cancelled" : "تم الإلغاء",
+  "fulfilled" : "تم التوصيل",
+  "approved" : "تم الموافقة"
+
 }

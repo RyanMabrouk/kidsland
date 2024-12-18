@@ -13,7 +13,7 @@ export default function ProductDetails() {
   const { data } = useProductById(String(productId));
   const product = data?.data;
   return (
-    <div className="flex flex-row gap-20 py-8 dark:bg-gray-800 md:flex-col">
+    <div  className="flex flex-row gap-20 py-8 dark:bg-gray-800 md:flex-col">
       <div className="mx-auto flex max-w-6xl flex-row gap-20 px-4 sm:px-6 lg:px-8">
         <div className="-mx-4 flex flex-row items-center gap-16 max-[1150px]:gap-10 max-[700px]:flex-col">
           <div className="px-4">
@@ -43,7 +43,7 @@ export default function ProductDetails() {
               />
             </div>
           </div>
-          <div className="flex flex-col items-start justify-start self-center px-4 max-[700px]:self-start">
+          <div dir={translation?.default_language ==="ar" ? "rtl" : "ltr"} className="flex flex-col items-start justify-start self-center px-4 max-[700px]:self-start">
             <div className="relative flex flex-row gap-2">
               <h2 className="mb-2 text-3xl font-bold text-gray-800 dark:text-white">
                 {product?.title ?? ""}
@@ -58,7 +58,7 @@ export default function ProductDetails() {
               {product?.subtitle ?? ""}
             </p>
             <div className="mb-4 flex flex-col items-start gap-2">
-              <div className="mr-4 flex flex-row items-center gap-2">
+              <div className=" flex flex-row items-center gap-2">
                 <span className="font-bold text-gray-700 dark:text-gray-300">
                   {translation?.lang["price"]}:
                 </span>
@@ -102,7 +102,7 @@ export default function ProductDetails() {
             </div>
             <div>
               <span className="text-lg font-bold text-gray-700 dark:text-gray-300">
-                {["Product Description"]}:
+                {translation?.lang["Product Description"]}:
               </span>
               <p className="mt-2 text-gray-600 dark:text-gray-300">
                 {product?.description}

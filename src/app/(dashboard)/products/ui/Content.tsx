@@ -83,7 +83,7 @@ export default function Content() {
     }
   }, [page, products?.meta?.has_next_page, sort, filters, queryClient]);
   return (
-    <div className="mx-auto flex flex-row gap-12 max-[830px]:gap-0">
+    <div dir={translation?.default_language ==="ar" ? "rtl" : "ltr"}  className="mx-auto flex flex-row gap-12 max-[830px]:gap-0">
       <FiltersLaptop />
       <div className="mt-10 flex flex-col gap-12">
         <div className="flex flex-row items-center gap-6 max-[515px]:gap-3">

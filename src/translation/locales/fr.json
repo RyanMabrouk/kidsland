@@ -171,5 +171,10 @@
   "Please login to add to cart": "Veuillez vous connecter pour ajouter au panier",
   "pay on delivery": "Payez plus tard en espèces ou au moment de la livraison, une fois que votre commande est livrée.",
   "Item already in cart": "Article déjà dans le panier",
-  "Error loading cart": "Erreur de chargement du panier"
+  "Error loading cart": "Erreur de chargement du panier",
+  "pending" : "en attente",
+  "cancelled" : "annulé",
+  "fulfilled" : "réalisé",
+  "approved" : "approuvé"
+
 }

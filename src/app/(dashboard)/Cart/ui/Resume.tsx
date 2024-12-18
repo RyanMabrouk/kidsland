@@ -17,7 +17,7 @@ export default function Resume() {
   }
 
   return (
-    <div className="flex h-fit w-[21rem] flex-col items-center gap-2 rounded-xl bg-white p-4 shadow-2xl transition-all duration-300 max-md:w-full md:sticky md:top-20">
+    <div  className="flex h-fit w-[21rem] flex-col items-center gap-2 rounded-xl bg-white p-4 shadow-2xl transition-all duration-300 max-md:w-full md:sticky md:top-20">
       <h1 className="text-2xl text-color1">
         {translation?.lang["Cart Summary"]}
       </h1>

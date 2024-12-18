@@ -22,7 +22,7 @@ export default function OrderByIdQuery(id: number | null) {
       >({
         tableName: "order_products",
         column: "*, products(*)",
-        match: { order_id: order?.id },
+        match: { order_id: id },
       });
       return { data: { order, orderProducts }, error };
     },

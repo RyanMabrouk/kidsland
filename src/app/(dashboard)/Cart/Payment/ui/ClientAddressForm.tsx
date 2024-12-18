@@ -101,7 +101,7 @@ export default function ClientAddressForm({
             name="adress"
             type="email"
             label={
-              translation?.lang["address"] ??
+              translation?.lang["email"] ??
               "Adress (Street, Avenue, Building, ...)"
             }
           />

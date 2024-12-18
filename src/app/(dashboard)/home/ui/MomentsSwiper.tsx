@@ -52,7 +52,7 @@ export default function MomentsSwiper() {
   ];
   return (
     <div className="flex w-full flex-col gap-6 bg-gray-100 px-4 pb-10 pt-6 text-center">
-      <span className="text-[2rem] font-semibold text-slate-800 max-[830px]:text-[1.5rem] max-[530px]:text-[1rem]">
+      <span  dir={translation?.default_language ==="ar" ? "rtl" : "ltr"} className="text-[2rem] font-semibold text-slate-800 max-[830px]:text-[1.5rem] max-[530px]:text-[1rem]">
         {translation?.lang["Every moment is important. Choose your own!"]}
       </span>
       <div className="mx-auto max-w-[75vw] max-[500px]:max-w-[90vw]">

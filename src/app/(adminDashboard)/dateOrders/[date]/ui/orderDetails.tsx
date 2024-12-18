@@ -6,7 +6,9 @@ import { Player } from '@lottiefiles/react-lottie-player';
 import { Enums, Tables } from '@/types/database.types';
 
 export default function OrderDetails({ order }: { order: Tables<"orders"> }) {
+  console.log("🚀 ~ OrderDetails ~ order:", order.id)
   const { data: orderDetails, isPending } = useOrdersById(order.id);
+  console.log("🚀 ~ OrderDetails ~ orderDetails:", orderDetails)
   const client = order.first_name + " " + order.last_name;
   const address = order.region + ", " + order.city + ", " + order.additional_info;
 
