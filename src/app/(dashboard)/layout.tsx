@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useTransition } from "react";
 import Footer from "./ui/Footer";
 import getProfile from "@/api/getProfile";
 import { redirect } from "next/navigation";
 import { Nav } from "./ui/Nav/Nav";
+import getTranslation from "@/translation/getTranslation";
 export default async function Layout({
   children,
 }: {

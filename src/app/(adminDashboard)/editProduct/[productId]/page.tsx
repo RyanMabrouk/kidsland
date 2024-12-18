@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useToast } from "@/hooks/useToast";
 import PictureUploader from "./ui/picture_uploader";
 import { Player } from "@lottiefiles/react-lottie-player";
+import { Enums } from "@/types/database.types";
 
 const schema = z.object({
   title: z.string().min(1, "Le titre est requis"),
@@ -116,6 +117,7 @@ export default function Page() {
         discount,
         stock,
         description,
+        discount_type: "fixed" as Enums<"discount_type_enum">,
         category_id,
         wholesale_price,
         extra_images_urls: newExtraImagesUrls,
