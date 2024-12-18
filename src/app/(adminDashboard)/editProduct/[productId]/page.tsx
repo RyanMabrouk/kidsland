@@ -114,7 +114,7 @@ export default function Page() {
         title,
         subtitle,
         price,
-        discount,
+        discount : price -discount ,
         stock,
         description,
         discount_type: "fixed" as Enums<"discount_type_enum">,
@@ -136,6 +136,8 @@ export default function Page() {
     onSuccess: () => {
       toast.success("Succès!", "Produit mis à jour avec succès!");
       queryClient.invalidateQueries({ queryKey: ["products", { id }] });
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+
     },
     onError: (error) => {
       toast.error(
@@ -274,7 +276,7 @@ export default function Page() {
           step="0.01"
           placeholder="remise..."
           name="discount"
-          defaultValue={product?.data?.discount || ""}
+          defaultValue={product?.data?.price_after_discount || ""}
         />
 
         <div className="text-sm font-semibold text-gray-900 sm:col-span-2">

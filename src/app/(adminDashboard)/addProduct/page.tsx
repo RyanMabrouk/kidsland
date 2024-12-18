@@ -100,7 +100,7 @@ export default function Page() {
             stock: Number(formData.get("stock")),
             description: String(formData.get("description")),
             subtitle: String(formData.get("subtitle")),
-            discount: Number(formData.get("discount")),
+            discount: Number(formData.get("price"))-Number(formData.get("discount")),
             discount_type: "fixed",
             wholesale_price: Number(formData.get("wholesalePrice")),
             image_url,
@@ -113,7 +113,7 @@ export default function Page() {
       if (error) throw new Error(error.message);
     },
     onSuccess: () => {
-      toast.success("Article added successfully!", "The product was created.");
+      toast.success("Success!", "The product was created.");
       queryClient.invalidateQueries({ queryKey: ["products"] });
 
       formRef.current?.reset();
