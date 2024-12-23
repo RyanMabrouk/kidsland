@@ -41,7 +41,7 @@ export default function Items() {
     );
   return (
     <div className="w-full max-w-[40rem] rounded-md bg-white shadow-md">
-      <div className="ml-5 py-4 text-xl text-color1">
+      <div className="mx-5 py-4 text-xl text-color1">
         {translation?.lang["you have {QUANTITY} products in your cart"].replace(
           "{QUANTITY}",
           String(cart?.data?.length) ?? 0,
