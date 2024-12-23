@@ -157,7 +157,7 @@
   "Something went wrong while ordering": "حدث خطأ أثناء الطلب",
   "Language changed": "تم تغيير اللغة بنجاح",
   "Sort": "فرز",
-  "Products": "المنتجات",
+  "Products":"منتجات",
   "Account": "الحساب",
   "Cart": "السلة",
   "Orders history": "تاريخ الطلبات",
@@ -175,6 +175,6 @@
   "pending" : "قيد الانتظار",
   "cancelled" : "تم الإلغاء",
   "fulfilled" : "تم التوصيل",
-  "approved" : "تم الموافقة"
-
+  "approved" : "تم الموافقة",
+  "product": "منتج"
 }

@@ -111,14 +111,14 @@ export default function Content() {
             }}
           />
           <span className="text-xl font-bold text-color8 max-[515px]:text-sm">
-            {products?.meta?.total_count} {translation?.lang["Products"]}
+            {products?.meta?.total_count ?? 0} {(products?.meta?.total_count ?? 0) > 1 ? translation?.lang["Products"] : translation?.lang["product"]}
           </span>
         </div>
         {isLoading ? (
           <div className="flex min-h-screen w-screen max-w-[50rem] items-start justify-center pt-[20%]">
             <Spinner className="size-12 self-center justify-self-center" />
           </div>
-        ) : products.data && products.data.length > 1 ? (
+        ) : products.data && products.data.length > 0 ? (
           <div className="mx-auto grid min-h-screen w-[50rem] grid-cols-3 gap-x-10 gap-y-10 max-[1150px]:w-max max-[1150px]:grid-cols-2 max-[830px]:grid-cols-2">
             {products.data.map((product, key) => (
               <Product key={key} {...product} />

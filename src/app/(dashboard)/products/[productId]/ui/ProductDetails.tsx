@@ -13,7 +13,7 @@ export default function ProductDetails() {
   const { data } = useProductById(String(productId));
   const product = data?.data;
   return (
-    <div  className="flex flex-row gap-20 py-8 dark:bg-gray-800 md:flex-col">
+    <div dir={translation?.default_language ==="ar" ? "rtl" : "ltr"}   className="flex flex-row gap-20 py-8 dark:bg-gray-800 md:flex-col">
       <div className="mx-auto flex max-w-6xl flex-row gap-20 px-4 sm:px-6 lg:px-8">
         <div className="-mx-4 flex flex-row items-center gap-16 max-[1150px]:gap-10 max-[700px]:flex-col">
           <div className="px-4">
