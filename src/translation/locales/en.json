@@ -175,6 +175,7 @@
   "pending" : "pending",
   "cancelled" : "cancelled",
   "fulfilled" : "fulfilled",
-  "approved" : "approved"
+  "approved" : "approved",
+  "product": "product"
 
 }
