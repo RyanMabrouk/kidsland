@@ -27,10 +27,10 @@ export default function PriceRangeFilter() {
         }),
         {
           scroll: false,
-        }
+        },
       );
     }, 1500),
-    [value]
+    [value],
   );
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export default function PriceRangeFilter() {
     const [min, max] = newValue;
     if (min > max) {
       setValue([max, max]); // Adjust min to match max if invalid
-    } else  {
+    } else {
       setValue(newValue);
     }
   };
@@ -65,8 +65,11 @@ export default function PriceRangeFilter() {
       dir={"ltr"}
       className="flex flex-col items-start justify-center bg-white"
     >
-      <span dir="rtl " className="mb-1 ml-auto text-right text-sm font-medium uppercase">
-        (TND){translation?.lang["price"]}
+      <span
+        dir={translation?.default_language === "ar" ? "rtl" : "ltr"}
+        className={`mb-1 ${translation?.default_language === "ar" ? "ml-auto" : ""} text-right text-sm font-medium uppercase`}
+      >
+        {translation?.lang["price"]}(TND)
       </span>
       <Slider
         className="!mx-1 !text-color8"
@@ -86,7 +89,7 @@ export default function PriceRangeFilter() {
           value={value[0]}
           className="h-[2rem] w-full rounded-sm border border-gray-500 text-center focus:outline-color8"
           onChange={(e) => {
-            const newMin = Math.max(0,Number(e.target.value));
+            const newMin = Math.max(0, Number(e.target.value));
             validateAndSetValue([newMin, value[1]]);
           }}
         />
@@ -96,7 +99,7 @@ export default function PriceRangeFilter() {
           value={value[1]}
           className="h-[2rem] w-full rounded-sm border border-gray-500 text-center focus:outline-color8"
           onChange={(e) => {
-            const newMax = Math.min(Number(e.target.value),999);
+            const newMax = Math.min(Number(e.target.value), 999);
             validateAndSetValue([value[0], newMax]);
           }}
         />
