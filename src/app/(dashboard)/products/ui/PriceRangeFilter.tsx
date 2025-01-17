@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect, useCallback } from "react";
 import { Slider } from "@mui/material";
 import debounce from "lodash.debounce";
@@ -26,10 +27,10 @@ export default function PriceRangeFilter() {
         }),
         {
           scroll: false,
-        },
+        }
       );
     }, 1500),
-    [value],
+    [value]
   );
 
   useEffect(() => {
@@ -37,7 +38,7 @@ export default function PriceRangeFilter() {
     return () => {
       debouncedOnChange.cancel();
     };
-  }, value);
+  }, [value, debouncedOnChange]);
 
   useEffect(() => {
     if (minPriceSearchParams && Number(minPriceSearchParams) !== value[0]) {
@@ -47,21 +48,35 @@ export default function PriceRangeFilter() {
       setValue((prev) => [prev[0], Number(maxPriceSearchParams)]);
     }
   }, [minPriceSearchParams, maxPriceSearchParams]);
+
+  const validateAndSetValue = (newValue: number[]) => {
+    const [min, max] = newValue;
+    if (min > max) {
+      setValue([max, max]); // Adjust min to match max if invalid
+    } else  {
+      setValue(newValue);
+    }
+  };
+
   const { data: translation } = useTranslation();
+
   return (
-    <div className="flex flex-col items-start justify-center bg-white">
-      <span className="mb-1 text-sm font-medium uppercase">
-        {translation?.lang["price"]} (TND)
+    <div
+      dir={"ltr"}
+      className="flex flex-col items-start justify-center bg-white"
+    >
+      <span dir="rtl " className="mb-1 ml-auto text-right text-sm font-medium uppercase">
+        (TND){translation?.lang["price"]}
       </span>
       <Slider
         className="!mx-1 !text-color8"
         onChange={(e, newValue) => {
-          setValue(newValue as number[]);
+          validateAndSetValue(newValue as number[]);
         }}
         value={value}
-        defaultValue={[5, 999]}
+        defaultValue={[0, 999]}
         max={999}
-        min={5}
+        min={0}
         valueLabelDisplay="auto"
         getAriaValueText={(value) => String(value)}
       />
@@ -71,11 +86,8 @@ export default function PriceRangeFilter() {
           value={value[0]}
           className="h-[2rem] w-full rounded-sm border border-gray-500 text-center focus:outline-color8"
           onChange={(e) => {
-            const newValue = Math.max(
-              5,
-              Math.min(Number(e.target.value), value[1]),
-            );
-            setValue([newValue, value[1]]);
+            const newMin = Math.max(0,Number(e.target.value));
+            validateAndSetValue([newMin, value[1]]);
           }}
         />
         <span className="mx-4 text-lg font-bold">-</span>
@@ -84,11 +96,8 @@ export default function PriceRangeFilter() {
           value={value[1]}
           className="h-[2rem] w-full rounded-sm border border-gray-500 text-center focus:outline-color8"
           onChange={(e) => {
-            const newValue = Math.min(
-              999,
-              Math.max(Number(e.target.value), value[0]),
-            );
-            setValue([value[0], newValue]);
+            const newMax = Math.min(Number(e.target.value),999);
+            validateAndSetValue([value[0], newMax]);
           }}
         />
       </div>
