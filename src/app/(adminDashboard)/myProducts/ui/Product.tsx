@@ -21,6 +21,7 @@ export default function Product({
   image_url,
   id,
 }: Partial<ProductProps>) {
+  console.log("price , discount , price_after_discount", price, discount, price_after_discount)
   return (
     <Link
       href={`/products/${id}`}
