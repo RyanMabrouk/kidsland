@@ -141,6 +141,7 @@ export default function Content() {
           className="flex w-full justify-center"
           count={products?.meta?.total_pages}
           page={page}
+          dir="ltr"
           boundaryCount={1}
           onChange={(e, value) => {
             router.push(

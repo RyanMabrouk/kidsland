@@ -17,13 +17,13 @@ import { Enums } from "@/types/database.types";
 
 const schema = z.object({
   title: z.string().min(1, "Le titre est requis"),
-  description: z.string().min(1, "La description est requise"),
+  description: z.string().optional(),
   price: z.number().positive("Le prix doit être un nombre positif"),
   discount: z.number().optional(),
-  stock: z.number().positive("Le stock doit être un nombre positif"),
-  wholesale_price: z
+  stock: z.number().optional(),
+  wholesalePrice: z
     .number()
-    .positive("Le prix de gros doit être un nombre positif"),
+    .optional(),
   category_id: z.union([z.literal(1), z.literal(2), z.literal(3)], {
     message: "Catégorie invalide",
   }),
@@ -114,7 +114,7 @@ export default function Page() {
         title,
         subtitle,
         price,
-        discount : price -discount ,
+        discount ,
         stock,
         description,
         discount_type: "fixed" as Enums<"discount_type_enum">,
@@ -276,7 +276,7 @@ export default function Page() {
           step="0.01"
           placeholder="remise..."
           name="discount"
-          defaultValue={product?.data?.price_after_discount || ""}
+          defaultValue={product?.data?.discount || ""}
         />
 
         <div className="text-sm font-semibold text-gray-900 sm:col-span-2">

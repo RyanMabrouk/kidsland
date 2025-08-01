@@ -66,7 +66,7 @@ export function ProductsSection() {
       )}
       <Pagination
         className="flex w-full justify-center"
-        count={2}
+        count={products.meta?.total_pages}
         page={page}
         boundaryCount={1}
         onChange={(e, value) => setPage(value)}

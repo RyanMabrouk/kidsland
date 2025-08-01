@@ -13,13 +13,13 @@ import PictureUploader from "./ui/additional_pictures_uploader/picture_uploader"
 
 const schema = z.object({
   title: z.string().min(1, "Le titre est requis"),
-  description: z.string().min(1, "La description est requise"),
+  description: z.string().optional(),
   price: z.number().positive("Le prix doit être un nombre positif"),
   discount: z.number().optional(),
-  stock: z.number().positive("Le stock doit être un nombre positif"),
+  stock: z.number().optional(),
   wholesalePrice: z
     .number()
-    .positive("Le prix de gros doit être un nombre positif"),
+    .optional(),
   category_id: z.union([z.literal(1), z.literal(2), z.literal(3)], {
     message: "Catégorie invalide",
   }),
@@ -100,7 +100,7 @@ export default function Page() {
             stock: Number(formData.get("stock")),
             description: String(formData.get("description")),
             subtitle: String(formData.get("subtitle")),
-            discount: Number(formData.get("price"))-Number(formData.get("discount")),
+            discount: Number(formData.get("discount")),
             discount_type: "fixed",
             wholesale_price: Number(formData.get("wholesalePrice")),
             image_url,
@@ -220,7 +220,7 @@ export default function Page() {
 
       <div className="grid w-full grid-cols-1 items-center gap-3 sm:grid-cols-12">
         <div className="text-sm font-semibold text-gray-900 sm:col-span-2">
-          Prix d'origine :
+          Prix de Vente :
         </div>
         <input
           className="tx-base w-full border-[1px] border-gray-200 px-4 py-2 text-gray-500 placeholder:text-sm placeholder:text-gray-300 focus:outline-none sm:col-span-4"
