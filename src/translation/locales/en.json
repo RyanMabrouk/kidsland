@@ -176,6 +176,7 @@
   "cancelled" : "cancelled",
   "fulfilled" : "fulfilled",
   "approved" : "approved",
-  "product": "product"
-
+  "product": "product",
+  "crafted with": "crafted with",
+  "by": "by"
 }

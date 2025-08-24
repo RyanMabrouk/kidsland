@@ -176,7 +176,9 @@
   "cancelled" : "annulé",
   "fulfilled" : "réalisé",
   "approved" : "approuvé",
-  "product": "produit"
+  "product": "produit",
+  "crafted with": "fabriqué avec",
+  "by": "par"
 
 
 }

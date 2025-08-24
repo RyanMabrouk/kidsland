@@ -176,5 +176,7 @@
   "cancelled" : "تم الإلغاء",
   "fulfilled" : "تم التوصيل",
   "approved" : "تم الموافقة",
-  "product": "منتج"
+  "product": "منتج",
+  "crafted with": "مصنوع  ب",
+  "by": "بواسطة"
 }
