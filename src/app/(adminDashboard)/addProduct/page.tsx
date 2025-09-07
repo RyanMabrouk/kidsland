@@ -10,6 +10,7 @@ import { SelectGeneric } from "@/app/ui/SelectGeneric";
 import { useToast } from "@/hooks/useToast";
 import { v4 as uuidv4 } from "uuid";
 import PictureUploader from "./ui/additional_pictures_uploader/picture_uploader";
+import { slugify } from "@/helpers/slugify";
 
 const schema = z.object({
   title: z.string().min(1, "Le titre est requis"),
@@ -106,6 +107,7 @@ export default function Page() {
             image_url,
             extra_images_urls,
             category_id: Number(formData.get("category_id")),
+            slug: slugify(String(formData.get("title"))),
           },
         ],
         tableName: "products",

@@ -1,16 +1,17 @@
 "use client";
 import AddToCartBtn from "@/app/(dashboard)/home/ui/ProductsSection/AddToCartBtn";
-import useProductById from "@/hooks/data/products/useProductById";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { WishlistHart } from "@/app/(dashboard)/home/ui/ProductsSection/WishListHart";
 import useTranslation from "@/translation/useTranslation";
 import CustomSwiper from "@/app/ui/Swiper";
+import useProductBySlug from "@/hooks/data/products/useProductBySlug";
 
 export default function ProductDetails() {
-  const { productId } = useParams();
+  const { slug } = useParams();
   const { data: translation } = useTranslation();
-  const { data } = useProductById(String(productId));
+  const decodedSlug = decodeURIComponent(Array.isArray(slug) ? slug[0] : slug);
+  const { data } = useProductBySlug(String(decodedSlug));
   const product = data?.data;
   return (
     <div dir={translation?.default_language ==="ar" ? "rtl" : "ltr"}   className="flex flex-row gap-20 py-8 dark:bg-gray-800 md:flex-col">

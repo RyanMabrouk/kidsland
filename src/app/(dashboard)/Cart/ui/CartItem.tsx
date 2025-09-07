@@ -21,7 +21,7 @@ export default function CartItem({
   const price_after_discount = product.price - product.discount;
   const { data: translation } = useTranslation();
   const updateCartInLocalStorage = async(updatedCart: any[]) => {
-    await localStorage.setItem("cart", JSON.stringify(updatedCart));
+   localStorage.setItem("cart", JSON.stringify(updatedCart));
     queryClient.invalidateQueries({ queryKey: ["cart"] }); 
   };
   const getCartFromLocalStorage = () => {

@@ -1,14 +1,14 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { productByIdQuery } from "./productByIdQuery";
 import useCart from "../cart/useCart";
 import { formatProduct } from "./formatProducts";
 import useWishlist from "../wishlist/useWishlist";
+import { productBySlugQuery } from "./productBySlugQuery";
 
-export default function useProductById(id: string) {
+export default function useProductBySlug(slug: string) {
   const { data: cart } = useCart();
   const { data: wishlist } = useWishlist();
-  const query = useQuery(productByIdQuery({ id }));
+  const query = useQuery(productBySlugQuery({ slug }));
   return {
     ...query,
     data: {

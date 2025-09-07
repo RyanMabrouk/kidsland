@@ -14,17 +14,48 @@ const lato = Lato({
 });
 
 export const metadata: Metadata = {
-  title: "",
-  description: "",
+  title: "Sfari Jouets | Jeux Éducatifs تونس - ألعاب تعليمية للأطفال",
+  description:
+    "اكتشفوا مجموعة واسعة من الألعاب التعليمية في تونس مع Sfari Jouets. Jouets éducatifs pour enfants en Tunisie, qualité, apprentissage et développement garanti.",
   generator: "Next.js",
   manifest: "/manifest.json",
-  keywords: [],
+  keywords: [
+    "jeux éducatifs Tunisie",
+    "jouets éducatifs Tunisie",
+    "jouets enfants Tunisie",
+    "magasin jouets Tunisie",
+    "Montessori Tunisie",
+    "ألعاب تعليمية تونس",
+    "ألعاب أطفال تونس",
+    "ألعاب تعليمية للأطفال",
+    "متجر ألعاب تعليمية تونس",
+  ],
   authors: [
     {
-      name: "",
-      url: "",
+      name: "Sfari Jouets",
+      url: "https://sfari-jouets.com",
     },
   ],
+  openGraph: {
+    title: "Sfari Jouets | Jeux Éducatifs تونس - ألعاب تعليمية للأطفال",
+    description:
+      "Sfari Jouets يقدم ألعاب تعليمية للأطفال في تونس بجودة عالية وأسعار مناسبة. Jouets éducatifs pour enfants en Tunisie.",
+    url: "https://sfari-jouets.com",
+    siteName: "Sfari Jouets",
+    images: [
+      {
+        url: "https://sfari-jouets.com/og-image.png", 
+        width: 1200,
+        height: 630,
+        alt: "Sfari Jouets - Jeux éducatifs et ألعاب تعليمية في تونس",
+      },
+    ],
+    locale: "fr_FR", 
+    type: "website",
+  },
+  alternates: {
+    canonical: "https://sfari-jouets.com",
+  },
 };
 
 export default async function RootLayout({

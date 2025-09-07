@@ -15,8 +15,6 @@ export default function Products({ searchQuery }: { searchQuery: string }) {
     limit,
     search: { column: "title", value: searchQuery },
   }); 
-  console.log("🚀 ~ Products ~ products:", products)
-
   const queryClient = useQueryClient();
 
   useEffect(() => {
