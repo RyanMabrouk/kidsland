@@ -5,7 +5,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
-import useProductById from "@/hooks/data/products/useProductById";
 import updateData from "@/api/updateData";
 import { SelectGeneric } from "@/app/ui/SelectGeneric";
 import { uploadFile } from "@/api/uploadFile";
@@ -14,6 +13,8 @@ import { useToast } from "@/hooks/useToast";
 import PictureUploader from "./ui/picture_uploader";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { Enums } from "@/types/database.types";
+import { slugify } from "@/helpers/slugify";
+import useProductBySlug from "@/hooks/data/products/useProductBySlug";
 
 const schema = z.object({
   title: z.string().min(1, "Le titre est requis"),
@@ -21,20 +22,18 @@ const schema = z.object({
   price: z.number().positive("Le prix doit être un nombre positif"),
   discount: z.number().optional(),
   stock: z.number().optional(),
-  wholesalePrice: z
-    .number()
-    .optional(),
+  wholesalePrice: z.number().optional(),
   category_id: z.union([z.literal(1), z.literal(2), z.literal(3)], {
     message: "Catégorie invalide",
   }),
 });
 
 export default function Page() {
-  const { productId } = useParams();
-  const id = productId as string;
+  const { slug } = useParams();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { data: product, isLoading } = useProductById(String(productId));
+  const decodedSlug = decodeURIComponent(Array.isArray(slug) ? slug[0] : slug);
+  const { data: product, isLoading } = useProductBySlug(String(decodedSlug));
   const [preview, setPreview] = useState<string>(
     product.data?.image_url ?? "/noArticlePic.png",
   );
@@ -114,13 +113,14 @@ export default function Page() {
         title,
         subtitle,
         price,
-        discount ,
+        discount,
         stock,
         description,
         discount_type: "fixed" as Enums<"discount_type_enum">,
         category_id,
         wholesale_price,
         extra_images_urls: newExtraImagesUrls,
+        slug: slugify(title),
       };
       const match = { id: product?.data?.id };
 
@@ -135,9 +135,8 @@ export default function Page() {
     },
     onSuccess: () => {
       toast.success("Succès!", "Produit mis à jour avec succès!");
-      queryClient.invalidateQueries({ queryKey: ["products", { id }] });
+      queryClient.invalidateQueries({ queryKey: ["products", { slug }] });
       queryClient.invalidateQueries({ queryKey: ["products"] });
-
     },
     onError: (error) => {
       toast.error(

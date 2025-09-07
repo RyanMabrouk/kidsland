@@ -1,14 +1,15 @@
 "use client";
-import useProductById from "@/hooks/data/products/useProductById";
 import useProducts from "@/hooks/data/products/useProducts";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { ProductSwiper } from "./ProductSwiper";
 import useTranslation from "@/translation/useTranslation";
+import useProductBySlug from "@/hooks/data/products/useProductBySlug";
 
 export default function RecommendationSection() {
-  const { productId } = useParams();
-  const { data } = useProductById(String(productId));
+  const { slug } = useParams();
+  const decodedSlug = decodeURIComponent(Array.isArray(slug) ? slug[0] : slug);
+  const { data } = useProductBySlug(String(decodedSlug));
   const product = data?.data;
   const { data: products } = useProducts({
     page: 1,

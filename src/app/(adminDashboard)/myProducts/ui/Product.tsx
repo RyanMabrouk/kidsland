@@ -10,7 +10,7 @@ type ProductProps = {
   discount: number;
   image_url: string | null;
   price_after_discount: number;
-  id: string;
+  slug: string | undefined | null;
 };
 
 export default function Product({
@@ -19,12 +19,12 @@ export default function Product({
   price_after_discount,
   discount,
   image_url,
-  id,
+  slug,
 }: Partial<ProductProps>) {
   console.log("price , discount , price_after_discount", price, discount, price_after_discount)
   return (
     <Link
-      href={`/products/${id}`}
+      href={`/products/${slug}`}
       className=" relative flex h-[22rem] sm:h-[25rem] w-[13rem] sm:w-[15rem] flex-col items-center justify-center gap-4 overflow-hidden"
     >
       <div className="group h-full w-full overflow-hidden rounded-md border transition-all ease-linear hover:backdrop-brightness-75">
@@ -44,7 +44,7 @@ export default function Product({
           height={2000}
           className="h-full w-full cursor-pointer rounded-md object-cover sm:object-scale-down transition-all ease-linear group-hover:scale-[120%] group-hover:brightness-75"
         />
-        <Link href={`/editProduct/${id}`}>
+        <Link href={`/editProduct/${slug}`}>
           <button
             className="absolute bottom-[5%] left-[17.5%] z-0 flex h-[2.5rem] w-[10rem] flex-row items-center justify-center  rounded-xl-center gap-2 rounded-xl border border-slate-700 bg-white px-2 sm:px-3 py-1 sm:py-2 text-center text-xs sm:text-sm font-semibold capitalize text-slate-700 opacity-0 transition-all ease-linear hover:bg-slate-700 hover:text-white group-hover:opacity-100"
           >
