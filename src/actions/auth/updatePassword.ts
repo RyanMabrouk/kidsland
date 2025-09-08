@@ -18,6 +18,6 @@ export default async function updatePassword({
       },
     };
   } else {
-    redirect("/home");
+    redirect("/");
   }
 }

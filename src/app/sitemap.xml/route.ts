@@ -9,7 +9,7 @@ export const GET = async () => {
   const baseUrl = "https://sfari-jouets.com";
 
   const urls = products.data?.map(
-    (p) => `<url><loc>${baseUrl}/products/${encodeURIComponent(p.slug ?? "")}</loc></url>`
+    (p) => `<url><loc>${baseUrl}/products/${p.slug ?? ""}</loc></url>`
   );
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -22,7 +22,7 @@ export const GET = async () => {
 
   return new Response(xml, {
     headers: {
-      "Content-Type": "application/xml",
+      "Content-Type": "application/xml; charset=UTF-8",
     },
   });
 };

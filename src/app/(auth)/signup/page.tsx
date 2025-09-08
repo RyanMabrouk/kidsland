@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 export default async function Page() {
   const { session } = await getSession();
 
-  if (session) redirect("/home");
+  if (session) redirect("/");
   return (
     <div className="flex min-h-screen items-center justify-center">
       <SignupForm />

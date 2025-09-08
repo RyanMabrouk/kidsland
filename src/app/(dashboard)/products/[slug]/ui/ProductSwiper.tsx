@@ -1,5 +1,5 @@
 "use client";
-import Product from "@/app/(dashboard)/home/ui/ProductsSection/Product";
+import Product from "@/app/(dashboard)/ui/home/ui/ProductsSection/Product";
 import CustomSwiper from "@/app/ui/Swiper";
 import { IProduct } from "@/types/database.tables.types";
 import { MdKeyboardArrowRight } from "react-icons/md";

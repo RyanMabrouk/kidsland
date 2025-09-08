@@ -1,11 +1,11 @@
 "use client";
-import AddToCartBtn from "@/app/(dashboard)/home/ui/ProductsSection/AddToCartBtn";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { WishlistHart } from "@/app/(dashboard)/home/ui/ProductsSection/WishListHart";
 import useTranslation from "@/translation/useTranslation";
 import CustomSwiper from "@/app/ui/Swiper";
 import useProductBySlug from "@/hooks/data/products/useProductBySlug";
+import { WishlistHart } from "@/app/(dashboard)/ui/home/ui/ProductsSection/WishListHart";
+import AddToCartBtn from "@/app/(dashboard)/ui/home/ui/ProductsSection/AddToCartBtn";
 
 export default function ProductDetails() {
   const { slug } = useParams();

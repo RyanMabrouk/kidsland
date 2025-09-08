@@ -9,13 +9,13 @@ import { useEffect, useState } from "react";
 import FiltersLaptop from "./FiltersLaptop";
 import FiltersPhone from "./FiltersPhone";
 import { ToggleSortArrow } from "./ToggleSortArrow";
-import Product from "../../home/ui/ProductsSection/Product";
 import useTranslation from "@/translation/useTranslation";
 import { Spinner } from "@/app/ui/Spinner";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import useCategories from "@/hooks/data/categories/useCategories";
 import createNewPathname from "@/helpers/createNewPathname";
+import Product from "../../ui/home/ui/ProductsSection/Product";
 export interface ProductsFilterType {
   minDiscount: number;
   priceRange: [number, number];
