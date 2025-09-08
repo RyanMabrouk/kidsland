@@ -6,10 +6,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import { productsQuery } from "@/hooks/data/products/productsQuery";
 import useTranslation from "@/translation/useTranslation";
 import usePopulatedWishlist from "@/hooks/data/wishlist/usePopulatedWishlist";
-import Product from "../../home/ui/ProductsSection/Product";
 import { Player } from "@lottiefiles/react-lottie-player";
 import useUser from "@/hooks/data/user/useUser";
 import { useRouter } from "next/navigation";
+import Product from "../../ui/home/ui/ProductsSection/Product";
 
 function Content() {
   const [page, setPage] = useState(1);
