@@ -2,7 +2,6 @@
 import { cn } from "@/lib/utils";
 import { FaShoppingCart } from "react-icons/fa";
 import { FaCheckCircle } from "react-icons/fa";
-import { Spinner } from "../../../../ui/Spinner";
 import useTranslation from "@/translation/useTranslation";
 import { useAddToCart } from "@/hooks/data/cart/addToCart";
 import { useQueryClient } from "@tanstack/react-query";
