@@ -25,7 +25,7 @@ export default function SideBar() {
     <>
       <div className="hidden w-[17rem] bg-slate-900 sm:flex sm:flex-col">
         <div className="p-3">
-          <Link href={"/home"}>
+          <Link href={"/"}>
             <Image
               src="/logo/logo-2.png"
               alt="logo"

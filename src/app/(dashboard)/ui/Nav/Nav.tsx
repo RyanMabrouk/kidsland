@@ -5,13 +5,13 @@ import { NavbarItemsSubmenu } from "./NavbarItemsSubmenu";
 import SearchBar from "./SearchBar";
 import UserMenu from "./UserMenu";
 import CartButton from "./CartButton";
-import { menuItems } from "../../home/constants/menuItems";
 import Link from "next/link";
 import useTranslation from "@/translation/useTranslation";
 import PhoneSheet from "./PhoneSheet";
 import LanguageSwitcher from "./LanguageSwitch";
 import useUser from "@/hooks/data/user/useUser";
 import { Player } from "@lottiefiles/react-lottie-player";
+import { menuItems } from "@/constants/menuItems";
 
 export function Nav() {
   const { data: translation } = useTranslation();
@@ -20,7 +20,7 @@ export function Nav() {
   return (
     <nav dir={translation?.default_language === "ar" ? "rtl" : "ltr"} className="mx-auto flex h-20 w-full flex-row items-center justify-evenly px-4 max-[830px]:justify-between max-[439px]:px-2 min-[830px]:max-w-[80rem]">
       <PhoneSheet />
-      <Link href={"/home"}>
+      <Link href={"/"}>
         <Image
           src="/logo/logo-2.png"
           alt="logo"

@@ -1,9 +1,9 @@
 import React from "react";
-import { OffersContainer } from "./ui/Offers/Offers";
-import MomentsSwiper from "./ui/MomentsSwiper";
-import HomeSwiper from "./ui/HomeSwiper";
-import { ProductsSection } from "./ui/ProductsSection/ProductsSection";
+
 import HomeHydration from "@/provider/HomeHydration";
+import HomeSwiper from "./ui/home/ui/HomeSwiper";
+import MomentsSwiper from "./ui/home/ui/MomentsSwiper";
+import { ProductsSection } from "./ui/home/ui/ProductsSection/ProductsSection";
 
 export default function Page() {
   return (

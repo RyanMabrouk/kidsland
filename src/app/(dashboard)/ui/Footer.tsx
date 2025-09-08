@@ -2,10 +2,10 @@
 import Image from "next/image";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-import { menuItems } from "../home/constants/menuItems";
 import Link from "next/link";
 import { EMAIL, FB_LINK, IG_LINK } from "@/constants/Admin";
 import useTranslation from "@/translation/useTranslation";
+import { menuItems } from "@/constants/menuItems";
 
 export default function Footer() {
   const { data: translation } = useTranslation();

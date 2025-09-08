@@ -9,10 +9,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { menuItems } from "../../home/constants/menuItems";
 import Image from "next/image";
 import Link from "next/link";
 import useTranslation from "@/translation/useTranslation";
+import { menuItems } from "@/constants/menuItems";
 export default function PhoneSheet() {
   const { data: translation } = useTranslation();
   return (
@@ -27,7 +27,7 @@ export default function PhoneSheet() {
         <SheetHeader>
           <SheetTitle className="flex items-center justify-start p-6">
             <SheetClose asChild>
-              <Link href={"/home"}>
+              <Link href={"/"}>
                 <Image
                   src="/logo/logo-2.png"
                   alt="logo"

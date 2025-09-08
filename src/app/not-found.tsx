@@ -25,7 +25,7 @@ function NotFound() {
           </p>
           <Link
             className="rounded border border-slate-700 bg-slate-100 p-2 px-5 font-bold text-slate-700 duration-300 ease-in-out hover:!bg-slate-600 hover:!text-slate-200"
-            href="/home"
+            href="/"
           >
             Go Home
           </Link>

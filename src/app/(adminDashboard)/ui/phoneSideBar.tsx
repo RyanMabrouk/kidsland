@@ -31,7 +31,7 @@ export function PhoneSideBar() {
           <SheetHeader>
           </SheetHeader>
           <div className="">
-            <Link href={"/home"}>
+            <Link href={"/"}>
               <Image
                 src="/logo/logo-2.png"
                 alt="logo"
