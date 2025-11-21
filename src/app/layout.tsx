@@ -6,6 +6,7 @@ import { ToastContainer, ToastProvider } from "@/hooks/useToast";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import Store from "@/provider/QCStore";
+import Script from "next/script";
 
 const lato = Lato({
   weight: ["100", "300", "400", "700", "900"],
@@ -44,13 +45,13 @@ export const metadata: Metadata = {
     siteName: "Sfari Jouets",
     images: [
       {
-        url: "https://sfari-jouets.com/og-image.png", 
+        url: "https://sfari-jouets.com/og-image.png",
         width: 1200,
         height: 630,
         alt: "Sfari Jouets - Jeux éducatifs et ألعاب تعليمية في تونس",
       },
     ],
-    locale: "fr_FR", 
+    locale: "fr_FR",
     type: "website",
   },
   alternates: {
@@ -58,7 +59,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -67,7 +68,24 @@ export default async function RootLayout({
     <html lang="en">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        {/* GA4 Script Loader */}
+        <Script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=G-QKZC2GB76E`}
+        />
+
+        {/* GA4 Config */}
+        <Script id="ga4-init">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-QKZC2GB76E');
+          `}
+        </Script>
       </head>
+
       <body className={lato.className + " min-h-screen"}>
         <Analytics />
         <SpeedInsights />
