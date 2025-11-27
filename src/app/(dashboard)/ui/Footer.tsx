@@ -123,7 +123,7 @@ export default function Footer() {
             </div>
             <span>{translation?.lang["by"]}</span>
             <Link
-              href="https://evowave.tech"
+              href="https://evowave.dev"
               target="_blank"
               className="relative font-semibold text-slate-700 transition-all duration-300 hover:text-slate-900"
             >
